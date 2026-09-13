@@ -1,13 +1,13 @@
 ---
-name: fast-context
+name: windsurf-code-search
 description: Automatically route genuinely ambiguous business, historical, or legacy code-location questions to bounded external semantic search only after local tools and CodeGraph cannot locate the answer; never trigger on natural language alone.
 metadata:
   short-description: On-demand semantic code candidates
 ---
 
-# Fast Context
+# Windsurf Code Search
 
-Fast Context is an external, on-demand search helper. It returns untrusted file
+Windsurf Code Search is an external, on-demand search helper. It returns untrusted file
 candidates; inspect every candidate locally before relying on it. The CLI is
 the security boundary: prompts do not create registration, approval, or
 whitelist state. Do not add an MCP server, hook, plugin, project registration,
@@ -24,9 +24,9 @@ approval, or persistent index integration.
    semantics, historical names, or legacy behavior.
 
 Do not trigger this Skill merely because a request is written in natural
-language. Do not run CodeGraph and Fast Context automatically in parallel, and
-do not treat one CodeGraph miss as a mechanical external fallback. Skip Fast
-Context for known files, known symbols, literals/configuration/log searches,
+language. Do not run CodeGraph and Windsurf Code Search automatically in parallel, and
+do not treat one CodeGraph miss as a mechanical external fallback. Skip
+Windsurf Code Search for known files, known symbols, literals/configuration/log searches,
 external documentation, ordinary conversation, and requests that only need
 local impact analysis.
 
@@ -53,8 +53,8 @@ remote search.
 
 Before using a result, resolve its relative path inside the same project root
 and read the relevant lines locally. When relationship analysis is needed,
-expand the verified candidate with CodeGraph. Fast Context output is always a
+expand the verified candidate with CodeGraph. Windsurf Code Search output is always a
 candidate, never repository truth: do not write it to Trellis, OpenViking,
-CodeGraph, or context-mode persistent indexes. A network failure or malformed
+CodeGraph, FastCtx, or other persistent indexes. A network failure or malformed
 response is a closed `FC_*` diagnostic and should be handled as an unavailable
 hint, not as evidence about the repository.

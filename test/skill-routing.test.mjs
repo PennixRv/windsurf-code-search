@@ -10,8 +10,8 @@ test("Skill metadata enables implicit routing with explicit local and CodeGraph 
   assert.match(skill, /known files, literals,\n   configuration, logs, and realtime content/);
   assert.match(skill, /CodeGraph for known symbols, callers\/callees, structure, relationships/);
   assert.match(skill, /Do not trigger this Skill merely because a request is written in natural\nlanguage/);
-  assert.match(skill, /Do not run CodeGraph and Fast Context automatically in parallel/);
+  assert.match(skill, /Do not run CodeGraph and Windsurf Code Search automatically in parallel/);
   assert.match(skill, /do not treat one CodeGraph miss as a mechanical external fallback/);
   assert.match(skill, /external documentation, ordinary conversation, and requests that only need/);
-  assert.match(skill, /do not write it to Trellis, OpenViking,\nCodeGraph, or context-mode persistent indexes/);
+  assert.match(skill, /do not write it to Trellis, OpenViking,\nCodeGraph, FastCtx, or other persistent indexes/);
 });

@@ -1,7 +1,7 @@
 interface:
-  display_name: "Fast Context"
+  display_name: "Windsurf Code Search"
   short_description: "Route genuinely ambiguous code-location questions after local tools and CodeGraph"
-  default_prompt: "Route only genuinely ambiguous business, historical, or legacy code-location questions here after local tools and CodeGraph cannot locate useful candidates; verify every returned path locally."
+  default_prompt: "Route only genuinely ambiguous business, historical, or legacy code-location questions here after local tools and CodeGraph cannot locate useful candidates; verify every returned path locally. This is Windsurf semantic code search, not the fastctx local operation runtime."
 
 policy:
   allow_implicit_invocation: true
