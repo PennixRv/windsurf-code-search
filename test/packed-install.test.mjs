@@ -32,7 +32,7 @@ test("staged tarball installs offline and the runtime CLI does not need maintain
     const packageCommand = join(installDirectory, "node_modules", ".bin", "windsurf-code-search");
     const packageHelp = execFileSync(packageCommand, ["--help"], {
       encoding: "utf8",
-      env: {},
+      env: { PATH: process.env.PATH },
       stdio: ["ignore", "pipe", "pipe"],
     });
     assert.match(packageHelp, /windsurf-code-search --project/);

@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "package": "@pennixrv/windsurf-code-search@0.1.14",
+  "package": "@pennixrv/windsurf-code-search@0.1.15",
   "baseline": {
     "repository": "https://github.com/PennixRv/windsurf-code-search",
     "commit": "d5ebd5522295d21c1a4d6fcf05580e069104c5d6"
@@ -73,7 +73,7 @@
       "classification": "fork_owned",
       "owner": "pennixrv",
       "change_summary": "Patch release identity and exact individual-file runtime allowlist.",
-      "shipped_sha256": "63650bb7e3d716c7466b6cdac624f21fe9107871fdeb66232e092448dbe1b8d9"
+      "shipped_sha256": "66571b19305e68911f8128514c2e7586ec5b13e8eb7c967c317f3cfed253cdca"
     },
     {
       "path": "references/script-contract.md",
@@ -87,7 +87,7 @@
       "classification": "fork_owned",
       "owner": "pennixrv",
       "change_summary": "Public, privacy-safe provenance projection included in the npm package.",
-      "shipped_sha256": "a0e15fd742ef567350187919846c5b17d9cae3757065fa870ccb2b5451951af7"
+      "shipped_sha256": "d063cea20457bcfc8be33911d92aaa26a856b60005475dc2d66196dc745685e6"
     },
     {
       "path": "scripts/lib/LICENSE.fast-context-mcp",

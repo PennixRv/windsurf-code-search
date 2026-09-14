@@ -21,6 +21,7 @@ npm version, so it is not a legitimate source-integrity condition. All failed
 tags remain as evidence. `v0.1.13` removes only that redundant cross-runner
 diagnostic gate while retaining tag/evidence, tracked-artifact hash, offline
 install, and registry verification. Its CI test exposed an empty-`PATH` fixture
-that cannot execute a portable `/usr/bin/env node` launcher. `v0.1.14` retains
-the portable launcher and gives that fixture the runtime `PATH`; it is the only
+that cannot execute a portable `/usr/bin/env node` launcher. `v0.1.14` updated
+the source launcher fixture but missed the npm-installed `.bin` fixture.
+`v0.1.15` gives both executable paths the runtime `PATH`; it is the only
 candidate for publication.
