@@ -133,8 +133,8 @@ if (process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import
   try {
     verifyReleaseEvidence({ tag: process.argv[2] || process.env.GITHUB_REF_NAME });
     process.stdout.write("release evidence ok\n");
-  } catch {
-    process.stderr.write("release evidence verification failed\n");
+  } catch (error) {
+    process.stderr.write(`release evidence verification failed: ${error.message}\n`);
     process.exitCode = 1;
   }
 }
