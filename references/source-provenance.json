@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "package": "@pennixrv/windsurf-code-search@0.1.8",
+  "package": "@pennixrv/windsurf-code-search@0.1.9",
   "source_repository": "https://github.com/PennixRv/windsurf-code-search",
   "upstream": {
     "repository": "https://github.com/oulkurt/fast-context-skill",

@@ -19,7 +19,7 @@ jobs:
           node-version: "26.5.1"
       - run: npm install --global npm@12.0.1
       - run: npm ci --ignore-scripts
-      - run: node scripts/release/verify-tag.mjs
+      - run: node scripts/release/verify-tag.mjs "${{ github.ref_name }}"
       - run: node scripts/release/verify-release-evidence.mjs
       - run: npm test
       - run: npm run verify:provenance

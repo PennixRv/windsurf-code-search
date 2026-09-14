@@ -150,6 +150,7 @@ test("workflow permissions isolate validation, release, and npm publication", ()
   assert.match(publish, /TARBALL_PATH="\$GITHUB_WORKSPACE\/verified-tarball\/\$PACKAGE_NAME"/);
   assert.match(publish, /tarball_sha256/);
   assert.match(publish, /E404\|404 Not Found/);
+  assert.match(tag, /verify-tag\.mjs "\$\{\{ github\.ref_name \}\}"/);
   assert.match(tag, /verify-release-evidence\.mjs/);
   assert.match(publish, /verify-release-evidence\.mjs/);
   assert.match(publish, /Verify published registry tarball and attestations/);

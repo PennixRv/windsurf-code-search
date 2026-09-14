@@ -22,8 +22,8 @@ if (process.argv[1] && resolve(process.argv[1]) === resolve(new URL(import.meta.
   try {
     verifyTag({ tag: process.argv[2] || process.env.GITHUB_REF_NAME });
     process.stdout.write("tag ok\n");
-  } catch {
-    process.stderr.write("tag verification failed\n");
+  } catch (error) {
+    process.stderr.write(`tag verification failed: ${error.message}\n`);
     process.exitCode = 1;
   }
 }
