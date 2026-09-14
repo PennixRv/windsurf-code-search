@@ -14,6 +14,7 @@ import {
   validateAttestation,
 } from "../scripts/release/attestation.mjs";
 import { parseArguments } from "../scripts/release/publish-release.mjs";
+import { requireReleaseNpmVersion } from "../scripts/release/npm-version.mjs";
 import { verifyAttestedReleaseArtifact } from "../scripts/release/preflight-release.mjs";
 import { attestationPathForTag, packageArchivePaths } from "../scripts/release/verify-release-evidence.mjs";
 
@@ -62,6 +63,11 @@ test("tag verifier requires an annotated, exact, clean version tag", () => {
   assert.ok(calls.includes(`cat-file -t ${releaseTag}`));
   assert.throws(() => verifyTag({ tag: unexpectedTag, gitRunner }));
   assert.throws(() => verifyTag({ tag: "0.1.1", gitRunner }));
+});
+
+test("release artifact generation requires the CI npm version", () => {
+  assert.doesNotThrow(() => requireReleaseNpmVersion(() => "12.0.1\n"));
+  assert.throws(() => requireReleaseNpmVersion(() => "12.0.2\n"), /npm 12\.0\.1/);
 });
 
 test("release preflight requires the exact tracked tarball before evidence generation", () => {

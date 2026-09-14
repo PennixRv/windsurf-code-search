@@ -10,6 +10,7 @@ import {
   validateAttestation,
 } from "./attestation.mjs";
 import { buildConsumerPackage } from "./build-package.mjs";
+import { requireReleaseNpmVersion } from "./npm-version.mjs";
 import { attestationPathForTag, buildTarball } from "./verify-release-evidence.mjs";
 
 const SCRIPT_DIRECTORY = dirname(fileURLToPath(import.meta.url));
@@ -78,6 +79,7 @@ export function verifyAttestedReleaseArtifact({ tag, artifact, projectRoot = PRO
 
 export function preflightRelease({ projectRoot = PROJECT_ROOT } = {}) {
   if (projectRoot !== PROJECT_ROOT) throw new Error("custom project root is not supported");
+  requireReleaseNpmVersion();
   if (git(["status", "--porcelain"])) throw new Error("worktree must be clean before release preflight");
   const sourceCommit = git(["rev-parse", "HEAD"]);
   const packageJson = JSON.parse(readFileSync(join(PROJECT_ROOT, "package.json"), "utf8"));

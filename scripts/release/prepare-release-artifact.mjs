@@ -5,6 +5,7 @@ import { dirname, join, resolve } from "node:path";
 import { tmpdir } from "node:os";
 import { fileURLToPath } from "node:url";
 import { buildConsumerPackage } from "./build-package.mjs";
+import { requireReleaseNpmVersion } from "./npm-version.mjs";
 
 const SCRIPT_DIRECTORY = dirname(fileURLToPath(import.meta.url));
 const PROJECT_ROOT = resolve(SCRIPT_DIRECTORY, "../..");
@@ -15,6 +16,7 @@ export function artifactPathForTag(tag, projectRoot = PROJECT_ROOT) {
 }
 
 export function prepareReleaseArtifact({ projectRoot = PROJECT_ROOT } = {}) {
+  requireReleaseNpmVersion();
   const packageJson = JSON.parse(readFileSync(join(projectRoot, "package.json"), "utf8"));
   const tag = `v${packageJson.version}`;
   const destinationPath = artifactPathForTag(tag, projectRoot);

@@ -12,9 +12,11 @@
 
 ## Release Note
 
-`v0.1.8` through `v0.1.10` were tagged but rejected before publication by the
+`v0.1.8` through `v0.1.11` were tagged but rejected before publication by the
 tag-validation job. The first had generic output; the second identified that
 checkout had materialized the annotated tag as a commit, and `v0.1.10` fixed
-that before reaching evidence validation. All immutable failed tags remain as
-evidence. `v0.1.11` preserves the tag fix and makes evidence failures
-observable; it is the only candidate for publication.
+that before reaching evidence validation. `v0.1.11` exposed the remaining
+tarball mismatch: artifacts had been generated with local npm `12.0.2` while
+CI uses `12.0.1`. All immutable failed tags remain as evidence. `v0.1.12`
+requires the CI npm version before creating or preflighting release artifacts;
+it is the only candidate for publication.
