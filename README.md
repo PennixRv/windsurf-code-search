@@ -1,4 +1,4 @@
-# `@pennixrv/fast-context-skill`
+# `@pennixrv/windsurf-code-search`
 
 An on-demand Agent Skill and local CLI that asks Windsurf Devstral for bounded
 semantic code-search candidates. Local `rg` and CodeGraph remain the default
@@ -11,7 +11,7 @@ current process:
 
 ```bash
 WINDSURF_API_KEY='provided-out-of-band' \
-  npx --yes @pennixrv/fast-context-skill \
+  npx --yes @pennixrv/windsurf-code-search \
   --project "/absolute/path/to/project" \
   --query "Where is the legacy import flow implemented?"
 ```

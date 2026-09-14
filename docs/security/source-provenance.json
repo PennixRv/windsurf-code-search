@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "package": "@pennixrv/fast-context-skill@0.1.7",
+  "package": "@pennixrv/windsurf-code-search@0.1.8",
   "baseline": {
-    "repository": "https://github.com/PennixRv/fast-context-skill",
+    "repository": "https://github.com/PennixRv/windsurf-code-search",
     "commit": "d5ebd5522295d21c1a4d6fcf05580e069104c5d6"
   },
   "expected_runtime_paths": [
@@ -11,10 +11,10 @@
     "README.md",
     "SKILL.md",
     "agents/openai.yaml",
+    "bin/windsurf-code-search",
     "package.json",
     "references/script-contract.md",
     "references/source-provenance.json",
-    "scripts/fast-context-search.mjs",
     "scripts/lib/LICENSE.fast-context-mcp",
     "scripts/lib/core.mjs",
     "scripts/lib/credentials.mjs",
@@ -22,7 +22,8 @@
     "scripts/lib/executor.mjs",
     "scripts/lib/path-guard.mjs",
     "scripts/lib/protobuf.mjs",
-    "scripts/lib/public-error.mjs"
+    "scripts/lib/public-error.mjs",
+    "scripts/windsurf-code-search.mjs"
   ],
   "files": [
     {
@@ -44,28 +45,35 @@
       "classification": "fork_owned",
       "owner": "pennixrv",
       "change_summary": "Local-first operation with bounded session recovery, envelope and answer-shape repair, locally grounded implementation evidence recovery, and fixed remote failure documentation.",
-      "shipped_sha256": "151e3c4179aa421b7497d6150f4b8f759d5f722123766cd258cf4f1e70144764"
+      "shipped_sha256": "bf700d8a9d2a92c2d1282a1ae956c1bece05763b12695c612ef3c573bc695d44"
     },
     {
       "path": "SKILL.md",
       "classification": "fork_owned",
       "owner": "pennixrv",
       "change_summary": "Automatic local-first and CodeGraph-gated routing without approval state.",
-      "shipped_sha256": "68a11c87105cab5943df0032998e5f7b2a0e04fff17fb48cdcee980033aa9cf8"
+      "shipped_sha256": "0560977d552c391f4bbbf6d28f33cb757bd2276eb0f74e1d5403769ad536a328"
     },
     {
       "path": "agents/openai.yaml",
       "classification": "fork_owned",
       "owner": "pennixrv",
       "change_summary": "Implicit invocation metadata with local and CodeGraph routing gates.",
-      "shipped_sha256": "655cc490ab7d9fc277c2bd85cd187e937523266c95eee0310e7d1ec80c24c400"
+      "shipped_sha256": "5bd2af9deaa1b813b75663eb2af0e7a4e274a3dd74a49ff05fb7b28767f1d763"
+    },
+    {
+      "path": "bin/windsurf-code-search",
+      "classification": "fork_owned",
+      "owner": "pennixrv",
+      "change_summary": "Executable launcher that delegates to the packaged Node CLI.",
+      "shipped_sha256": "5cc2f8088819f93f8d83ba174acb7e202d0ddcc99c7d55922bfb07ab1be98569"
     },
     {
       "path": "package.json",
       "classification": "fork_owned",
       "owner": "pennixrv",
       "change_summary": "Patch release identity and exact individual-file runtime allowlist.",
-      "shipped_sha256": "177f25c4fa5748f3bf930496e80daf1563be58e015a83e9d75273336b0cbfc72"
+      "shipped_sha256": "873f659923761235b262a5aa0f8a21b87dcea390c111043f0a566888f7e14ed3"
     },
     {
       "path": "references/script-contract.md",
@@ -79,14 +87,7 @@
       "classification": "fork_owned",
       "owner": "pennixrv",
       "change_summary": "Public, privacy-safe provenance projection included in the npm package.",
-      "shipped_sha256": "ce00469218e09d20c5ebafab295e107690ee1399866f411e5f8fd2a36186803e"
-    },
-    {
-      "path": "scripts/fast-context-search.mjs",
-      "classification": "fork_owned",
-      "owner": "pennixrv",
-      "change_summary": "Finite CLI parser, explicit opt-out, pre-network credential boundary, and awaited bounded search lifecycle.",
-      "shipped_sha256": "2d14358192d7f905220bfcd4be530f843e35d5ee67196c01e6096bc1fcdc4ef1"
+      "shipped_sha256": "5ecdbfcaf70ca451409306464270f4d89070f424f7c37234c8512cc462239d47"
     },
     {
       "path": "scripts/lib/LICENSE.fast-context-mcp",
@@ -147,6 +148,13 @@
       "owner": "pennixrv",
       "change_summary": "Closed public diagnostic map for redacted failures.",
       "shipped_sha256": "417900eb1ad877cc39f045e63115bc6166924c5dabf55d250e93d742d162168d"
+    },
+    {
+      "path": "scripts/windsurf-code-search.mjs",
+      "classification": "fork_owned",
+      "owner": "pennixrv",
+      "change_summary": "Finite CLI parser, explicit opt-out, pre-network credential boundary, and awaited bounded search lifecycle.",
+      "shipped_sha256": "9b42473f7954daeb5109bb25aaa962d3e3bf6b00b3e50ed7755311efd659e080"
     }
   ]
 }

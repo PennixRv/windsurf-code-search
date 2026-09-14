@@ -8,8 +8,8 @@ const MAX_QUERY_LENGTH = 2000;
 const MAX_RESULTS = 50;
 
 const USAGE = `Usage:
-  fast-context-search --project <directory> --query <text> [--max-results <n>] [--deny <relative-glob> ...] [--no-external]
-  fast-context-search --help`;
+  windsurf-code-search --project <directory> --query <text> [--max-results <n>] [--deny <relative-glob> ...] [--no-external]
+  windsurf-code-search --help`;
 
 function cliError(code) {
   return new FastContextError(code);
@@ -126,7 +126,7 @@ export async function runCli({
   }
 }
 
-if (process.argv[1] && process.argv[1].endsWith("fast-context-search.mjs")) {
+if (process.argv[1] && process.argv[1].endsWith("windsurf-code-search.mjs")) {
   // Node may unref a pending fetch socket. Keep this one-shot CLI alive until
   // the bounded credential and search promise settles, then always clear it.
   const cliKeepalive = setInterval(() => {}, 2 ** 31 - 1);

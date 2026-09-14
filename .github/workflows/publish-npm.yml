@@ -137,7 +137,7 @@ jobs:
           test "$(sha256sum "$TARBALL_PATH" | awk '{print $1}')" = "$EXPECTED_TARBALL_SHA256"
           SMOKE_DIR="$(mktemp -d)"
           npm install --offline --ignore-scripts --no-audit --no-fund --prefix "$SMOKE_DIR" "$TARBALL_PATH"
-          node "$SMOKE_DIR/node_modules/@pennixrv/fast-context-skill/scripts/fast-context-search.mjs" --help
+          node "$SMOKE_DIR/node_modules/@pennixrv/windsurf-code-search/scripts/windsurf-code-search.mjs" --help
       - name: Require an explicit registry 404
         shell: bash
         run: |

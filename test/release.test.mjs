@@ -90,8 +90,8 @@ test("release preflight requires the exact tracked tarball before evidence gener
 
 test("release rebuild archives only the source package allowlist", () => {
   assert.deepEqual(
-    packageArchivePaths({ files: ["README.md", "scripts/fast-context-search.mjs"] }),
-    ["README.md", "package.json", "scripts/fast-context-search.mjs"],
+    packageArchivePaths({ files: ["README.md", "scripts/windsurf-code-search.mjs"] }),
+    ["README.md", "package.json", "scripts/windsurf-code-search.mjs"],
   );
   assert.throws(() => packageArchivePaths({ files: ["../secret"] }));
   assert.throws(() => packageArchivePaths({ files: ["scripts/"] }));

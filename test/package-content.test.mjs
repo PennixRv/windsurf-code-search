@@ -36,7 +36,7 @@ test("staged npm tarball contains exactly the individual allowlist", () => {
     assert.equal(installedManifest.devDependencies, undefined);
     assert.ok(readFileSync(join(installedRoot, "README.md"), "utf8").includes("references/source-provenance.json"));
     const projection = JSON.parse(readFileSync(join(installedRoot, "references", "source-provenance.json"), "utf8"));
-    assert.equal(projection.package, `@pennixrv/fast-context-skill@${packageJson.version}`);
+    assert.equal(projection.package, `@pennixrv/windsurf-code-search@${packageJson.version}`);
     assert.equal(projection.privacy.contains_credentials, false);
     assert.equal(projection.privacy.contains_runtime_state, false);
     assert.equal(projection.privacy.contains_local_absolute_paths, false);

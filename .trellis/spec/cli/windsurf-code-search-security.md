@@ -1,10 +1,10 @@
-# Fast Context Security Contract
+# Windsurf Code Search Security Contract
 
 ## Scenario: External Semantic Search
 
 ### 1. Scope / Trigger
 
-`scripts/fast-context-search.mjs` is a user-facing CLI that may send a bounded
+`scripts/windsurf-code-search.mjs` is a user-facing CLI that may send a bounded
 query and guarded project context to an external service. Changes to its
 arguments, environment use, filesystem primitives, result shape, package
 contents, or release workflows require this contract and offline regression
@@ -13,7 +13,7 @@ tests.
 ### 2. Signatures
 
 ```text
-fast-context-search --project <directory> --query <text>
+windsurf-code-search --project <directory> --query <text>
   [--max-results <1..50>] [--deny <relative-glob> ...] [--no-external]
 
 stdout: {

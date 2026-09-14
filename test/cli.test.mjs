@@ -4,7 +4,7 @@ import { mkdtempSync, readFileSync, rmSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 import test from "node:test";
-import { parseArgs, runCli } from "../scripts/fast-context-search.mjs";
+import { parseArgs, runCli } from "../scripts/windsurf-code-search.mjs";
 import { FastContextError } from "../scripts/lib/public-error.mjs";
 
 function stream() {
@@ -19,7 +19,7 @@ test("direct CLI entry awaits bounded credential discovery before exiting", () =
     const environment = { ...process.env, HOME: home };
     delete environment.WINDSURF_API_KEY;
     const result = spawnSync(process.execPath, [
-      "scripts/fast-context-search.mjs",
+      "scripts/windsurf-code-search.mjs",
       "--project",
       root,
       "--query",
@@ -32,7 +32,7 @@ test("direct CLI entry awaits bounded credential discovery before exiting", () =
     assert.equal(result.status, 1);
     assert.equal(result.stdout, "");
     assert.equal(result.stderr, "FC_KEY_MISSING: WINDSURF_API_KEY is required\n");
-    const entry = readFileSync("scripts/fast-context-search.mjs", "utf8");
+    const entry = readFileSync("scripts/windsurf-code-search.mjs", "utf8");
     assert.match(entry, /const cliKeepalive = setInterval/);
     assert.match(entry, /await runCli\(/);
     assert.match(entry, /clearInterval\(cliKeepalive\)/);

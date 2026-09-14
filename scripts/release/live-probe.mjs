@@ -12,7 +12,7 @@ import { buildConsumerPackage } from "./build-package.mjs";
 const SCRIPT_DIRECTORY = dirname(fileURLToPath(import.meta.url));
 const PROJECT_ROOT = resolve(SCRIPT_DIRECTORY, "../..");
 const FIXTURE_DIRECTORY = join(PROJECT_ROOT, "test", "fixtures", "ledger-recall");
-const SOURCE_CLI = join(PROJECT_ROOT, "scripts", "fast-context-search.mjs");
+const SOURCE_CLI = join(PROJECT_ROOT, "scripts", "windsurf-code-search.mjs");
 const MAX_CAPTURED_BYTES = 128 * 1024;
 const PROBE_INTER_RUN_DELAY_MS = 10_000;
 const RETAINED_QUERY = "Where does the application resume financial records left in a partially committed state after an interrupted batch?";
@@ -311,7 +311,7 @@ function installConsumerPackage(outputDirectory) {
   });
   if (result.status !== 0) throw new Error("offline package installation failed");
   return {
-    cliPath: join(installDirectory, "node_modules", "@pennixrv", "fast-context-skill", "scripts", "fast-context-search.mjs"),
+    cliPath: join(installDirectory, "node_modules", "@pennixrv", "windsurf-code-search", "scripts", "windsurf-code-search.mjs"),
     tarball_sha256: sha256(artifact.tarballPath),
   };
 }

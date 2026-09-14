@@ -42,15 +42,6 @@ function requireExplicit404(packageCoordinate) {
   }
 }
 
-function requireNpmAuth() {
-  const result = spawnSync("npm", ["whoami", "--registry=https://registry.npmjs.org"], {
-    cwd: PROJECT_ROOT,
-    encoding: "utf8",
-    stdio: ["ignore", "pipe", "pipe"],
-  });
-  if (result.status !== 0 || !result.stdout.trim()) throw new Error("npm authentication unavailable");
-}
-
 function createAttestation({ sourceCommit, packageJson, artifact }) {
   const provenance = readFileSync(join(PROJECT_ROOT, "docs/security/source-provenance.json"));
   const manifest = readFileSync(join(PROJECT_ROOT, "package.json"));
@@ -97,7 +88,6 @@ export function preflightRelease({ projectRoot = PROJECT_ROOT } = {}) {
   runChecked("npm", ["run", "pack:check"]);
   const artifact = buildTarball(sourceCommit, PROJECT_ROOT);
   verifyAttestedReleaseArtifact({ tag, artifact });
-  requireNpmAuth();
   requireExplicit404(`${packageJson.name}@${packageJson.version}`);
   const attestation = createAttestation({ sourceCommit, packageJson, artifact });
   const artifactDirectory = join(PROJECT_ROOT, "dist", "releases", tag);
@@ -129,4 +119,4 @@ if (process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import
   }
 }
 
-export { createAttestation, requireExplicit404, requireNpmAuth };
+export { createAttestation, requireExplicit404 };

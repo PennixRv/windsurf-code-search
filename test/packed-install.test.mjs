@@ -9,21 +9,35 @@ import { buildConsumerPackage } from "../scripts/release/build-package.mjs";
 test("staged tarball installs offline and the runtime CLI does not need maintainer files", () => {
   const temporaryDirectory = mkdtempSync(join(tmpdir(), "fast-context-pack-"));
   try {
+    const sourceHelp = execFileSync("bin/windsurf-code-search", ["--help"], {
+      encoding: "utf8",
+      env: {},
+      stdio: ["ignore", "pipe", "pipe"],
+    });
+    assert.match(sourceHelp, /windsurf-code-search --project/);
+
     const artifact = buildConsumerPackage({ outputDirectory: temporaryDirectory });
     const installDirectory = join(temporaryDirectory, "install");
     execFileSync("npm", ["install", "--offline", "--ignore-scripts", "--no-audit", "--no-fund", "--prefix", installDirectory, artifact.tarballPath], {
       encoding: "utf8",
       stdio: ["ignore", "pipe", "pipe"],
     });
-    const packageRoot = join(installDirectory, "node_modules", "@pennixrv", "fast-context-skill");
-    const help = execFileSync(process.execPath, [join(packageRoot, "scripts", "fast-context-search.mjs"), "--help"], {
+    const packageRoot = join(installDirectory, "node_modules", "@pennixrv", "windsurf-code-search");
+    const help = execFileSync(process.execPath, [join(packageRoot, "scripts", "windsurf-code-search.mjs"), "--help"], {
       encoding: "utf8",
       env: {},
       stdio: ["ignore", "pipe", "pipe"],
     });
-    assert.match(help, /fast-context-search --project/);
+    assert.match(help, /windsurf-code-search --project/);
+    const packageCommand = join(installDirectory, "node_modules", ".bin", "windsurf-code-search");
+    const packageHelp = execFileSync(packageCommand, ["--help"], {
+      encoding: "utf8",
+      env: {},
+      stdio: ["ignore", "pipe", "pipe"],
+    });
+    assert.match(packageHelp, /windsurf-code-search --project/);
     const disabled = spawnSync(process.execPath, [
-      join(packageRoot, "scripts", "fast-context-search.mjs"),
+      join(packageRoot, "scripts", "windsurf-code-search.mjs"),
       "--project", installDirectory,
       "--query", "query",
       "--no-external",
@@ -36,7 +50,7 @@ test("staged tarball installs offline and the runtime CLI does not need maintain
     assert.equal(disabled.stdout, "");
     assert.equal(disabled.stderr, "FC_EXTERNAL_DISABLED: external search is disabled by the caller\n");
     const missingCredential = spawnSync(process.execPath, [
-      join(packageRoot, "scripts", "fast-context-search.mjs"),
+      join(packageRoot, "scripts", "windsurf-code-search.mjs"),
       "--project", installDirectory,
       "--query", "query",
     ], {
@@ -50,11 +64,11 @@ test("staged tarball installs offline and the runtime CLI does not need maintain
     assert.equal(existsSync(join(packageRoot, "scripts", "lib", "credentials.mjs")), true);
     assert.equal(existsSync(join(packageRoot, "scripts", "lib", "devin-credential-helper.mjs")), true);
     assert.equal(
-      readFileSync(join(packageRoot, "scripts", "fast-context-search.mjs"), "utf8"),
-      readFileSync("scripts/fast-context-search.mjs", "utf8"),
+      readFileSync(join(packageRoot, "scripts", "windsurf-code-search.mjs"), "utf8"),
+      readFileSync("scripts/windsurf-code-search.mjs", "utf8"),
     );
     assert.match(
-      readFileSync(join(packageRoot, "scripts", "fast-context-search.mjs"), "utf8"),
+      readFileSync(join(packageRoot, "scripts", "windsurf-code-search.mjs"), "utf8"),
       /await runCli\(/,
     );
     const installedCore = readFileSync(join(packageRoot, "scripts", "lib", "core.mjs"), "utf8");

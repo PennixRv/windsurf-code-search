@@ -35,7 +35,7 @@ local impact analysis.
 Provide one existing project directory and one natural-language query:
 
 ```bash
-node /path/to/fast-context-skill/scripts/fast-context-search.mjs \
+/path/to/windsurf-code-search/bin/windsurf-code-search \
   --project "/absolute/path/to/project" \
   --query "Where is the legacy import flow implemented?"
 ```

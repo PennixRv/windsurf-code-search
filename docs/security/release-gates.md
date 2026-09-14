@@ -1,7 +1,7 @@
 # Release Gates
 
 The release identity is an immutable annotated `v<major>.<minor>.<patch>` tag
-for `@pennixrv/fast-context-skill`. A publisher must validate the peeled tag
+for `@pennixrv/windsurf-code-search`. A publisher must validate the peeled tag
 target, the direct-child source/evidence history, fixed tag metadata, package
 version, clean tree, source provenance, staged consumer manifest, exact package
 contents, and one lifecycle-disabled tarball. The evidence commit changes only
