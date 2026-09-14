@@ -12,7 +12,7 @@
 
 ## Release Note
 
-`v0.1.8` through `v0.1.12` were tagged but rejected before publication by the
+`v0.1.8` through `v0.1.13` were tagged but rejected before publication by the
 tag-validation job. The first had generic output; the second identified that
 checkout had materialized the annotated tag as a commit, and `v0.1.10` fixed
 that before reaching evidence validation. `v0.1.11` exposed a cross-runner
@@ -20,4 +20,7 @@ compressed-tarball byte mismatch; `v0.1.12` confirmed it persists with the CI
 npm version, so it is not a legitimate source-integrity condition. All failed
 tags remain as evidence. `v0.1.13` removes only that redundant cross-runner
 diagnostic gate while retaining tag/evidence, tracked-artifact hash, offline
-install, and registry verification; it is the only candidate for publication.
+install, and registry verification. Its CI test exposed an empty-`PATH` fixture
+that cannot execute a portable `/usr/bin/env node` launcher. `v0.1.14` retains
+the portable launcher and gives that fixture the runtime `PATH`; it is the only
+candidate for publication.

@@ -1,6 +1,6 @@
 {
   "name": "@pennixrv/windsurf-code-search",
-  "version": "0.1.13",
+  "version": "0.1.14",
   "description": "Agent Skill and CLI for Windsurf Devstral semantic code search without an MCP server.",
   "license": "MIT",
   "type": "module",

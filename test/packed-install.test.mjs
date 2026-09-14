@@ -11,7 +11,7 @@ test("staged tarball installs offline and the runtime CLI does not need maintain
   try {
     const sourceHelp = execFileSync("bin/windsurf-code-search", ["--help"], {
       encoding: "utf8",
-      env: {},
+      env: { PATH: process.env.PATH },
       stdio: ["ignore", "pipe", "pipe"],
     });
     assert.match(sourceHelp, /windsurf-code-search --project/);
@@ -25,7 +25,7 @@ test("staged tarball installs offline and the runtime CLI does not need maintain
     const packageRoot = join(installDirectory, "node_modules", "@pennixrv", "windsurf-code-search");
     const help = execFileSync(process.execPath, [join(packageRoot, "scripts", "windsurf-code-search.mjs"), "--help"], {
       encoding: "utf8",
-      env: {},
+      env: { PATH: process.env.PATH },
       stdio: ["ignore", "pipe", "pipe"],
     });
     assert.match(help, /windsurf-code-search --project/);
