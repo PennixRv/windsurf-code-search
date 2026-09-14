@@ -12,7 +12,7 @@
 
 ## Release Note
 
-`v0.1.8` through `v0.1.13` were tagged but rejected before publication by the
+`v0.1.8` through `v0.1.14` were tagged but rejected before publication by the
 tag-validation job. The first had generic output; the second identified that
 checkout had materialized the annotated tag as a commit, and `v0.1.10` fixed
 that before reaching evidence validation. `v0.1.11` exposed a cross-runner
@@ -28,3 +28,22 @@ Before its manual publication, the default-branch workflow is corrected to
 force-fetch its annotated tag and load the tracked artifact from that tag,
 rather than dispatch `GITHUB_SHA`; this change does not alter the candidate
 package, tag, or evidence.
+
+## Delivery Outcome
+
+`v0.1.15` passed its tag CI run
+[`34832450641`](https://github.com/PennixRv/windsurf-code-search/actions/runs/34832450641).
+Manual publication run
+[`34832653049`](https://github.com/PennixRv/windsurf-code-search/actions/runs/34832653049)
+published `@pennixrv/windsurf-code-search@0.1.15` with provenance (Sigstore
+transparency-log index `2829525796`). Its only failed step came after successful
+publication: the tarball endpoint was available but npm metadata had not yet
+made the version installable by package coordinate. Once metadata converged,
+the public tarball SHA-256 matched
+`27eee97bd155c840582706df3b597b7dcb00737f8df5ca70e087e91f8b775535`, coordinate
+installation and the executable smoke check passed, and `npm audit signatures`
+reported one verified registry signature and one verified attestation.
+
+The default-branch publication workflow now downloads and hashes the public
+tarball first, then retries the coordinate install only for bounded registry
+metadata propagation. It does not republish a successful release.

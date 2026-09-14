@@ -157,6 +157,8 @@ test("workflow permissions isolate validation, release, and npm publication", ()
   assert.match(tag, /buildArtifact: false/);
   assert.match(publish, /verify-release-evidence\.mjs/);
   assert.match(publish, /Verify published registry tarball and attestations/);
+  assert.match(publish, /INSTALLED=false/);
+  assert.match(publish, /test "\$INSTALLED" = true/);
   assert.match(publish, /sleep 10/);
   assert.match(publish, /curl --fail --retry 12 --retry-delay 5 --location/);
   assert.match(publish, /EXPECTED_TARBALL_SHA256/);
