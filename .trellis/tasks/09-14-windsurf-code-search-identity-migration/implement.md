@@ -12,8 +12,9 @@
 
 ## Release Note
 
-`v0.1.8` was tagged but rejected before publication by the tag-validation job,
-whose prior generic failure output did not identify the GitHub context mismatch.
-The immutable failed tag remains as evidence. `v0.1.9` explicitly passes
-`github.ref_name` to the checker and retains its error reason; it is the only
-candidate for publication.
+`v0.1.8` and `v0.1.9` were tagged but rejected before publication by the
+tag-validation job. The former had generic output; the latter identified that
+checkout had materialized the annotated tag as a commit. Both immutable failed
+tags remain as evidence. `v0.1.10` explicitly passes `github.ref_name` and
+force-fetches the exact tag object before validation; it is the only candidate
+for publication.

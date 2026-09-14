@@ -106,6 +106,7 @@ test("workflow permissions isolate validation, release, and npm publication", ()
   assert.match(tag, /permissions:\n  contents: read/);
   assert.doesNotMatch(tag, /contents:\s*write/);
   assert.doesNotMatch(tag, /gh release create/);
+  assert.match(tag, /git fetch --force origin "refs\/tags\/\$\{\{ github\.ref_name \}\}:refs\/tags\/\$\{\{ github\.ref_name \}\}"/);
   assert.match(publish, /permissions:\n  contents: read/);
   assert.match(publish, /contents: read\n      id-token: write/);
   assert.doesNotMatch(publish, /contents: write/);
