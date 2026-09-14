@@ -19,6 +19,7 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ inputs.tag }}
+      - run: git fetch --force origin "refs/tags/${{ inputs.tag }}:refs/tags/${{ inputs.tag }}"
       - uses: actions/setup-node@v4
         with:
           node-version: "26.5.1"
@@ -34,8 +35,7 @@ jobs:
         run: |
           TARBALL="$(node -p "JSON.parse(require('fs').readFileSync('docs/releases/attestations/' + process.env.RELEASE_TAG + '.json', 'utf8')).artifacts.tarball_filename")"
           mkdir -p dist/attested-package
-          git fetch --no-tags origin "$GITHUB_SHA"
-          git show "$GITHUB_SHA:docs/releases/artifacts/$RELEASE_TAG.tgz" > "dist/attested-package/$TARBALL"
+          git show "$RELEASE_TAG:docs/releases/artifacts/$RELEASE_TAG.tgz" > "dist/attested-package/$TARBALL"
           EXPECTED="$(node -p "JSON.parse(require('fs').readFileSync('docs/releases/attestations/' + process.env.RELEASE_TAG + '.json', 'utf8')).artifacts.tarball_sha256")"
           ACTUAL="$(sha256sum "dist/attested-package/$TARBALL" | awk '{print $1}')"
           test "$ACTUAL" = "$EXPECTED"
@@ -83,6 +83,7 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ inputs.tag }}
+      - run: git fetch --force origin "refs/tags/${{ inputs.tag }}:refs/tags/${{ inputs.tag }}"
       - uses: actions/setup-node@v4
         with:
           node-version: "26.5.1"

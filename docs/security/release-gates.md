@@ -17,9 +17,10 @@ Before source commit `C`, `release:prepare-artifact` writes exactly one
 `docs/releases/artifacts/v<version>.tgz` from the staging builder. `C` includes
 that tarball; preflight confirms the tracked artifact against the local staging
 build before creating evidence commit `E`. This is the immutable workflow input
-downloaded by the CI publisher. CI verifies its tag and evidence metadata, then
-checks the tracked artifact hash and installs that exact artifact offline; it
-does not require a separate runner to reproduce identical compressed bytes.
+downloaded from that tag by the CI publisher. CI force-fetches the annotated tag
+object, verifies its tag and evidence metadata, then checks the tracked artifact
+hash and installs that exact artifact offline; it does not require a separate
+runner to reproduce identical compressed bytes.
 
 The evidence rebuilder archives only `package.json` and the explicit npm
 `files` allowlist from `C`. It must never archive accumulated historical

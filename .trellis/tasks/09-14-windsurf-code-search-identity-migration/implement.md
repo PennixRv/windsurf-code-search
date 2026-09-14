@@ -23,5 +23,8 @@ diagnostic gate while retaining tag/evidence, tracked-artifact hash, offline
 install, and registry verification. Its CI test exposed an empty-`PATH` fixture
 that cannot execute a portable `/usr/bin/env node` launcher. `v0.1.14` updated
 the source launcher fixture but missed the npm-installed `.bin` fixture.
-`v0.1.15` gives both executable paths the runtime `PATH`; it is the only
-candidate for publication.
+`v0.1.15` gives both executable paths the runtime `PATH` and passed tag CI.
+Before its manual publication, the default-branch workflow is corrected to
+force-fetch its annotated tag and load the tracked artifact from that tag,
+rather than dispatch `GITHUB_SHA`; this change does not alter the candidate
+package, tag, or evidence.

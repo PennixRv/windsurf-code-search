@@ -133,6 +133,7 @@ test("workflow permissions isolate validation, release, and npm publication", ()
   assert.match(publish, /verify-tag\.mjs.*verifyTag/);
   assert.match(publish, /verify-release-evidence\.mjs.*verifyReleaseEvidence/);
   assert.match(publish, /RELEASE_TAG: \$\{\{ inputs\.tag \}\}/);
+  assert.match(publish, /git fetch --force origin "refs\/tags\/\$\{\{ inputs\.tag \}\}:refs\/tags\/\$\{\{ inputs\.tag \}\}"/);
   assert.doesNotMatch(publish, /- run: node --input-type=module -e/);
   assert.match(readFileSync("scripts/release/verify-tag.mjs", "utf8"), /process\.argv\[2\] \|\| process\.env\.GITHUB_REF_NAME/);
   assert.match(readFileSync("scripts/release/verify-release-evidence.mjs", "utf8"), /process\.argv\[2\] \|\| process\.env\.GITHUB_REF_NAME/);
@@ -142,7 +143,7 @@ test("workflow permissions isolate validation, release, and npm publication", ()
   assert.doesNotMatch(publish, /rebuilt-npm-tarball-\$\{\{ github\.run_id \}\}/);
   assert.doesNotMatch(publish, /dist\/rebuilt-diagnostic\/\*\.tgz/);
   assert.match(publish, /docs\/releases\/artifacts\/\$RELEASE_TAG\.tgz/);
-  assert.match(publish, /git fetch --no-tags origin "\$GITHUB_SHA"/);
+  assert.match(publish, /git show "\$RELEASE_TAG:docs\/releases\/artifacts\/\$RELEASE_TAG\.tgz"/);
   assert.match(publish, /dist\/attested-package/);
   assert.match(publish, /buildArtifact: false/);
   assert.match(publish, /sudo ln -sf "\$NODE_EXECUTABLE" \/usr\/bin\/node/);
