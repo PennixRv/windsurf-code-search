@@ -1,0 +1,18 @@
+{
+  "schema_version": 2,
+  "package": {
+    "name": "@pennixrv/windsurf-code-search",
+    "version": "0.1.10"
+  },
+  "source": {
+    "commit": "154af7421790ad65f2e2b8909bc4a27bf2a018d7"
+  },
+  "artifacts": {
+    "provenance_sha256": "dba9d2d0f65d2b9f2c442f6a40cd28cbcfbc99a9fe0fa44c8c2adffabafc2ab5",
+    "package_manifest_sha256": "918cfbe46c7c947f7bd7edef07e895667f5d87b4bab8c4ad0223331fb6119b55",
+    "consumer_manifest_sha256": "6a7d2eea0ae992fa5a7961d29495f4a93ac0a354b96261336869e280109f93f8",
+    "tarball_filename": "pennixrv-windsurf-code-search-0.1.10.tgz",
+    "tarball_sha256": "be864890ced093424cc8958d58baf5fcaad171e31875b46f9c9f1bcef651fed2"
+  },
+  "canonical_attestation_sha256": "317aac194efcb0f143ded1c11067a81234fd0f97beb7dd7781c93e452074a779"
+}
