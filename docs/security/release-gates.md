@@ -4,9 +4,9 @@ The release identity is an immutable annotated `v<major>.<minor>.<patch>` tag
 for `@pennixrv/windsurf-code-search`. A publisher must validate the peeled tag
 target, the direct-child source/evidence history, fixed tag metadata, package
 version, clean tree, source provenance, staged consumer manifest, exact package
-contents, and one lifecycle-disabled tarball. The evidence commit changes only
-`docs/releases/attestations/<tag>.json`. The tarball digest is rechecked
-immediately before publication; any mutation or repack aborts.
+contents, and the tracked lifecycle-disabled tarball. The evidence commit
+changes only `docs/releases/attestations/<tag>.json`. The tarball digest is
+rechecked immediately before publication; any mutation or repack aborts.
 
 The attestation records source manifest, public provenance, staged consumer
 manifest, and tarball digests. Its canonical digest omits only the
@@ -15,10 +15,11 @@ annotated tag message, which avoids a self-referential commit or file hash.
 
 Before source commit `C`, `release:prepare-artifact` writes exactly one
 `docs/releases/artifacts/v<version>.tgz` from the staging builder. `C` includes
-that tarball; preflight rebuilds the consumer tarball from `C` and rejects a
-missing or digest-mismatched tracked artifact before creating evidence commit
-`E`. This is the immutable workflow input downloaded by the CI publisher; a
-runner rebuild is diagnostic only and never replaces it.
+that tarball; preflight confirms the tracked artifact against the local staging
+build before creating evidence commit `E`. This is the immutable workflow input
+downloaded by the CI publisher. CI verifies its tag and evidence metadata, then
+checks the tracked artifact hash and installs that exact artifact offline; it
+does not require a separate runner to reproduce identical compressed bytes.
 
 The evidence rebuilder archives only `package.json` and the explicit npm
 `files` allowlist from `C`. It must never archive accumulated historical

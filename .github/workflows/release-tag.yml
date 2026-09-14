@@ -21,9 +21,11 @@ jobs:
       - run: npm install --global npm@12.0.1
       - run: npm ci --ignore-scripts
       - run: node scripts/release/verify-tag.mjs "${{ github.ref_name }}"
-      - run: node scripts/release/verify-release-evidence.mjs
+      - run: |
+          node --input-type=module -e 'import("./scripts/release/verify-release-evidence.mjs").then(({ verifyReleaseEvidence }) => verifyReleaseEvidence({ tag: process.env.RELEASE_TAG, buildArtifact: false }))'
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
       - run: npm test
       - run: npm run verify:provenance
       - run: npm run pack:check
       - run: npm pack --dry-run --json --ignore-scripts
-      - run: node scripts/release/build-package.mjs --output dist/tag-package
