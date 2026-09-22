@@ -46,8 +46,12 @@ explicit `WINDSURF_API_KEY`. On Linux/WSL only, a missing explicit key may use
 the current user's Devin CLI login through a package-owned, bounded no-shell
 helper. That helper has one fixed credentials path, rejects symlinks, oversize
 files, unknown fields and unsupported values, and never scans desktop state.
-It never prints keys, persists prompts or responses, or emits raw remote
-errors. Do not copy a credential into a file, command history, log, or commit.
+The owner-managed configuration path is available through `configure` and
+`config-doctor`; it is private, atomic, and redacted. The runtime precedence
+is explicit environment, owner config, then Devin login. It never prints keys,
+persists prompts or responses, or emits raw remote errors. Do not copy a
+credential into a file, command history, log, or commit outside the owner
+configuration command.
 Use `--no-external` when the caller must prevent all credential access and
 remote search.
 

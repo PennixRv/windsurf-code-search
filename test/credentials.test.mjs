@@ -1,13 +1,16 @@
 import assert from "node:assert/strict";
-import { mkdirSync, mkdtempSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
+import { chmodSync, mkdirSync, mkdtempSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 import test from "node:test";
 import {
   CREDENTIAL_LIMITS,
+  inspectOwnerCredential,
   isSupportedDevinCredential,
+  ownerConfigPath,
   readDevinCredential,
   resolveCredential,
+  writeOwnerCredential,
 } from "../scripts/lib/credentials.mjs";
 
 const devinSession = "devin-session-token$synthetic-session-token-12345";
@@ -97,4 +100,48 @@ test("discovery uses a no-shell helper with a minimal environment and byte cap",
   assert.deepEqual(call.options.env, { HOME: "/synthetic/home" });
   assert.equal(call.options.maxOutputBytes, CREDENTIAL_LIMITS.MAX_HELPER_OUTPUT_BYTES);
   assert.ok(call.options.signal instanceof AbortSignal);
+});
+
+test("owner config is private, atomic, and takes precedence over Devin", async () => {
+  const configHome = mkdtempSync(join(tmpdir(), "fast-context-owner-"));
+  const environment = { XDG_CONFIG_HOME: configHome, HOME: configHome };
+  try {
+    writeOwnerCredential("owner-synthetic-key", { environment });
+    assert.deepEqual(inspectOwnerCredential({ environment }), {
+      status: "configured",
+      apiKey: "owner-synthetic-key",
+      source: "owner-config",
+    });
+    assert.deepEqual(
+      await resolveCredential({
+        environment,
+        platformName: "darwin",
+        runProcess: async () => ({ status: 0, stdout: devinSession }),
+      }),
+      { apiKey: "owner-synthetic-key", source: "owner-config" },
+    );
+    chmodSync(ownerConfigPath(environment), 0o644);
+    assert.equal(inspectOwnerCredential({ environment }).status, "blocked");
+    assert.equal(await resolveCredential({ environment, platformName: "darwin" }), null);
+  } finally {
+    rmSync(configHome, { recursive: true, force: true });
+  }
+});
+
+test("owner config rejects symlinks and malformed shapes without exposing content", () => {
+  const configHome = mkdtempSync(join(tmpdir(), "fast-context-owner-"));
+  const environment = { XDG_CONFIG_HOME: configHome, HOME: configHome };
+  const path = ownerConfigPath(environment);
+  try {
+    mkdirSync(join(configHome, "windsurf-code-search"), { recursive: true, mode: 0o700 });
+    const target = join(configHome, "outside.json");
+    writeFileSync(target, JSON.stringify({ apiKey: "secret-sentinel" }));
+    symlinkSync(target, path);
+    assert.equal(inspectOwnerCredential({ environment }).status, "blocked");
+    rmSync(path);
+    writeFileSync(path, JSON.stringify({ wrong: "secret-sentinel" }), { mode: 0o600 });
+    assert.equal(inspectOwnerCredential({ environment }).status, "invalid");
+  } finally {
+    rmSync(configHome, { recursive: true, force: true });
+  }
 });

@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "package": "@pennixrv/windsurf-code-search@0.1.15",
+  "package": "@pennixrv/windsurf-code-search@0.1.16",
   "source_repository": "https://github.com/PennixRv/windsurf-code-search",
   "upstream": {
     "repository": "https://github.com/oulkurt/fast-context-skill",
@@ -27,22 +27,22 @@
   ],
   "classification": "public-runtime-projection",
   "runtime_file_sha256": {
-    "SKILL.md": "0560977d552c391f4bbbf6d28f33cb757bd2276eb0f74e1d5403769ad536a328",
-    "README.md": "bf700d8a9d2a92c2d1282a1ae956c1bece05763b12695c612ef3c573bc695d44",
+    "SKILL.md": "622a5f44960d5abcdec7730affbbe64a747c401696ec28bed7d143ca8fd1b3e6",
+    "README.md": "c61ace8c2d3601980bf9ede299130e362970f00ce11f1e52d0c8d2c3166324f7",
     "NOTICE.md": "cc25264b880d726f158bfa046bfdbe6871adb2ad86ebad3ecacad1f68410d61f",
     "LICENSE": "bb9a2ce78d8b8ca19db1bb4ddc68b02aa1959487d28fc472d8414ede53cc3df1",
     "references/script-contract.md": "b963982ccf00a890965ac1c6531ce4544adcc5ab4235555f9ee2b8fc78f4e586",
     "agents/openai.yaml": "5bd2af9deaa1b813b75663eb2af0e7a4e274a3dd74a49ff05fb7b28767f1d763",
     "bin/windsurf-code-search": "5cc2f8088819f93f8d83ba174acb7e202d0ddcc99c7d55922bfb07ab1be98569",
-    "scripts/windsurf-code-search.mjs": "9b42473f7954daeb5109bb25aaa962d3e3bf6b00b3e50ed7755311efd659e080",
+    "scripts/windsurf-code-search.mjs": "d51f5f8f85d9e0807969f6b232f6e1d15220bc1da8d47129c4c809066d9d2882",
     "scripts/lib/LICENSE.fast-context-mcp": "06dcddbb6908a0c6dd4a9e8ec822eea41d5a460a53089fecccc8a68049e99241",
-    "scripts/lib/credentials.mjs": "d21cec35688727272340ddc30875bc982f4914843e76d947951e4256fd1a931d",
+    "scripts/lib/credentials.mjs": "d36d7e0dc471fc0215d4798a626434c100bb3a0fce64b04034a252edec3a3e91",
     "scripts/lib/core.mjs": "84d5aed3888b80c3ef9351b6e9d0d3ad7d1688440dc5831f4f79c9ff72e6f0f3",
     "scripts/lib/devin-credential-helper.mjs": "803ef84423c90b78f6c6a7ad410a2a8f2d5fd417ec2fac1d3654b770d99d3301",
     "scripts/lib/executor.mjs": "87ff4c758764c601a53e0398cc0ff79af46edad7a27bea96f474e1d032a2f5cb",
     "scripts/lib/path-guard.mjs": "cf8b5631ede6e6368fe80ae28fb6c42dc6353642ddf1a92b326dabc515cf3393",
     "scripts/lib/protobuf.mjs": "be21011475d2623b993a6baced0d829ca0c36f0d871fe2c3fb5b439079c8b88a",
-    "scripts/lib/public-error.mjs": "417900eb1ad877cc39f045e63115bc6166924c5dabf55d250e93d742d162168d"
+    "scripts/lib/public-error.mjs": "c2a412470632aa50b7db1a946681a471da166c18529a3de569327e77c50cf2b3"
   },
   "self_digest": "omitted to avoid a self-referential digest",
   "privacy": {

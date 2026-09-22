@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "package": "@pennixrv/windsurf-code-search@0.1.15",
+  "package": "@pennixrv/windsurf-code-search@0.1.16",
   "baseline": {
     "repository": "https://github.com/PennixRv/windsurf-code-search",
     "commit": "d5ebd5522295d21c1a4d6fcf05580e069104c5d6"
@@ -45,14 +45,14 @@
       "classification": "fork_owned",
       "owner": "pennixrv",
       "change_summary": "Local-first operation with bounded session recovery, envelope and answer-shape repair, locally grounded implementation evidence recovery, and fixed remote failure documentation.",
-      "shipped_sha256": "bf700d8a9d2a92c2d1282a1ae956c1bece05763b12695c612ef3c573bc695d44"
+      "shipped_sha256": "c61ace8c2d3601980bf9ede299130e362970f00ce11f1e52d0c8d2c3166324f7"
     },
     {
       "path": "SKILL.md",
       "classification": "fork_owned",
       "owner": "pennixrv",
       "change_summary": "Automatic local-first and CodeGraph-gated routing without approval state.",
-      "shipped_sha256": "0560977d552c391f4bbbf6d28f33cb757bd2276eb0f74e1d5403769ad536a328"
+      "shipped_sha256": "622a5f44960d5abcdec7730affbbe64a747c401696ec28bed7d143ca8fd1b3e6"
     },
     {
       "path": "agents/openai.yaml",
@@ -73,21 +73,21 @@
       "classification": "fork_owned",
       "owner": "pennixrv",
       "change_summary": "Patch release identity and exact individual-file runtime allowlist.",
-      "shipped_sha256": "66571b19305e68911f8128514c2e7586ec5b13e8eb7c967c317f3cfed253cdca"
+      "shipped_sha256": "6d99f9da2e88e2e91ba38561d872bfbef0465ff8675b45db72d9feaa29b389db"
     },
     {
       "path": "references/script-contract.md",
       "classification": "fork_owned",
       "owner": "pennixrv",
       "change_summary": "Finite CLI with bounded upstream session recovery, strict envelope and answer-shape correction, local evidence projection, credential-source, and redacted remote-error contract.",
-      "shipped_sha256": "b963982ccf00a890965ac1c6531ce4544adcc5ab4235555f9ee2b8fc78f4e586"
+      "shipped_sha256": "c85ca61f80537d7dd841ac4591ba609a0d21b33bcf92fd0a2882212ca5501d2f"
     },
     {
       "path": "references/source-provenance.json",
       "classification": "fork_owned",
       "owner": "pennixrv",
       "change_summary": "Public, privacy-safe provenance projection included in the npm package.",
-      "shipped_sha256": "d063cea20457bcfc8be33911d92aaa26a856b60005475dc2d66196dc745685e6"
+      "shipped_sha256": "e133b2fb489e73ac48f34bf2c06e420b26057513f455bb2b66c951741210ac6f"
     },
     {
       "path": "scripts/lib/LICENSE.fast-context-mcp",
@@ -112,7 +112,7 @@
       "classification": "fork_owned",
       "owner": "pennixrv",
       "change_summary": "Explicit-first Linux/WSL Devin credential selection through a bounded private helper pipe.",
-      "shipped_sha256": "d21cec35688727272340ddc30875bc982f4914843e76d947951e4256fd1a931d"
+      "shipped_sha256": "d36d7e0dc471fc0215d4798a626434c100bb3a0fce64b04034a252edec3a3e91"
     },
     {
       "path": "scripts/lib/devin-credential-helper.mjs",
@@ -147,14 +147,14 @@
       "classification": "fork_owned",
       "owner": "pennixrv",
       "change_summary": "Closed public diagnostic map for redacted failures.",
-      "shipped_sha256": "417900eb1ad877cc39f045e63115bc6166924c5dabf55d250e93d742d162168d"
+      "shipped_sha256": "c2a412470632aa50b7db1a946681a471da166c18529a3de569327e77c50cf2b3"
     },
     {
       "path": "scripts/windsurf-code-search.mjs",
       "classification": "fork_owned",
       "owner": "pennixrv",
       "change_summary": "Finite CLI parser, explicit opt-out, pre-network credential boundary, and awaited bounded search lifecycle.",
-      "shipped_sha256": "9b42473f7954daeb5109bb25aaa962d3e3bf6b00b3e50ed7755311efd659e080"
+      "shipped_sha256": "d51f5f8f85d9e0807969f6b232f6e1d15220bc1da8d47129c4c809066d9d2882"
     }
   ]
 }

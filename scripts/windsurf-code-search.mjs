@@ -1,14 +1,21 @@
 #!/usr/bin/env node
 
 import { PathGuard } from "./lib/path-guard.mjs";
-import { resolveCredential } from "./lib/credentials.mjs";
+import {
+  inspectOwnerCredential,
+  resolveCredential,
+  writeOwnerCredential,
+} from "./lib/credentials.mjs";
 import { FastContextError, publicDiagnostic } from "./lib/public-error.mjs";
+import { createInterface } from "node:readline/promises";
 
 const MAX_QUERY_LENGTH = 2000;
 const MAX_RESULTS = 50;
 
 const USAGE = `Usage:
   windsurf-code-search --project <directory> --query <text> [--max-results <n>] [--deny <relative-glob> ...] [--no-external]
+  windsurf-code-search configure
+  windsurf-code-search config-doctor
   windsurf-code-search --help`;
 
 function cliError(code) {
@@ -98,6 +105,24 @@ export async function runCli({
   resolveApiKey = resolveCredential,
 } = {}) {
   try {
+    if (argv?.[0] === "configure" || argv?.[0] === "config-doctor") {
+      if (argv.length !== 1) throw cliError("FC_ARG_UNKNOWN");
+      if (argv[0] === "config-doctor") {
+        const result = inspectOwnerCredential({ environment });
+        stdout.write(`status=${result.status}\n`);
+        return result.status === "configured" ? 0 : 1;
+      }
+      if (!process.stdin.isTTY || !process.stdout.isTTY) throw cliError("FC_CONFIG_TTY_REQUIRED");
+      const existing = inspectOwnerCredential({ environment });
+      if (existing.status !== "missing") {
+        const confirmation = await promptLine("Existing Windsurf configuration found. Type REPLACE to rotate it: ");
+        if (confirmation !== "REPLACE") throw cliError("FC_CONFIG_PRESERVED");
+      }
+      const apiKey = await promptHidden("Windsurf API key: ");
+      writeOwnerCredential(apiKey, { environment });
+      stdout.write("ok configured\n");
+      return 0;
+    }
     const options = parseArgs(argv || []);
     if (options.help) {
       stdout.write(`${USAGE}\n`);
@@ -138,3 +163,43 @@ if (process.argv[1] && process.argv[1].endsWith("windsurf-code-search.mjs")) {
 }
 
 export { MAX_QUERY_LENGTH, MAX_RESULTS, USAGE };
+
+async function promptLine(prompt) {
+  const reader = createInterface({ input: process.stdin, output: process.stdout });
+  try {
+    return (await reader.question(prompt)).trim();
+  } finally {
+    reader.close();
+  }
+}
+
+function promptHidden(prompt) {
+  const input = process.stdin;
+  const output = process.stdout;
+  output.write(prompt);
+  input.setRawMode(true);
+  input.resume();
+  return new Promise((resolve, reject) => {
+    let value = "";
+    const finish = (error, result = "") => {
+      input.off("data", onData);
+      input.setRawMode(false);
+      output.write("\n");
+      if (error) reject(error);
+      else if (!result) reject(new Error("A value is required."));
+      else resolve(result);
+    };
+    const onData = (chunk) => {
+      for (const character of String(chunk)) {
+        if (character === "\u0003") return finish(cliError("FC_CONFIG_CANCELLED"));
+        if (character === "\r" || character === "\n") return finish(null, value.trim());
+        if (character === "\u007f") {
+          if (value) value = value.slice(0, -1);
+          continue;
+        }
+        value += character;
+      }
+    };
+    input.on("data", onData);
+  });
+}

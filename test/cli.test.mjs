@@ -5,6 +5,7 @@ import { join } from "node:path";
 import { tmpdir } from "node:os";
 import test from "node:test";
 import { parseArgs, runCli } from "../scripts/windsurf-code-search.mjs";
+import { writeOwnerCredential } from "../scripts/lib/credentials.mjs";
 import { FastContextError } from "../scripts/lib/public-error.mjs";
 
 function stream() {
@@ -151,6 +152,36 @@ test("CLI argument failures do not inspect environment or load core", async () =
   assert.equal(status, 2);
   assert.equal(loaded, false);
   assert.match(stderr.value(), /^FC_PROJECT_ALIAS:/);
+});
+
+test("config-doctor emits only a stable redacted owner status", async () => {
+  const configHome = mkdtempSync(join(tmpdir(), "fast-context-doctor-"));
+  const stdout = stream();
+  const stderr = stream();
+  const environment = { XDG_CONFIG_HOME: configHome, HOME: configHome };
+  try {
+    assert.equal(await runCli({ argv: ["config-doctor"], environment, stdout, stderr }), 1);
+    assert.equal(stdout.value(), "status=missing\n");
+    writeOwnerCredential("doctor-synthetic-secret", { environment });
+    const configuredStdout = stream();
+    assert.equal(await runCli({ argv: ["config-doctor"], environment, stdout: configuredStdout, stderr }), 0);
+    assert.equal(configuredStdout.value(), "status=configured\n");
+    assert.doesNotMatch(configuredStdout.value(), /doctor-synthetic-secret|config\.json/);
+    assert.equal(stderr.value(), "");
+  } finally {
+    rmSync(configHome, { recursive: true, force: true });
+  }
+});
+
+test("configure requires a controlling terminal and creates no owner file", async () => {
+  const configHome = mkdtempSync(join(tmpdir(), "fast-context-configure-"));
+  const stderr = stream();
+  try {
+    assert.equal(await runCli({ argv: ["configure"], environment: { XDG_CONFIG_HOME: configHome }, stderr }), 1);
+    assert.match(stderr.value(), /^FC_CONFIG_TTY_REQUIRED:/);
+  } finally {
+    rmSync(configHome, { recursive: true, force: true });
+  }
 });
 
 test("CLI redacts remote and parser sentinels from public diagnostics", async () => {

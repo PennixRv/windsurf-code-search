@@ -12,8 +12,11 @@ generated output, logs, and dependency trees. `--deny` can only narrow this
 set.
 
 After argv and project-root validation, the CLI chooses credentials in a fixed
-order: a non-empty explicit `WINDSURF_API_KEY`, then a Linux/WSL Devin CLI
-login. The fallback is a package-owned, no-shell Node helper that only opens
+order: a non-empty explicit `WINDSURF_API_KEY`, the private owner config at
+`$XDG_CONFIG_HOME/windsurf-code-search/config.json` (or its `$HOME/.config`
+fallback), then a Linux/WSL Devin CLI login. The owner file is exact JSON,
+atomic, `0600`, bounded, and rejects symlinks, non-regular files, and unsafe
+modes. The fallback is a package-owned, no-shell Node helper that only opens
 the current user's fixed `~/.local/share/devin/credentials.toml` path, rejects
 symlinks and oversize files, accepts only known fields and supported
 `devin-session-token$`, `devin-`, or `sk-` forms, and returns an accepted value
@@ -21,9 +24,11 @@ through a bounded private pipe. It never scans desktop state databases or
 alternative paths. The CLI never prints, stores, logs, places in arguments, or
 returns credentials. Missing or invalid discovery fails as `FC_KEY_MISSING`.
 
-`--no-external` is the caller's explicit opt-out. It does not inspect the
-environment, start the credential helper, import the search core, or create a
-network request; it writes only `FC_EXTERNAL_DISABLED` to stderr. HTTP `401`
+`configure` is an interactive owner command; `config-doctor` is local-only and
+prints a fixed redacted status. `--no-external` is the caller's explicit
+opt-out. It does not inspect the environment, owner config, start the
+credential helper, import the search core, or create a network request; it
+writes only `FC_EXTERNAL_DISABLED` to stderr. HTTP `401`
 and `403` produce `FC_AUTH_REJECTED`; a shared deadline produces
 `FC_REMOTE_TIMEOUT`; transport/caller cancellation and a valid Connect
 `resource_exhausted`/`unavailable` EndStream produce `FC_REMOTE_UNAVAILABLE`;

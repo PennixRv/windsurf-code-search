@@ -24,6 +24,21 @@ formats, does not scan desktop state databases, and never exposes the token in
 arguments, output, logs, or persistent state. Explicit `WINDSURF_API_KEY`
 always has priority.
 
+For a reusable local installation, configure the owner-managed private file
+interactively:
+
+```bash
+windsurf-code-search configure
+windsurf-code-search config-doctor
+```
+
+The file is `$XDG_CONFIG_HOME/windsurf-code-search/config.json`, falling back
+to `$HOME/.config/windsurf-code-search/config.json`. `configure` hides the key,
+requires `REPLACE` before rotation, and writes `0700`/`0600` owner files. The
+runtime precedence is environment, owner config, then Devin login. The doctor
+prints only `status=configured|missing|invalid|blocked|unavailable` and never
+contacts the remote service.
+
 The accepted options are `--project`, `--query`, bounded `--max-results`,
 repeatable relative `--deny`, standalone `--no-external`, and standalone
 `--help`. `--no-external` exits with `FC_EXTERNAL_DISABLED` before inspecting
