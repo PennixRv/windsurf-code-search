@@ -1,0 +1,30 @@
+{
+  "id": "subnode-defaults-consumer-update",
+  "name": "subnode-defaults-consumer-update",
+  "title": "Adopt published Trellis subnode defaults",
+  "description": "Apply the user-authorized native Trellis asset update for beta.24, preserve project execution policy and pre-existing work, and verify the eight generated Sol/Luna profiles.",
+  "status": "in_progress",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P1",
+  "creator": "penn",
+  "assignee": "penn",
+  "createdAt": "2026-10-03",
+  "completedAt": null,
+  "branch": null,
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": null,
+  "relatedFiles": [],
+  "notes": "",
+  "meta": {
+    "consumer_adoption": "verified_beta24",
+    "publication_mode": "authorized_direct_push_no_pr",
+    "release_version": "0.7.0-beta.24"
+  }
+}

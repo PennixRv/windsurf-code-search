@@ -11,7 +11,7 @@ It is intentionally a **capability skill, not a workflow**. There is no fixed ou
 
 ## What `trellis mem` is
 
-A local CLI that indexes the user's past Claude Code, Codex, Pi Agent, and ZCode conversation logs and lets you list, search, slice by Trellis task boundaries, and dump cleaned dialogue from them. Claude and Codex use `~/.claude/projects/` and `~/.codex/sessions/`. Pi uses its default or environment-configured session root, global `~/.pi/agent/settings.json`, and the scoped project's `.pi/settings.json`; relative `sessionDir` values resolve from the settings file directory. Project-local Pi settings require project-scoped lookup through the current cwd or `--cwd`. ZCode uses `~/.zcode/cli/db/db.sqlite`. OpenCode logs are not yet indexable (provider adapter pending) — when an OpenCode session is the obvious target, surface that limitation rather than guessing.
+A local CLI that indexes the user's past Claude Code, Codex, Devin CLI, Grok, OpenCode, Pi Agent, and ZCode conversation logs and lets you list, search, slice by Trellis task boundaries, and dump cleaned dialogue from them. Claude and Codex use `~/.claude/projects/` and `~/.codex/sessions/`. Devin CLI (Cognition terminal agent, not `trellis init --devin` Desktop) uses `~/.local/share/devin/cli/sessions.db`. Grok uses `~/.grok/sessions/`. OpenCode uses `~/.local/share/opencode/opencode.db` (zero-dependency SQLite reader). Pi uses its default or environment-configured session root, global `~/.pi/agent/settings.json`, and the scoped project's `.pi/settings.json`; relative `sessionDir` values resolve from the settings file directory. Project-local Pi settings require project-scoped lookup through the current cwd or `--cwd`. ZCode uses `~/.zcode/cli/db/db.sqlite`.
 
 Nothing in `mem` is uploaded. All reads are local.
 
@@ -68,7 +68,7 @@ trellis mem list --cwd <project-path>
 trellis mem projects   # → list active project cwds, then narrow
 ```
 
-Phase slicing (`--phase brainstorm|implement|all`) cuts the session at `task.py create` and `task.py start` boundaries. For a finish-work review of the current task, `--phase brainstorm` recovers the planning discussion and `--phase implement` recovers the execution loop. Default is `all`.
+Phase slicing (`--phase brainstorm|implement|all`) cuts the session at `task.py create`/`replan` and `task.py start` boundaries. For a finish-work review of the current task, `--phase brainstorm` recovers the planning discussion and `--phase implement` recovers the execution loop. Default is `all`.
 
 ## Triggering patterns
 

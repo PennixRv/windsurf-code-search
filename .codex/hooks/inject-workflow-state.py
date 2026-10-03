@@ -10,23 +10,31 @@ The emitted ``hookEventName`` field is platform-aware: most hosts expect
 CodeBuddy / Droid / Codex / Copilot wiring), but Gemini CLI 0.40.x renamed
 its per-turn event to ``BeforeAgent`` and its schema validator rejects the
 legacy name. ``_detect_platform`` picks the right value at runtime.
-Breadcrumb text is pulled exclusively from workflow.md
-[workflow-state:STATUS] tag blocks — workflow.md is the single source of
-truth. There are no fallback dicts in this script: when workflow.md is
+Breadcrumb text is pulled exclusively from the resolved workflow file's
+[workflow-state:STATUS] tag blocks — the active task may select a
+per-task variant (`.trellis/workflows/<id>.md` via task.json `workflow`),
+otherwise personal, team, and global defaults are resolved in order.
+There are no fallback dicts in this script: when the resolved workflow is
 missing or a tag is absent, the breadcrumb degrades to a generic
 "Refer to workflow.md for current step." line so users see (and fix)
 the broken state instead of the hook silently masking it.
 
-Shared across all hook-capable platforms (Claude, Cursor, Codex, Qoder,
-CodeBuddy, Droid, Gemini, Copilot, Kiro). Kiro wires this via the CLI
+Which platforms register this hook is decided by SHARED_HOOKS_BY_PLATFORM
+in templates/shared-hooks/index.ts — currently Claude, Codex, Gemini,
+Qoder, Copilot, CodeBuddy, Droid, Kiro, Trae and ZCode. That table is the
+source of truth; each listed platform's collect<Platform>Templates() pulls
+this file into its template map through collectSharedHooks(), and a single
+writer puts that map on disk at init time. Kiro wires this via the CLI
 custom agent's ``hooks.userPromptSubmit`` and the IDE ``.kiro.hook``
 ``promptSubmit`` event; its output branch emits a plain-text breadcrumb
-(Kiro adds hook stdout directly to the conversation context). Written to
-each platform's hooks directory via writeSharedHooks() at init time.
+(Kiro adds hook stdout directly to the conversation context).
 
-Silent exit 0 cases (no output):
+Silent exit 0 case (no output):
   - No .trellis/ directory found (not a Trellis project)
-  - task.json malformed or missing status
+
+When a session points at a task directory whose task.json is missing, malformed,
+or missing a usable status, the hook emits a task_error breadcrumb instead of
+misreporting the session as having no active task.
 """
 from __future__ import annotations
 
@@ -95,11 +103,16 @@ def find_trellis_root(start: Path) -> Optional[Path]:
 def _detect_platform(input_data: dict) -> str | None:
     if isinstance(input_data.get("cursor_version"), str):
         return "cursor"
+    # CLAUDE_PROJECT_DIR is a compatibility alias that several hosts set
+    # alongside their own variable — CodeBuddy, ZCode and Trae all do. It must
+    # therefore be checked LAST, or every one of them is detected as claude and
+    # the context key becomes `claude_<their-session-id>`. That key does not
+    # match the session file `task.py start` wrote under the host's real name,
+    # so every turn reports no_task while the pointer exists on disk.
+    # Observed on CodeBuddy IDE 4.10.4: session file `codebuddy_ae54840e….json`
+    # alongside marker `update-check-claude_ae54840e….marker`, same id.
     env_map = {
-        # ZCode may set both ZCODE_PROJECT_DIR and CLAUDE_PROJECT_DIR; check
-        # ZCODE first so ZCode sessions aren't misdetected as claude.
         "ZCODE_PROJECT_DIR": "zcode",
-        "CLAUDE_PROJECT_DIR": "claude",
         "CURSOR_PROJECT_DIR": "cursor",
         "CODEBUDDY_PROJECT_DIR": "codebuddy",
         "FACTORY_PROJECT_DIR": "droid",
@@ -108,6 +121,8 @@ def _detect_platform(input_data: dict) -> str | None:
         "KIRO_PROJECT_DIR": "kiro",
         "COPILOT_PROJECT_DIR": "copilot",
         "TRAE_PROJECT_DIR": "trae",
+        # Last: the shared alias, only meaningful once no vendor key matched.
+        "CLAUDE_PROJECT_DIR": "claude",
     }
     for env_name, platform in env_map.items():
         if os.environ.get(env_name):
@@ -145,9 +160,20 @@ def _resolve_active_task(root: Path, input_data: dict):
     return resolve_active_task(root, input_data, platform=_detect_platform(input_data))
 
 
-def get_active_task(root: Path, input_data: dict) -> Optional[tuple[str, str, str]]:
-    """Return (task_id, status, source) from the current active task."""
+def get_active_task(
+    root: Path, input_data: dict
+) -> tuple[str, str, str] | None:
+    """Return active task data, a task-record error, or no task pointer.
+
+    ``(task_id, "task_error", source)`` is distinct from ``None``: a session
+    pointer can exist even when its task record is missing or unreadable, and
+    that state needs a diagnostic breadcrumb rather than the normal ``no_task``
+    prompt.
+    """
     active = _resolve_active_task(root, input_data)
+    if active.source_type == "unbound_ambiguous":
+        candidates = ", ".join(active.candidate_paths)
+        return candidates, "unbound_ambiguous", active.source
     if not active.task_path:
         return None
 
@@ -159,16 +185,20 @@ def get_active_task(root: Path, input_data: dict) -> Optional[tuple[str, str, st
 
     task_json = task_dir / "task.json"
     if not task_json.is_file():
-        return None
+        return task_dir.name, "task_error", active.source
     try:
         data = json.loads(task_json.read_text(encoding="utf-8"))
     except (json.JSONDecodeError, OSError):
-        return None
+        return task_dir.name, "task_error", active.source
+    if not isinstance(data, dict):
+        return task_dir.name, "task_error", active.source
 
     task_id = data.get("id") or task_dir.name
     status = data.get("status", "")
     if not isinstance(status, str) or not status:
-        return None
+        return task_dir.name, "task_error", active.source
+    if active.source_type == "unbound":
+        return task_id, "unbound_task", active.source
     return task_id, status, active.source
 
 
@@ -183,16 +213,40 @@ _TAG_RE = re.compile(
     re.DOTALL,
 )
 
-def load_breadcrumbs(root: Path) -> dict[str, str]:
-    """Parse workflow.md for [workflow-state:STATUS] blocks.
+def _resolve_workflow_md(root: Path, input_data: dict) -> Path:
+    """Resolve the active task's workflow file, falling back to the global one.
 
-    Returns {status: body_text}. workflow.md is the single source of
+    The per-task resolution rule lives in common.workflow_selection inside
+    .trellis/scripts. Older installed projects may not ship that module, and
+    hooks must never crash the session — ANY failure (import error, old
+    scripts tree, resolver bug) falls back to the global workflow.md.
+    """
+    try:
+        scripts_dir = root / ".trellis" / "scripts"
+        if str(scripts_dir) not in sys.path:
+            sys.path.insert(0, str(scripts_dir))
+        from common.workflow_selection import resolve_workflow_md  # type: ignore[import-not-found]
+
+        return resolve_workflow_md(
+            root, input_data, platform=_detect_platform(input_data)
+        )
+    except Exception:
+        return root / ".trellis" / "workflow.md"
+
+
+def load_breadcrumbs(root: Path, input_data: dict) -> dict[str, str]:
+    """Parse the resolved workflow file for [workflow-state:STATUS] blocks.
+
+    Returns {status: body_text}. The workflow file is the single source of
     truth — there are no fallback dicts in this script. Missing tags
-    (or a missing/unreadable workflow.md) fall back to a generic line
+    (or a missing/unreadable workflow file) fall back to a generic line
     in build_breadcrumb so users see the broken state and fix
     workflow.md, rather than the hook silently masking the issue.
+    The active task's per-task workflow selection (task.json `workflow`
+    field) is honored via _resolve_workflow_md; without a selection this
+    reads the global .trellis/workflow.md exactly as before.
     """
-    workflow = root / ".trellis" / "workflow.md"
+    workflow = _resolve_workflow_md(root, input_data)
     if not workflow.is_file():
         return {}
     try:
@@ -263,13 +317,14 @@ def prompt_has_skip_keyword(prompt: str, keyword: str) -> bool:
 def _resolve_codex_dispatch_mode(config: dict) -> str:
     """Normalize `codex.dispatch_mode` from .trellis/config.yaml to "auto" or "inline".
 
-    Defaults to `auto`. The legacy `sub-agent` value is an alias for `auto`.
-    Any other explicit value (including invalid ones) falls back to `inline`
+    Defaults to `inline`. `auto` explicitly enables native dispatch; the
+    legacy `sub-agent` value is an alias for `auto`. Any other explicit value
+    (including invalid ones) falls back to `inline`
     without per-turn warnings. Shared by `_codex_mode_banner` (the per-turn
     banner) and `resolve_breadcrumb_key` (the breadcrumb tag key) so the two
     stay in lockstep.
     """
-    mode = "auto"
+    mode = "inline"
     if isinstance(config, dict):
         codex_cfg = config.get("codex")
         if isinstance(codex_cfg, dict):
@@ -287,16 +342,16 @@ def _codex_mode_banner(config: dict) -> str:
     """Emit a `<codex-mode>` banner for the additionalContext payload.
 
     Reads `codex.dispatch_mode` from .trellis/config.yaml; defaults to
-    `auto`, which dispatches Trellis sub-agents using native Codex context
+    `inline`, so the main session implements and checks directly. `auto`
+    explicitly dispatches Trellis sub-agents using native Codex context
     injection with a child-side fallback. This does not rely on inherited
     parent transcripts: `fork_turns` remains caller-controlled, and
     fresh-history sub-agents still receive their explicit delegated task and
-    inherited session configuration. `inline` is an explicit opt-out; the
-    legacy `sub-agent` value is an alias for `auto`. Invalid explicit values
-    fall back to `inline` without per-turn warnings. The banner makes the
-    active mode explicit to Codex AI per turn, complementing the workflow-state
-    body which is per-status. Mode tells AI which dispatch protocol to follow;
-    workflow-state tells AI what step it's at.
+    inherited session configuration. The legacy `sub-agent` value is an alias
+    for `auto`. Invalid explicit values fall back to `inline` without per-turn
+    warnings. The banner makes the active mode explicit to Codex AI per turn,
+    complementing the workflow-state body which is per-status. Mode tells AI
+    which dispatch protocol to follow; workflow-state tells AI what step it's at.
     """
     mode = _resolve_codex_dispatch_mode(config)
     if mode == "auto":
@@ -308,8 +363,7 @@ def _codex_mode_banner(config: dict) -> str:
     else:
         meaning = (
             "inline: the main session implements/checks directly; "
-            "do not dispatch native Codex subagents; use trellis channel only "
-            "for a bounded coordinator-owned delegation."
+            "do not dispatch implement/check sub-agents."
         )
     return f"<codex-mode>{meaning}</codex-mode>"
 
@@ -319,12 +373,12 @@ def resolve_breadcrumb_key(
 ) -> str:
     """Pick the breadcrumb tag key based on Codex dispatch_mode.
 
-    Codex defaults to ``auto`` and therefore uses the ordinary ``<status>``
-    breadcrumb for native SubagentStart dispatch with child-side fallback;
-    it does not depend on an inherited parent transcript. ``inline`` selects
-    the parallel ``<status>-inline`` tag; ``sub-agent`` remains an alias for
-    ``auto``. Invalid explicit values fall back to inline without per-turn
-    warnings.
+    Codex defaults to ``inline`` and therefore uses the parallel
+    ``<status>-inline`` breadcrumb for main-session execution. Explicit
+    ``auto`` uses the ordinary ``<status>`` breadcrumb for native
+    SubagentStart dispatch with child-side fallback; ``sub-agent`` remains an
+    alias for ``auto``. Invalid explicit values fall back to inline without
+    per-turn warnings.
 
     Non-codex platforms return the plain status unchanged.
     """
@@ -354,7 +408,10 @@ def build_breadcrumb(
         body = templates.get(status)
     if body is None:
         body = "Refer to workflow.md for current step."
-    header = f"Status: {status}" if task_id is None else f"Task: {task_id} ({status})"
+    if status == "unbound_ambiguous":
+        header = f"Status: {status}\nCandidates: {task_id}"
+    else:
+        header = f"Status: {status}" if task_id is None else f"Task: {task_id} ({status})"
     return f"<workflow-state>\n{header}\n{body}\n</workflow-state>"
 
 
@@ -412,7 +469,7 @@ def main() -> int:
     if prompt_has_skip_keyword(data.get("prompt", ""), _resolve_skip_keyword(config)):
         return 0  # user opted out of the per-turn breadcrumb for this turn
 
-    templates = load_breadcrumbs(root)
+    templates = load_breadcrumbs(root, data)
     platform = _detect_platform(data)
     task = get_active_task(root, data)
     if task is None:
