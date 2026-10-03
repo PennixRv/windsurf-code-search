@@ -1,0 +1,28 @@
+{
+  "id": "trellis-beta26-adoption",
+  "name": "trellis-beta26-adoption",
+  "title": "Adopt Trellis beta.26 worker-terminal guidance",
+  "description": "Update only native Trellis generated assets to beta.26; preserve the selected workflow and project customizations, verify new bundled worker wait guidance and archive the consumer task.",
+  "status": "completed",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P2",
+  "creator": "penn",
+  "assignee": "penn",
+  "createdAt": "2026-10-03",
+  "completedAt": "2026-10-03",
+  "branch": "main",
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": null,
+  "relatedFiles": [],
+  "notes": "",
+  "meta": {
+    "delivery_mode": "change_bearing"
+  }
+}
