@@ -9,9 +9,9 @@
     ".agents/skills/trellis-break-loop/SKILL.md": "f5a93699832f29dee443b53c135a7459519b371f689af191d15c29e8ee5c7bde",
     ".agents/skills/trellis-check/SKILL.md": "dfb0600e95c19c7a83200465b6a92a5514ec9778ba4083efa881bed541cc74a8",
     ".agents/skills/trellis-update-spec/SKILL.md": "003ce08a3404aeb50998029392c4d4e57b626edf526d3ebd585032bb92dcbb96",
-    ".agents/skills/trellis-channel/references/command-reference.md": "f7e7e956ceffc1ec8d54c53c155d60aaf65de2f6ffd3194b8d74eb27443f93a7",
+    ".agents/skills/trellis-channel/references/command-reference.md": "49d871872e16100cc500b23d34a17984de3b11bcc828e50b9ec315ca8d282d97",
     ".agents/skills/trellis-channel/references/forum.md": "407db39e8ebde47cea8637e3069bdb3d76ba42b43ed1d08ba97a56f26dbcfcb4",
-    ".agents/skills/trellis-channel/references/progress-debugging.md": "df1b7c74f2b368c2893e5be9664bea0343e780d5742dbae2a9ae719b6999f324",
+    ".agents/skills/trellis-channel/references/progress-debugging.md": "6ef50670061f5e2a7fdd96870074f2545ccd8e5bd41168d1016e27fedf5645cb",
     ".agents/skills/trellis-channel/references/workers.md": "adddd53cf45e0f664afe1561347035da1b42320e8baa23fa3530e73de193f8fb",
     ".agents/skills/trellis-channel/references/workflows.md": "a7eaca08d1d3ed7781ff37c4a587a062676759648c7b797a9c07e7b518a3c2b5",
     ".agents/skills/trellis-channel/SKILL.md": "129f21c60bed19351ed0851748cd6d8306402d90c49f2672d3ae84466ea7209f",
@@ -98,7 +98,7 @@
     ".trellis/scripts/workspace_note.py": "2159a1445ff80e63e2e81d1589445d18710ae81bd54d1e6fd1a9b9b1ee629081",
     ".trellis/agents/subnode.md": "e3cbcbb9cafcd931d0725c91e97955469f23ba64db92eee10c66d465ce2896d5",
     ".trellis/agents/subnode-profiles.json": "b862bd997cb8874ae0e167ca47abcd315840e6a6102373c3e516e969f14ee8a2",
-    ".agents/skills/trellis-channel/references/subnode-work.md": "9e3edd3378a13c5692fad55ea9bbd02092e92e4994cfb937f3373b704cf31189",
+    ".agents/skills/trellis-channel/references/subnode-work.md": "227d747de1f3a1ed5ab86c3456c8ee555b15e34694e9a46d68bdf00dec8be364",
     ".agents/skills/trellis-research-record/SKILL.md": "f433da1e9fe6f5003a2c4330a72b2998433b91e4b73d4d2c22622a620ad0966a",
     ".codex/hooks/inject-spec-context.py": "4df3945be18163afe066ec3061d8b95a687f676e3a80dbf0aada4dec8c339f90"
   }
