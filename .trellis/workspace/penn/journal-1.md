@@ -239,3 +239,29 @@ Native assets and eight Sol/Luna profiles updated; custom inline workflow and na
 ### Status
 
 [OK] **Completed**
+
+
+## Session 10: Consume Trellis beta.25 recovery assets
+<!-- trellis-session: v=2 fp=8b93c491a01c0cbf -->
+
+**Date**: 2026-10-03
+**Task**: Consume Trellis beta.25 recovery assets
+**Branch**: `main`
+
+### Summary
+
+Native beta.25 update consumed recovery scripts and continue guidance; local custom workflow retained and three missing unbound recovery blocks added; provider settings and five intentional platform deletions preserved.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `ff29c71` | chore: adopt Trellis beta.25 recovery |
+
+### Testing
+
+- [OK] Installed recovery script bytes and managed receipts verified; update dry-run and diff check passed
+
+### Status
+
+[OK] **Completed**
