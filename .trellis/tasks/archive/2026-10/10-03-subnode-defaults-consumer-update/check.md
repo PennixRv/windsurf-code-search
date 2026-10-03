@@ -20,3 +20,5 @@ Native create-new completed; candidates were compared with existing bytes. Prese
 - Root and FastCtx provenance verify codex-subnode-channel @ 8f7a3741a107288ffe30a6c6ccc413f68d470c97; Trellis and Skills explicitly verify native @ beta.24.
 - Scope is released defaults and consumer adoption. Prior two read-only/no-tools route smokes establish Sol/high and Luna/xhigh reachability only; role quality, full Channel/report reliability and the three downstream tasks remain outside this acceptance.
 - Existing workflow and Codex config hashes remain unchanged; no SubagentStart hook or native profiles were restored. Diff whitespace checks only flag two intentional published Markdown hard breaks; all other paths pass.
+
+Post-promotion native update refreshed receipt baselines. Trellis/Skills have zero existing-byte receipt mismatches; CCH/Windsurf retain exactly the five already accepted customizations through native --skip-all. No new candidates or asset byte changes arose.
