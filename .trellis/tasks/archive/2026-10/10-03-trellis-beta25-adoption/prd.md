@@ -18,11 +18,11 @@ Consume published Trellis beta.25 generated assets, preserve custom inline/Chann
 
 ## Acceptance Criteria
 
-- [ ] Native update consumes beta.25 and the two recovery scripts match the
+- [x] Native update consumes beta.25 and the two recovery scripts match the
   released template.
-- [ ] Recovery guidance distinguishes usable identity from missing task binding.
-- [ ] Project customizations and pre-existing unrelated changes are preserved.
-- [ ] The reviewed asset diff and acceptance record are committed and pushed.
+- [x] Recovery guidance distinguishes usable identity from missing task binding.
+- [x] Project customizations and pre-existing unrelated changes are preserved.
+- [x] The reviewed asset diff and acceptance record are committed and pushed.
 
 ## Notes
 
