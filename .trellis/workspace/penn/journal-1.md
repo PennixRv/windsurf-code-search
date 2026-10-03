@@ -217,3 +217,25 @@ Published and independently verified @pennixrv/fast-context-skill@0.1.3; recorde
 ### Status
 
 [OK] **Completed**
+
+
+## Session 9: Adopt published Trellis beta.24 defaults
+<!-- trellis-session: v=2 fp=83604665db9563e3 -->
+
+**Date**: 2026-10-03
+**Task**: Adopt published Trellis beta.24 defaults
+**Branch**: `main`
+
+### Summary
+
+Native assets and eight Sol/Luna profiles updated; custom inline workflow and native-agent restrictions preserved. Profile receipts and Python syntax verified.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `41b9152800285b50b5a1feb1925a345686290fbd` | chore(workflow): adopt Trellis beta.24 subnode defaults |
+
+### Status
+
+[OK] **Completed**
