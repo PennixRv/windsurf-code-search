@@ -265,3 +265,25 @@ Native beta.25 update consumed recovery scripts and continue guidance; local cus
 ### Status
 
 [OK] **Completed**
+
+
+## Session 11: Adopt Trellis beta.26 consumer assets
+<!-- trellis-session: v=2 fp=a107e71ce220116f -->
+
+**Date**: 2026-10-03
+**Task**: Adopt Trellis beta.26 consumer assets
+**Branch**: `main`
+
+### Summary
+
+Updated native Trellis assets and worker-terminal guidance on beta.26; preserved legacy workflow/customizations, archived the consumer task.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `1a5b3ed` | chore(trellis): adopt beta.26 worker wait guidance |
+
+### Status
+
+[OK] **Completed**
