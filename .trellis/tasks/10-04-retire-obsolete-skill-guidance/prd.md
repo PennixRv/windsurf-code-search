@@ -25,8 +25,8 @@ Remove retired product reference from the source Skill and deliver a pinned pack
 
 - [x] Source instruction and package provenance agree; offline 114/114 tests pass.
 - [x] Provenance covers 18 files; exact package-content check passes.
-- [ ] Source pushed and Pennix snapshot pinned.
-- [ ] Native project refresh preserves unrelated policy.
+- [x] Source commit `9409047e167873ab7de49cb45884cc5dd4907321` is pushed and the Pennix snapshot is pinned.
+- [x] Native project refresh preserves unrelated policy; the existing `AGENTS.md` change remains untouched.
 
 ## Validation
 
@@ -34,3 +34,9 @@ The existing word assertion and provenance initially failed on the modified
 Skill; both were updated in the source owner. `npm test`,
 `npm run verify:provenance`, `npm run pack:check` then passed. No live network
 search or credential access was required. All tests ran without skips.
+
+The official 18-file consumer snapshot is pinned to the source commit above with
+SHA-256 `ca41841e856d5880f154df8623be37b75bebefd67f7b1220dff3048d40b333bd`;
+the 114 offline tests and exact package check pass. The Trellis beta.29 native
+project update is verified. This repository's pre-existing `AGENTS.md` worktree
+change is preserved and excluded from the retirement commit.
