@@ -51,8 +51,8 @@
       "path": "SKILL.md",
       "classification": "fork_owned",
       "owner": "pennixrv",
-      "change_summary": "Automatic local-first and CodeGraph-gated routing without approval state.",
-      "shipped_sha256": "622a5f44960d5abcdec7730affbbe64a747c401696ec28bed7d143ca8fd1b3e6"
+      "change_summary": "Automatic local-first and CodeGraph-gated routing; verified candidates stay outside persistent indexes.",
+      "shipped_sha256": "78b4115afa695af111686f4c425caaa6919437bda6ec7ec17fd803f1cfe08606"
     },
     {
       "path": "agents/openai.yaml",

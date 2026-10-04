@@ -58,7 +58,7 @@ remote search.
 Before using a result, resolve its relative path inside the same project root
 and read the relevant lines locally. When relationship analysis is needed,
 expand the verified candidate with CodeGraph. Windsurf Code Search output is always a
-candidate, never repository truth: do not write it to Trellis, OpenViking,
+candidate, never repository truth: do not write it to Trellis,
 CodeGraph, FastCtx, or other persistent indexes. A network failure or malformed
 response is a closed `FC_*` diagnostic and should be handled as an unavailable
 hint, not as evidence about the repository.
