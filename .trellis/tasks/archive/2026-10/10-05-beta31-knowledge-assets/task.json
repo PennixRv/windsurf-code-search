@@ -1,0 +1,31 @@
+{
+  "id": "beta31-knowledge-assets",
+  "name": "beta31-knowledge-assets",
+  "title": "刷新beta31知识来源职责资产",
+  "description": "承接根10-05-siyuan-knowledge-workflow-design明确实施授权；只通过原生Trellis刷新共同session-insight资产和匹配provenance，保留项目定制；不改产品运行代码。",
+  "status": "completed",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P2",
+  "creator": "penn",
+  "assignee": "penn",
+  "createdAt": "2026-10-05",
+  "completedAt": "2026-10-05",
+  "branch": "main",
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": null,
+  "relatedFiles": [],
+  "notes": "",
+  "meta": {
+    "delivery_mode": "change_bearing",
+    "implementation_authorized": "true",
+    "execution_class": "lightweight",
+    "planning_scope": "delivery"
+  }
+}
