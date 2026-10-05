@@ -23,6 +23,8 @@
 
 生成资产更新由根侧已批准的多落点实施推进，本地轻量任务补充独立 owner/验收记录。Git 只提交本任务精确路径；产品代码、既有未归属变更不混入本任务。
 
+全量静态收尾另行核验既有AGENTS执行策略：主会话inline实现/检查/Git、显式独立证据worker、必需检查不得把跳过或失败记为通过。与根已批准执行合同一致，不改变产品行为；按用户全量提交要求单独保存。旧未跟踪dist/releases/v0.1.16 staging/tarball无活动caller，精确删除。source provenance/NOTICE/许可中的上游来源名称仍有效并保留。
+
 ## Notes
 
 - Keep `prd.md` focused on requirements, constraints, and acceptance criteria.
