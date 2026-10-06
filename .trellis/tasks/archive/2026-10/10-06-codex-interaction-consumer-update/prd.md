@@ -12,9 +12,9 @@
 
 ## Acceptance Criteria
 
-- [ ] Native update dry-run/apply and selected workflow verify pass, with no unreviewed conflict or sidecar.
-- [ ] New start/continue guidance and grill callers present; retired active caller absent outside historical records.
-- [ ] Scoped generated assets/task evidence committed and pushed; task archived natively.
+- [x] Native update dry-run/apply and selected workflow verify pass, with no unreviewed conflict or sidecar.
+- [x] New start/continue guidance and grill callers present; retired active caller absent outside historical records.
+- [x] Scoped generated assets/task evidence committed and pushed; task archived natively.
 
 ## Notes
 
