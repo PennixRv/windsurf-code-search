@@ -1,0 +1,29 @@
+{
+  "id": "codex-interaction-consumer-update",
+  "name": "codex-interaction-consumer-update",
+  "title": "更新已发布 Trellis 交互资产",
+  "description": "消费根任务10-06-codex-interaction-continuation-routing的Trellis beta.32及已选工作流，保留源码、配置、任务和历史并完成原生更新验收",
+  "status": "in_progress",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P2",
+  "creator": "penn",
+  "assignee": "penn",
+  "createdAt": "2026-10-06",
+  "completedAt": null,
+  "branch": "main",
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": null,
+  "relatedFiles": [],
+  "notes": "",
+  "meta": {
+    "delivery_mode": "change_bearing",
+    "execution_class": "lightweight"
+  }
+}
