@@ -287,3 +287,25 @@ Updated native Trellis assets and worker-terminal guidance on beta.26; preserved
 ### Status
 
 [OK] **Completed**
+
+
+## Session 12: Verified blocking interaction and checkpoint rollout
+<!-- trellis-session: v=2 fp=de98d759d31b778e -->
+
+**Date**: 2026-10-06
+**Task**: Verified blocking interaction and checkpoint rollout
+**Branch**: `main`
+
+### Summary
+
+Consumed Trellis beta.32 and preserved native ownership, project configuration and history; verified selected workflow, current continuation/grill assets and clean landing. This session task archived; unrelated prior tasks preserved.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `ff1ad16` | chore: consume verified Trellis beta.32 interaction assets |
+
+### Status
+
+[OK] **Completed**

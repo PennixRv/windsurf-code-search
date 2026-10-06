@@ -8,8 +8,8 @@
 
 <!-- @@@auto:current-status -->
 - **Active File**: `journal-1.md`
-- **Total Sessions**: 11
-- **Last Active**: 2026-10-03
+- **Total Sessions**: 12
+- **Last Active**: 2026-10-06
 <!-- @@@/auto:current-status -->
 
 ---
@@ -19,7 +19,7 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-1.md` | ~289 | Active |
+| `journal-1.md` | ~311 | Active |
 <!-- @@@/auto:active-documents -->
 
 ---
@@ -29,6 +29,7 @@
 <!-- @@@auto:session-history -->
 | # | Date | Title | Commits | Branch |
 |---|------|-------|---------|--------|
+| 12 | 2026-10-06 | Verified blocking interaction and checkpoint rollout | `ff1ad16` | `main` |
 | 11 | 2026-10-03 | Adopt Trellis beta.26 consumer assets | `1a5b3ed` | `main` |
 | 10 | 2026-10-03 | Consume Trellis beta.25 recovery assets | `ff29c71` | `main` |
 | 9 | 2026-10-03 | Adopt published Trellis beta.24 defaults | `41b9152800285b50b5a1feb1925a345686290fbd` | `main` |
