@@ -8,8 +8,8 @@
 
 <!-- @@@auto:current-status -->
 - **Active File**: `journal-1.md`
-- **Total Sessions**: 12
-- **Last Active**: 2026-10-06
+- **Total Sessions**: 13
+- **Last Active**: 2026-10-07
 <!-- @@@/auto:current-status -->
 
 ---
@@ -19,7 +19,7 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-1.md` | ~311 | Active |
+| `journal-1.md` | ~334 | Active |
 <!-- @@@/auto:active-documents -->
 
 ---
@@ -29,6 +29,7 @@
 <!-- @@@auto:session-history -->
 | # | Date | Title | Commits | Branch |
 |---|------|-------|---------|--------|
+| 13 | 2026-10-07 | 工作流审查修复交付收尾 | `7865337`, `ab30106` | `main` |
 | 12 | 2026-10-06 | Verified blocking interaction and checkpoint rollout | `ff1ad16` | `main` |
 | 11 | 2026-10-03 | Adopt Trellis beta.26 consumer assets | `1a5b3ed` | `main` |
 | 10 | 2026-10-03 | Consume Trellis beta.25 recovery assets | `ff29c71` | `main` |
