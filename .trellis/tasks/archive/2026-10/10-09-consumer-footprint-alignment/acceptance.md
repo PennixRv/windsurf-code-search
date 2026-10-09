@@ -5,3 +5,4 @@
 - Only project-generated assets and task evidence change. Package `0.1.16` and the accepted materialized runtime are unchanged; no snapshot rebuild or credential/optional-target activation is required.
 - Root coordination owns final provenance/dry-run, installed runtime comparison, source publication and removal of rejected candidates/backups.
 - Final native workflow verification passed; dry-run has no pending common template update and preserves only the documented custom differences. The four rejected candidates and eleven generated backups were removed after checking the no-history boundary.
+- Project asset commit `1f6b8e6` was pushed to main. Installed Pennix source files/modes and collection integrity were compared after native replacement; Windsurf runtime/package source did not change, and its accepted materialized ref remains unchanged.

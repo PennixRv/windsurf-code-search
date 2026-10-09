@@ -11,7 +11,7 @@ Native non-destructive project update to beta.41 preserving inline custom assets
 
 ## Acceptance Criteria
 
-- [ ] Dry-run/provenance pass, project-only changes committed/pushed, accepted candidates and retired backups removed; materialized Skill unchanged.
+- [x] Dry-run/provenance pass, project-only changes committed/pushed, accepted candidates and retired backups removed; materialized Skill unchanged.
 
 ## Notes
 
