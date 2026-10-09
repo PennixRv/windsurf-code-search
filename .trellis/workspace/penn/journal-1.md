@@ -332,3 +332,25 @@ Windsurf当前provenance/pack基线通过，beta39消费者更新并保留定制
 ### Status
 
 [OK] **Completed**
+
+
+## Session 14: Verify stable Windsurf owner and artifact
+<!-- trellis-session: v=2 fp=457463ff66326e3c -->
+
+**Date**: 2026-10-09
+**Task**: Verify stable Windsurf owner and artifact
+**Branch**: `main`
+
+### Summary
+
+114 tests、pack check、provenance 与 v0.1.16 release evidence 重建通过；修正安全规范，核验精确运行包及既有单行文档净化；不空发版本、不创建凭据。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `2448951` | docs: align credential precedence contract |
+
+### Status
+
+[OK] **Completed**
