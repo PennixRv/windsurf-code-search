@@ -63,9 +63,11 @@ explicit opt-out `--no-external`, or positional arguments.
   path through the same guard before touching the filesystem.
 - After argv/root validation and before dynamic core import, context
   construction, DNS, socket, request body, or fetch setup, credentials are
-  resolved in this exact order: non-empty explicit `WINDSURF_API_KEY`; then,
-  only on Linux/WSL, the current user's fixed
-  `~/.local/share/devin/credentials.toml`; otherwise `FC_KEY_MISSING`.
+  resolved in this exact order: non-empty explicit `WINDSURF_API_KEY`; then the
+  private owner-managed `~/.config/windsurf-code-search/config.json` (or the
+  equivalent `$XDG_CONFIG_HOME` path); then, only on Linux/WSL, the current
+  user's fixed `~/.local/share/devin/credentials.toml`; otherwise
+  `FC_KEY_MISSING`.
   `--no-external` occurs before all credential access and instead returns
   `FC_EXTERNAL_DISABLED`.
 - Devin discovery runs only in a package-owned Node child with no shell, a
