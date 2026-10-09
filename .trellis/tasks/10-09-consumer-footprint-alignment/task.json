@@ -1,0 +1,29 @@
+{
+  "id": "consumer-footprint-alignment",
+  "name": "consumer-footprint-alignment",
+  "title": "Align project workflow assets to beta.41",
+  "description": "Native non-destructive project update to beta.41 preserving inline custom assets, validate provenance and remove accepted retired backups.",
+  "status": "in_progress",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P2",
+  "creator": "penn",
+  "assignee": "penn",
+  "createdAt": "2026-10-09",
+  "completedAt": null,
+  "branch": "main",
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": null,
+  "relatedFiles": [],
+  "notes": "",
+  "meta": {
+    "execution_class": "direct",
+    "delivery_mode": "change_bearing"
+  }
+}
