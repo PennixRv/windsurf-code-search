@@ -354,3 +354,25 @@ Windsurf当前provenance/pack基线通过，beta39消费者更新并保留定制
 ### Status
 
 [OK] **Completed**
+
+
+## Session 15: 中文 Skill 合同与界面修订
+<!-- trellis-session: v=2 fp=4504bab5a3e8a4b8 -->
+
+**Date**: 2026-10-10
+**Task**: 中文 Skill 合同与界面修订
+**Branch**: `main`
+
+### Summary
+
+入口、完整脚本合同与界面中文化，保留机器字段、参数、协议与限制；114 项离线测试通过，来源文档与集合字节一致。未修改 CLI 运行实现或版本，任务已归档。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `3e87626` | docs: localize skill contract and interface guidance |
+
+### Status
+
+[OK] **Completed**
