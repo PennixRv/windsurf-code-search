@@ -1,7 +1,7 @@
 interface:
   display_name: "Windsurf Code Search"
-  short_description: "Route genuinely ambiguous code-location questions after local tools and CodeGraph"
-  default_prompt: "Route only genuinely ambiguous business, historical, or legacy code-location questions here after local tools and CodeGraph cannot locate useful candidates; verify every returned path locally. This is Windsurf semantic code search, not the fastctx local operation runtime."
+  short_description: "本地工具和 CodeGraph 无法定位时，对模糊代码问题做有界语义搜索"
+  default_prompt: "使用 $windsurf-code-search 处理本地工具和 CodeGraph 无法定位的业务、历史或遗留代码问题；逐一读取并核验返回路径、范围和语义。这是 Windsurf 语义搜索，与 FastCtx 本地操作分别负责。"
 
 policy:
   allow_implicit_invocation: true
