@@ -1,0 +1,53 @@
+{
+  "id": "skill-contract-navigation",
+  "name": "skill-contract-navigation",
+  "title": "Windsurf Skill 脚本合同导航修订",
+  "description": "接续根侧 Pennix Skills 审查 F03，在真实上游修正脚本合同的执行前导航与候选覆盖语义，验证包产物并交付固定来源。",
+  "status": "in_progress",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P2",
+  "creator": "penn",
+  "assignee": "penn",
+  "createdAt": "2026-10-11",
+  "completedAt": null,
+  "branch": "main",
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": null,
+  "relatedFiles": [],
+  "notes": "",
+  "meta": {
+    "execution_class": "planned",
+    "delivery_mode": "change_bearing",
+    "planning": {
+      "revision": 1,
+      "seal": {
+        "revision": 1,
+        "task_id": "skill-contract-navigation",
+        "task_name": "10-11-skill-contract-navigation",
+        "documents": [
+          "prd.md",
+          "design.md",
+          "implement.md"
+        ],
+        "document_digests": {
+          "prd.md": "6dc6b81b1983158cdbbbc71f7ada5069d3037a47750f5ae369fc5767f36edae2",
+          "design.md": "bee3b10ec5d09b27b7471dc7051b6706c33c0c0059379c60a49167296bb4b23c",
+          "implement.md": "a7cf6376766c320ea1a46a2830893b60935ff3d9849951710d765c717bfc78ec"
+        },
+        "execution_class": "planned",
+        "delivery_mode": "change_bearing",
+        "sealed_at": "2026-10-11T09:16:05.347200+00:00"
+      },
+      "approved_revision": 1,
+      "approval_basis": "用户在展示根、Pennix、Windsurf、FastCtx revision 1及Grok摘要后明确批准上述已封口的完整修订包进入实施并完成交付收敛",
+      "approved_at": "2026-10-11T09:21:03.513014+00:00"
+    }
+  }
+}

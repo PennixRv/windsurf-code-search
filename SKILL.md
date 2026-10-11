@@ -1,5 +1,5 @@
 ---
-name: windsurf-code-search
+name: pennix-windsurf-code-search
 description: 只有在本地工具和 CodeGraph 无法定位时，才将真正含义不明确的业务、历史或旧代码位置问题路由到有范围的外部语义搜索；不会仅因自然语言表述触发。
 metadata:
   short-description: 按需获取语义代码候选
@@ -18,10 +18,12 @@ Windsurf Code Search 是按需使用的外部搜索辅助工具。它返回不�
 
 ## 调用
 
-提供一个已存在的项目目录和一个自然语言查询：
+调用前读取 [references/script-contract.md](references/script-contract.md)，核对参数、凭据访问、资源限制和结果覆盖范围。普通调用使用 Pennix 集合提供的受管 PATH 命令；链接安装与冲突处理由 `$pennix-component-lifecycle` 负责，本 Skill 不创建链接。
+
+提供一个已存在的明确项目目录和一个有范围的自然语言查询：
 
 ```bash
-/path/to/windsurf-code-search/bin/windsurf-code-search \
+windsurf-code-search \
   --project "/absolute/path/to/project" \
   --query "Where is the legacy import flow implemented?"
 ```
@@ -29,5 +31,7 @@ Windsurf Code Search 是按需使用的外部搜索辅助工具。它返回不�
 唯一可选控制项是有范围的 `--max-results`、可重复且只能相加的相对 `--deny` 模式和 `--no-external`。命令先接受明确的 `WINDSURF_API_KEY`。仅 Linux 或 WSL 下，缺少明确密钥时才可以通过包所有者提供的、有范围的无 Shell 辅助程序使用当前用户的 Devin CLI 登录。辅助程序固定凭据路径，拒绝符号链接、超大文件、未知字段和不支持值，不扫描桌面状态。
 
 所有者配置路径可通过 `configure` 和 `config-doctor` 使用；它是私有、原子和脱敏的。运行时优先级是明确环境变量、所有者配置、Devin 登录。命令不输出密钥、不持久化提示词或响应，也不输出远程原始错误。不要把凭据复制到所有者配置命令之外的文件、命令历史、日志或提交。调用方必须阻止所有凭据访问和远程搜索时使用 `--no-external`。
+
+`status`、`truncated` 和 `coverage` 描述本次限定范围的结果完整性。`complete` 不代表覆盖不受限制的整个仓库，也不证明语义正确；`truncated` 的访问计数、原因和可用前沿须保留，不能将不完整的无匹配结果当作全仓无结果。
 
 使用结果前，将相对路径解析到同一项目根目录内，再在本地读取相关行。需要关系分析时，用 CodeGraph 扩展已核验候选。Windsurf Code Search 输出永远只是候选，不是仓库事实；不得将其写入 Trellis、CodeGraph、FastCtx 或其他持久化索引。网络失败或格式错误响应是封闭的 `FC_*` 诊断，应作为不可用提示处理，不是仓库事实。

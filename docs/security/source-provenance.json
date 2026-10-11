@@ -51,15 +51,15 @@
       "path": "SKILL.md",
       "classification": "fork_owned",
       "owner": "pennixrv",
-      "change_summary": "Automatic local-first and CodeGraph-gated routing; verified candidates stay outside persistent indexes.",
-      "shipped_sha256": "78b4115afa695af111686f4c425caaa6919437bda6ec7ec17fd803f1cfe08606"
+      "change_summary": "Pennix Skill identity, local-first and CodeGraph-gated routing, pre-execution contract navigation, managed PATH invocation and bounded coverage interpretation; verified candidates stay outside persistent indexes.",
+      "shipped_sha256": "3f082f8efdd91d112182a7d7d7ce33243fa997d797a915df7cd040a2ce848951"
     },
     {
       "path": "agents/openai.yaml",
       "classification": "fork_owned",
       "owner": "pennixrv",
       "change_summary": "Implicit invocation metadata with local and CodeGraph routing gates.",
-      "shipped_sha256": "5bd2af9deaa1b813b75663eb2af0e7a4e274a3dd74a49ff05fb7b28767f1d763"
+      "shipped_sha256": "17f3dfd00aa62dd9e829b62568a711e9b42e28745306c7b3a8a8a0e900f24c30"
     },
     {
       "path": "bin/windsurf-code-search",
@@ -80,14 +80,14 @@
       "classification": "fork_owned",
       "owner": "pennixrv",
       "change_summary": "Finite CLI with bounded upstream session recovery, strict envelope and answer-shape correction, local evidence projection, credential-source, and redacted remote-error contract.",
-      "shipped_sha256": "c85ca61f80537d7dd841ac4591ba609a0d21b33bcf92fd0a2882212ca5501d2f"
+      "shipped_sha256": "de189f42d17479cac1c7cddabdfa283abfa35dd4a5c20e824575457eb0ab82b9"
     },
     {
       "path": "references/source-provenance.json",
       "classification": "fork_owned",
       "owner": "pennixrv",
       "change_summary": "Public, privacy-safe provenance projection included in the npm package.",
-      "shipped_sha256": "e133b2fb489e73ac48f34bf2c06e420b26057513f455bb2b66c951741210ac6f"
+      "shipped_sha256": "14cd8f2a8ed7ef6e914e0d843165a95366d53779a7705de08c0003456c88b9c3"
     },
     {
       "path": "scripts/lib/LICENSE.fast-context-mcp",
