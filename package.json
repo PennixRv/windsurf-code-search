@@ -22,6 +22,7 @@
     "scripts/lib/core.mjs",
     "scripts/lib/devin-credential-helper.mjs",
     "scripts/lib/executor.mjs",
+    "scripts/lib/lifecycle.mjs",
     "scripts/lib/path-guard.mjs",
     "scripts/lib/protobuf.mjs",
     "scripts/lib/public-error.mjs"

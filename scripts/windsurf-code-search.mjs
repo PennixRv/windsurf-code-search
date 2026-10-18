@@ -6,6 +6,7 @@ import {
   resolveCredential,
   writeOwnerCredential,
 } from "./lib/credentials.mjs";
+import { runLifecycle } from "./lib/lifecycle.mjs";
 import { FastContextError, publicDiagnostic } from "./lib/public-error.mjs";
 import { createInterface } from "node:readline/promises";
 
@@ -105,6 +106,14 @@ export async function runCli({
   resolveApiKey = resolveCredential,
 } = {}) {
   try {
+    if (argv?.[0] === "lifecycle") {
+      if (!argv[1] || argv[2] !== "--json" || argv.length !== 3) throw cliError("FC_ARG_UNKNOWN");
+      let input = "";
+      for await (const chunk of process.stdin) input += chunk;
+      const result = await runLifecycle(argv[1], input ? JSON.parse(input) : {}, environment);
+      stdout.write(`${JSON.stringify(result)}\n`);
+      return 0;
+    }
     if (argv?.[0] === "configure" || argv?.[0] === "config-doctor") {
       if (argv.length !== 1) throw cliError("FC_ARG_UNKNOWN");
       if (argv[0] === "config-doctor") {
