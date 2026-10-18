@@ -15,7 +15,7 @@ const MAX_RESULTS = 50;
 
 const USAGE = `Usage:
   windsurf-code-search --project <directory> --query <text> [--max-results <n>] [--deny <relative-glob> ...] [--no-external]
-  windsurf-code-search configure
+  windsurf-code-search configure [--key-stdin] [--replace]
   windsurf-code-search config-doctor
   windsurf-code-search --help`;
 
@@ -115,19 +115,29 @@ export async function runCli({
       return 0;
     }
     if (argv?.[0] === "configure" || argv?.[0] === "config-doctor") {
-      if (argv.length !== 1) throw cliError("FC_ARG_UNKNOWN");
+      const keyFromStdin = argv.includes("--key-stdin");
+      const replace = argv.includes("--replace");
+      if (argv.some((argument) => !["configure", "config-doctor", "--key-stdin", "--replace"].includes(argument))) {
+        throw cliError("FC_ARG_UNKNOWN");
+      }
+      if (argv[0] === "config-doctor" && (keyFromStdin || replace)) throw cliError("FC_ARG_UNKNOWN");
       if (argv[0] === "config-doctor") {
         const result = inspectOwnerCredential({ environment });
         stdout.write(`status=${result.status}\n`);
         return result.status === "configured" ? 0 : 1;
       }
-      if (!process.stdin.isTTY || !process.stdout.isTTY) throw cliError("FC_CONFIG_TTY_REQUIRED");
       const existing = inspectOwnerCredential({ environment });
-      if (existing.status !== "missing") {
+      if (existing.status !== "missing" && !replace) {
+        if (keyFromStdin) throw cliError("FC_CONFIG_PRESERVED");
         const confirmation = await promptLine("Existing Windsurf configuration found. Type REPLACE to rotate it: ");
         if (confirmation !== "REPLACE") throw cliError("FC_CONFIG_PRESERVED");
       }
-      const apiKey = await promptHidden("Windsurf API key: ");
+      if (keyFromStdin) {
+        if (process.stdin.isTTY) throw cliError("FC_CONFIG_STDIN_REQUIRED");
+      } else if (!process.stdin.isTTY || !process.stdout.isTTY) {
+        throw cliError("FC_CONFIG_TTY_REQUIRED");
+      }
+      const apiKey = keyFromStdin ? await readKeyFromStdin() : await promptLine("Windsurf API key: ");
       writeOwnerCredential(apiKey, { environment });
       stdout.write("ok configured\n");
       return 0;
@@ -182,33 +192,15 @@ async function promptLine(prompt) {
   }
 }
 
-function promptHidden(prompt) {
-  const input = process.stdin;
-  const output = process.stdout;
-  output.write(prompt);
-  input.setRawMode(true);
-  input.resume();
-  return new Promise((resolve, reject) => {
-    let value = "";
-    const finish = (error, result = "") => {
-      input.off("data", onData);
-      input.setRawMode(false);
-      output.write("\n");
-      if (error) reject(error);
-      else if (!result) reject(new Error("A value is required."));
-      else resolve(result);
-    };
-    const onData = (chunk) => {
-      for (const character of String(chunk)) {
-        if (character === "\u0003") return finish(cliError("FC_CONFIG_CANCELLED"));
-        if (character === "\r" || character === "\n") return finish(null, value.trim());
-        if (character === "\u007f") {
-          if (value) value = value.slice(0, -1);
-          continue;
-        }
-        value += character;
-      }
-    };
-    input.on("data", onData);
-  });
+async function readKeyFromStdin() {
+  const chunks = [];
+  let size = 0;
+  for await (const chunk of process.stdin) {
+    size += Buffer.byteLength(String(chunk));
+    if (size > 4096) throw cliError("FC_CONFIG_KEY_INVALID");
+    chunks.push(String(chunk));
+  }
+  const value = chunks.join("").trim();
+  if (!value || /[\r\n]/u.test(value)) throw cliError("FC_CONFIG_KEY_INVALID");
+  return value;
 }

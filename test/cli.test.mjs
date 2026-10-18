@@ -184,6 +184,27 @@ test("configure requires a controlling terminal and creates no owner file", asyn
   }
 });
 
+test("configure accepts stdin and requires explicit replacement", () => {
+  const configHome = mkdtempSync(join(tmpdir(), "fast-context-configure-stdin-"));
+  const environment = { ...process.env, XDG_CONFIG_HOME: configHome, HOME: configHome };
+  try {
+    const configured = spawnSync(process.execPath, [
+      "scripts/windsurf-code-search.mjs", "configure", "--key-stdin",
+    ], { cwd: process.cwd(), env: environment, input: "synthetic-windsurf-key\n", encoding: "utf8" });
+    assert.equal(configured.status, 0, configured.stderr);
+    assert.equal(configured.stdout, "ok configured\n");
+    assert.doesNotMatch(configured.stdout + configured.stderr, /synthetic-windsurf-key/);
+
+    const preserved = spawnSync(process.execPath, [
+      "scripts/windsurf-code-search.mjs", "configure", "--key-stdin",
+    ], { cwd: process.cwd(), env: environment, input: "replacement-key\n", encoding: "utf8" });
+    assert.equal(preserved.status, 1);
+    assert.match(preserved.stderr, /^FC_CONFIG_PRESERVED:/);
+    assert.doesNotMatch(preserved.stdout + preserved.stderr, /replacement-key/);
+  } finally {
+    rmSync(configHome, { recursive: true, force: true });
+  }
+});
 test("CLI redacts remote and parser sentinels from public diagnostics", async () => {
   const root = mkdtempSync(join(tmpdir(), "fast-context-cli-"));
   const stdout = stream();

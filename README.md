@@ -33,9 +33,11 @@ windsurf-code-search config-doctor
 ```
 
 The file is `$XDG_CONFIG_HOME/windsurf-code-search/config.json`, falling back
-to `$HOME/.config/windsurf-code-search/config.json`. `configure` hides the key,
-requires `REPLACE` before rotation, and writes `0700`/`0600` owner files. The
-runtime precedence is environment, owner config, then Devin login. The doctor
+to `$HOME/.config/windsurf-code-search/config.json`. Terminal entry displays
+the key while typing. Existing configuration requires the visible `REPLACE`
+confirmation; non-interactive replacement uses `configure --key-stdin --replace`
+with the key supplied through stdin. Both paths write `0700`/`0600` owner files.
+The runtime precedence is environment, owner config, then Devin login. The doctor
 prints only `status=configured|missing|invalid|blocked|unavailable` and never
 contacts the remote service.
 

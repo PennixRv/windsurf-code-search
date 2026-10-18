@@ -15,4 +15,4 @@
 - npm run pack:check：通过，精确独立文件白名单；npm test 还覆盖离线安装与源码运行字节。
 - 系统 skill-creator quick_validate：通过。
 
-接下来审阅 Git 差异并推送源码验收提交，由 Pennix 固定 SHA 后物化；没有 npm release 或 tag。消费者、PATH 与模型验收尚未完成，不先归档 AC。
+Git 差异审阅与 diff --check 通过，源码验收提交 ab19335810b1152fb40f53235ddefb8ca90d7550 已实际推送 origin/main，由 Pennix 固定 SHA 后物化；没有 npm release 或 tag。本段是后续纯任务留痕，代码消费来源仍为上述提交。消费者、PATH 与模型验收尚未完成，不先归档 AC。
