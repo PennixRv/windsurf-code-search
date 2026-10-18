@@ -1,0 +1,49 @@
+{
+  "id": "context-mode-carrier",
+  "name": "context-mode-carrier",
+  "title": "Context Mode 载体与候选边界",
+  "description": "落实已批准整包中的本仓库 Skill 与必要合同测试；保留未核验候选禁止持久化。根任务 10-18-context-mode-fastctx-replacement。",
+  "status": "completed",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P2",
+  "creator": "penn",
+  "assignee": "penn",
+  "createdAt": "2026-10-18",
+  "completedAt": "2026-10-18",
+  "branch": null,
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": null,
+  "relatedFiles": [],
+  "notes": "",
+  "meta": {
+    "execution_class": "direct",
+    "delivery_mode": "change_bearing",
+    "planning": {
+      "revision": 1,
+      "seal": {
+        "revision": 1,
+        "task_id": "context-mode-carrier",
+        "task_name": "10-18-context-mode-carrier",
+        "documents": [
+          "prd.md"
+        ],
+        "document_digests": {
+          "prd.md": "b34b4404c72046157b484c4cc5de3441f869b26b3c845f4066976e9eb9787e56"
+        },
+        "execution_class": "direct",
+        "delivery_mode": "change_bearing",
+        "sealed_at": "2026-10-18T07:45:13.446488+00:00"
+      },
+      "approved_revision": 1,
+      "approval_basis": "用户批准根任务整包推进，包含 Windsurf 载体修订与组合验收；本任务是其中限定的 Skill 与合同测试修改。",
+      "approved_at": "2026-10-18T07:45:19.495495+00:00"
+    }
+  }
+}

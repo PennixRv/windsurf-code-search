@@ -12,7 +12,12 @@
 
 ## Acceptance Criteria
 
-- [ ] Skill 路由测试通过，生产代码与既有未提交差异保持原样。
+- [x] Skill 路由测试通过，生产代码与既有未提交差异保持原样。
+
+## 验收结果
+
+- 根仓库 full-local 集成门禁在目录清洁、提交固定为 catalog pin `377d8489cbad7bcc2c14930edb875d87bb5e3ebd` 的独立 worktree 中通过：15 项通过、0 项失败或阻塞；其中包含本仓库 `npm test`。
+- 主工作树上的其他未提交文件未被本任务修改。
 
 ## Notes
 
