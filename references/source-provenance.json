@@ -21,13 +21,14 @@
     "scripts/lib/core.mjs",
     "scripts/lib/devin-credential-helper.mjs",
     "scripts/lib/executor.mjs",
+    "scripts/lib/lifecycle.mjs",
     "scripts/lib/path-guard.mjs",
     "scripts/lib/protobuf.mjs",
     "scripts/lib/public-error.mjs"
   ],
   "classification": "public-runtime-projection",
   "runtime_file_sha256": {
-    "SKILL.md": "3f082f8efdd91d112182a7d7d7ce33243fa997d797a915df7cd040a2ce848951",
+    "SKILL.md": "08ee7bbc57a79d4359d40f19b107b4731a5344e28abe0aac8d4f1ecf8f445f36",
     "README.md": "c61ace8c2d3601980bf9ede299130e362970f00ce11f1e52d0c8d2c3166324f7",
     "NOTICE.md": "cc25264b880d726f158bfa046bfdbe6871adb2ad86ebad3ecacad1f68410d61f",
     "LICENSE": "bb9a2ce78d8b8ca19db1bb4ddc68b02aa1959487d28fc472d8414ede53cc3df1",
@@ -40,6 +41,7 @@
     "scripts/lib/core.mjs": "84d5aed3888b80c3ef9351b6e9d0d3ad7d1688440dc5831f4f79c9ff72e6f0f3",
     "scripts/lib/devin-credential-helper.mjs": "803ef84423c90b78f6c6a7ad410a2a8f2d5fd417ec2fac1d3654b770d99d3301",
     "scripts/lib/executor.mjs": "87ff4c758764c601a53e0398cc0ff79af46edad7a27bea96f474e1d032a2f5cb",
+    "scripts/lib/lifecycle.mjs": "65f55f82e78ea219bfecc130a91e81f5a0b4be373a13f5b8a1a193698a10eae4",
     "scripts/lib/path-guard.mjs": "cf8b5631ede6e6368fe80ae28fb6c42dc6353642ddf1a92b326dabc515cf3393",
     "scripts/lib/protobuf.mjs": "be21011475d2623b993a6baced0d829ca0c36f0d871fe2c3fb5b439079c8b88a",
     "scripts/lib/public-error.mjs": "c2a412470632aa50b7db1a946681a471da166c18529a3de569327e77c50cf2b3"

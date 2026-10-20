@@ -1,0 +1,53 @@
+{
+  "id": "context-mode-candidate-index-routing",
+  "name": "context-mode-candidate-index-routing",
+  "title": "允许来源标记候选进入 Context Mode 本地索引",
+  "description": "根据根任务 10-20-context-mode-routing-alignment 的已批准完整方案，修正 Windsurf Skill 对 Context Mode 本地处理和索引的过宽限制及其回归断言。",
+  "status": "in_progress",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P2",
+  "creator": "penn",
+  "assignee": "penn",
+  "createdAt": "2026-10-20",
+  "completedAt": null,
+  "branch": "main",
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": null,
+  "relatedFiles": [],
+  "notes": "",
+  "meta": {
+    "execution_class": "planned",
+    "delivery_mode": "change_bearing",
+    "planning": {
+      "revision": 1,
+      "seal": {
+        "revision": 1,
+        "task_id": "context-mode-candidate-index-routing",
+        "task_name": "10-20-context-mode-candidate-index-routing",
+        "documents": [
+          "prd.md",
+          "design.md",
+          "implement.md"
+        ],
+        "document_digests": {
+          "prd.md": "a96512eddc00a67d6158fe29ec0ba2b63d01673fe026a43b839b7a13adcc8c00",
+          "design.md": "22176e5045a63cc4a1effd6c02e60ec58932d2ec5434b9d0cdf3a37ad7f6e6fd",
+          "implement.md": "e95056aaafe3a1a7cf7c8b886da6a3806a5244a07dba8c613bb2aa1fa943d286"
+        },
+        "execution_class": "planned",
+        "delivery_mode": "change_bearing",
+        "sealed_at": "2026-10-20T08:05:49.429313+00:00"
+      },
+      "approved_revision": 1,
+      "approval_basis": "用户于本会话明确批准完整根方案并要求推进到停止点；本 owner 计划仅细化已展示范围",
+      "approved_at": "2026-10-20T08:06:00.701886+00:00"
+    }
+  }
+}

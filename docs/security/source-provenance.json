@@ -20,6 +20,7 @@
     "scripts/lib/credentials.mjs",
     "scripts/lib/devin-credential-helper.mjs",
     "scripts/lib/executor.mjs",
+    "scripts/lib/lifecycle.mjs",
     "scripts/lib/path-guard.mjs",
     "scripts/lib/protobuf.mjs",
     "scripts/lib/public-error.mjs",
@@ -45,14 +46,14 @@
       "classification": "fork_owned",
       "owner": "pennixrv",
       "change_summary": "Local-first operation with bounded session recovery, envelope and answer-shape repair, locally grounded implementation evidence recovery, and fixed remote failure documentation.",
-      "shipped_sha256": "c61ace8c2d3601980bf9ede299130e362970f00ce11f1e52d0c8d2c3166324f7"
+      "shipped_sha256": "09d40d6fd32619511295f631ccd4b1ed0aa4621ecb346ca8e0fc8891b66e32c4"
     },
     {
       "path": "SKILL.md",
       "classification": "fork_owned",
       "owner": "pennixrv",
-      "change_summary": "Pennix Skill identity, local-first and CodeGraph-gated routing, pre-execution contract navigation, managed PATH invocation and bounded coverage interpretation; verified candidates stay outside persistent indexes.",
-      "shipped_sha256": "3f082f8efdd91d112182a7d7d7ce33243fa997d797a915df7cd040a2ce848951"
+      "change_summary": "Pennix Skill identity, local-first and CodeGraph-gated routing, source-tagged unverified candidate processing, pre-execution contract navigation, managed PATH invocation and bounded coverage interpretation.",
+      "shipped_sha256": "08ee7bbc57a79d4359d40f19b107b4731a5344e28abe0aac8d4f1ecf8f445f36"
     },
     {
       "path": "agents/openai.yaml",
@@ -73,7 +74,7 @@
       "classification": "fork_owned",
       "owner": "pennixrv",
       "change_summary": "Patch release identity and exact individual-file runtime allowlist.",
-      "shipped_sha256": "6d99f9da2e88e2e91ba38561d872bfbef0465ff8675b45db72d9feaa29b389db"
+      "shipped_sha256": "bdf1728fe213a56fc0d0e8a7f552296561f9b1d72a925d8b5a99a68026ca01cc"
     },
     {
       "path": "references/script-contract.md",
@@ -87,7 +88,7 @@
       "classification": "fork_owned",
       "owner": "pennixrv",
       "change_summary": "Public, privacy-safe provenance projection included in the npm package.",
-      "shipped_sha256": "14cd8f2a8ed7ef6e914e0d843165a95366d53779a7705de08c0003456c88b9c3"
+      "shipped_sha256": "7f22ca9c1f523a86ac0fac8b053bbcf11761a0dcef024a4e347807ae0a649af1"
     },
     {
       "path": "scripts/lib/LICENSE.fast-context-mcp",
@@ -129,6 +130,13 @@
       "shipped_sha256": "87ff4c758764c601a53e0398cc0ff79af46edad7a27bea96f474e1d032a2f5cb"
     },
     {
+      "path": "scripts/lib/lifecycle.mjs",
+      "classification": "fork_owned",
+      "owner": "pennixrv",
+      "change_summary": "Windsurf credential lifecycle ownership receipt and rollback contract.",
+      "shipped_sha256": "65f55f82e78ea219bfecc130a91e81f5a0b4be373a13f5b8a1a193698a10eae4"
+    },
+    {
       "path": "scripts/lib/path-guard.mjs",
       "classification": "fork_owned",
       "owner": "pennixrv",
@@ -154,7 +162,7 @@
       "classification": "fork_owned",
       "owner": "pennixrv",
       "change_summary": "Finite CLI parser, explicit opt-out, pre-network credential boundary, and awaited bounded search lifecycle.",
-      "shipped_sha256": "d51f5f8f85d9e0807969f6b232f6e1d15220bc1da8d47129c4c809066d9d2882"
+      "shipped_sha256": "194f4fb7deffd4f7adfd8d9c818d3b46a5a29c8693921f4b1a3ec6536e8c748f"
     }
   ]
 }

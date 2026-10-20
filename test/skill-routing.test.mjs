@@ -12,5 +12,8 @@ test("Skill metadata enables implicit routing with explicit local and CodeGraph 
   assert.match(skill, /不要自动并行运行 CodeGraph 和 Windsurf Code Search/);
   assert.match(skill, /一次 CodeGraph 未命中也不构成机械外部后备/);
   assert.match(skill, /外部文档、普通对话以及只需本地影响分析的请求都跳过本 Skill/);
-  assert.match(skill, /不得将其写入 Trellis、CodeGraph、context-mode 或其他持久化索引/);
+  assert.match(skill, /可以交由 Context Mode 在本地处理或索引/);
+  assert.match(skill, /须保留来源并标记“未核验”/);
+  assert.match(skill, /作为事实使用前回到当前源码核验/);
+  assert.match(skill, /不得将未核验候选直接写入 Trellis 或 CodeGraph/);
 });
