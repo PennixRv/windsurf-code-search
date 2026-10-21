@@ -68,6 +68,7 @@ from .task_utils import (
     resolve_task_dir,
     run_task_hooks,
 )
+from .task_planning import PlanningError, prepare_archive
 from .workflow_selection import DIR_WORKFLOWS, WORKFLOW_ID_RE
 
 
@@ -306,27 +307,27 @@ def _parse_meta_pairs(pairs: list[str] | None) -> dict[str, str] | None:
 
 def _default_prd_content(title: str, description: str | None = None) -> str:
     """Return the default PRD skeleton created with every task."""
-    goal = (description or "").strip() or "TBD."
-    heading = title.strip() or "Untitled task"
+    goal = (description or "").strip() or "待填写。"
+    heading = title.strip() or "未命名任务"
     return f"""# {heading}
 
-## Goal
+## 目标（Goal）
 
 {goal}
 
-## Requirements
+## 需求（Requirements）
 
-- TBD
+- 待填写
 
-## Acceptance Criteria
+## 验收标准（Acceptance Criteria）
 
-- [ ] TBD
+- [ ] 待填写
 
-## Notes
+## 备注（Notes）
 
-- Keep `prd.md` focused on requirements, constraints, and acceptance criteria.
-- Lightweight tasks can remain PRD-only.
-- For complex tasks, add `design.md` for technical design and `implement.md` for execution planning before `task.py start`.
+- 让 `prd.md` 聚焦需求、约束和验收标准。
+- 轻量任务可以只保留 PRD。
+- 复杂任务在 `task.py start` 前增加 `design.md` 记录技术设计，增加 `implement.md` 记录执行计划。
 """
 
 
@@ -582,7 +583,7 @@ def cmd_create(args: argparse.Namespace) -> int:
         "parent": None,
         "relatedFiles": [],
         "notes": "",
-        "meta": meta,
+        "meta": {**meta, "planning": {"revision": 1, "stage": "intake"}},
     }
     # Optional per-task workflow selection: key present only when opted in,
     # so tasks without a selection keep today's task.json shape byte-for-byte.
@@ -1095,6 +1096,13 @@ def cmd_rename(args: argparse.Namespace) -> int:
         )
         return 1
 
+    from .ownership_record import assert_task_rename_allowed
+    try:
+        assert_task_rename_allowed(repo_root, task_dir)
+    except (OSError, ValueError) as exc:
+        print(colored(f"Error: {exc}", Colors.RED), file=sys.stderr)
+        return 1
+
     old_name = task_dir.name
     date_prefix, _old_slug = _split_date_prefix(old_name)
 
@@ -1378,6 +1386,11 @@ def cmd_archive(args: argparse.Namespace) -> int:
                 file=sys.stderr,
             )
         else:
+            try:
+                prepare_archive(data, task_dir, getattr(args, "reason", None))
+            except PlanningError as exc:
+                print(colored(f"Error: {exc}", Colors.RED), file=sys.stderr)
+                return 1
             # Before any mutation: branch metadata is unrecoverable once the
             # task leaves the active tree. Stale branches only warn.
             if not _validate_branch_metadata(
@@ -1978,9 +1991,12 @@ def cmd_set_meta(args: argparse.Namespace) -> int:
     meta = data.get("meta")
     if not isinstance(meta, dict):
         meta = {}
+    if key in {"execution_class", "delivery_mode"} and meta.get(key) != value and data.get("status") == "in_progress":
+        print(colored("Error: replan the in-progress task before changing its classification", Colors.RED), file=sys.stderr)
+        return 1
     if key in {"execution_class", "delivery_mode"} and meta.get(key) != value and "planning" in meta:
         try:
-            invalidate_plan(data)
+            invalidate_plan(data, "intake")
         except ValueError as exc:
             print(colored(f"Error: {exc}", Colors.RED), file=sys.stderr)
             return 1

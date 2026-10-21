@@ -1,0 +1,53 @@
+{
+  "id": "closed-plan-project-assets",
+  "name": "closed-plan-project-assets",
+  "title": "物化闭合方案工作流项目资产",
+  "description": "执行根已批准 rollout revision 3 对本项目的 beta.53 原生预览、受管资产更新、工作流验证、提交与归档；不改组件产品源码，不关闭其他任务。",
+  "status": "in_progress",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P2",
+  "creator": "penn",
+  "assignee": "penn",
+  "createdAt": "2026-10-21",
+  "completedAt": null,
+  "branch": "main",
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": null,
+  "relatedFiles": [],
+  "notes": "",
+  "meta": {
+    "execution_class": "planned",
+    "delivery_mode": "change_bearing",
+    "planning": {
+      "revision": 1,
+      "seal": {
+        "revision": 1,
+        "task_id": "closed-plan-project-assets",
+        "task_name": "10-21-closed-plan-project-assets",
+        "documents": [
+          "prd.md",
+          "design.md",
+          "implement.md"
+        ],
+        "document_digests": {
+          "prd.md": "527f3faa76cc44a862db209ba638ebcdfbf54a10e6877695fa1ae0c46577e84b",
+          "design.md": "7c0a2f333dcba0678de902274fc5cf11ba7ea3e8731b2b81db79ef5b97c9b5e2",
+          "implement.md": "6dffa5dd36d0bc8efd88a5e7c91a2ba7f6507294d08e4158b0a1bb1e3d36d140"
+        },
+        "execution_class": "planned",
+        "delivery_mode": "change_bearing",
+        "sealed_at": "2026-10-21T13:58:23.453222+00:00"
+      },
+      "approved_revision": 1,
+      "approval_basis": "User approved root rollout revision 3 and deterministic owner decomposition without another approval; execute only approved native project assets steps",
+      "approved_at": "2026-10-21T13:58:23.509383+00:00"
+    }
+  }
+}
