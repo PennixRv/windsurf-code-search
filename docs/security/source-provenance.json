@@ -45,22 +45,22 @@
       "path": "README.md",
       "classification": "fork_owned",
       "owner": "pennixrv",
-      "change_summary": "Local-first operation with bounded session recovery, envelope and answer-shape repair, locally grounded implementation evidence recovery, and fixed remote failure documentation.",
-      "shipped_sha256": "09d40d6fd32619511295f631ccd4b1ed0aa4621ecb346ca8e0fc8891b66e32c4"
+      "change_summary": "Anchor-based source selection with bounded session recovery, envelope and answer-shape repair, locally grounded implementation evidence recovery, and fixed remote failure documentation.",
+      "shipped_sha256": "c33613623e0eca2c3ac58dc581933286d4ebfe827a8774fc75354c20beea20d9"
     },
     {
       "path": "SKILL.md",
       "classification": "fork_owned",
       "owner": "pennixrv",
-      "change_summary": "Pennix Skill identity, local-first and CodeGraph-gated routing, source-tagged unverified candidate processing, pre-execution contract navigation, managed PATH invocation and bounded coverage interpretation.",
-      "shipped_sha256": "08ee7bbc57a79d4359d40f19b107b4731a5344e28abe0aac8d4f1ecf8f445f36"
+      "change_summary": "Pennix Skill identity, anchor-based text/CodeGraph/semantic source routing, Context Mode CLI transport and source-tagged unverified candidate processing, managed PATH invocation and bounded coverage interpretation.",
+      "shipped_sha256": "050c6453f6ec5eb37791bd555891edb19cf0d3f4ccf037ff273d916299049979"
     },
     {
       "path": "agents/openai.yaml",
       "classification": "fork_owned",
       "owner": "pennixrv",
-      "change_summary": "Implicit invocation metadata with local and CodeGraph routing gates.",
-      "shipped_sha256": "17f3dfd00aa62dd9e829b62568a711e9b42e28745306c7b3a8a8a0e900f24c30"
+      "change_summary": "Implicit invocation metadata for clear semantic location requests without useful code anchors.",
+      "shipped_sha256": "b23ecdefb80a7fc504d203b04d2f203fa703f1f6f3ae2622ce128be098e8b95c"
     },
     {
       "path": "bin/windsurf-code-search",
@@ -88,7 +88,7 @@
       "classification": "fork_owned",
       "owner": "pennixrv",
       "change_summary": "Public, privacy-safe provenance projection included in the npm package.",
-      "shipped_sha256": "7f22ca9c1f523a86ac0fac8b053bbcf11761a0dcef024a4e347807ae0a649af1"
+      "shipped_sha256": "923e148451abd6c2695919dc4c16599bfa29ef91ff0a18f56fdaa2d6a7e6e242"
     },
     {
       "path": "scripts/lib/LICENSE.fast-context-mcp",

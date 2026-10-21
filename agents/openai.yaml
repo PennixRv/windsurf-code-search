@@ -1,7 +1,7 @@
 interface:
   display_name: "Windsurf Code Search"
-  short_description: "本地工具和 CodeGraph 无法定位时，对模糊代码问题做有界语义搜索"
-  default_prompt: "使用 $pennix-windsurf-code-search 处理本地工具和 CodeGraph 无法定位的业务、历史或遗留代码问题；先读脚本合同，再逐一读取并核验返回路径、范围和语义。"
+  short_description: "对含义和范围明确但无有效代码锚点的定位发现语义候选，保留外部边界和本地核验"
+  default_prompt: "使用 $pennix-windsurf-code-search 在明确允许范围内定位没有有效代码锚点的业务或旧行为；先读脚本合同，由 Context Mode 承载真实 CLI 并核验候选。"
 
 policy:
   allow_implicit_invocation: true

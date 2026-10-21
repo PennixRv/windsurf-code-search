@@ -26,9 +26,9 @@
     "execution_class": "planned",
     "delivery_mode": "change_bearing",
     "planning": {
-      "revision": 1,
+      "revision": 4,
       "seal": {
-        "revision": 1,
+        "revision": 4,
         "task_id": "context-mode-candidate-index-routing",
         "task_name": "10-20-context-mode-candidate-index-routing",
         "documents": [
@@ -37,17 +37,17 @@
           "implement.md"
         ],
         "document_digests": {
-          "prd.md": "a96512eddc00a67d6158fe29ec0ba2b63d01673fe026a43b839b7a13adcc8c00",
-          "design.md": "22176e5045a63cc4a1effd6c02e60ec58932d2ec5434b9d0cdf3a37ad7f6e6fd",
-          "implement.md": "e95056aaafe3a1a7cf7c8b886da6a3806a5244a07dba8c613bb2aa1fa943d286"
+          "prd.md": "1c04de3581e9c4244c13ff7c1febdcc5ac2d4564c25a5ca805a563a382909b07",
+          "design.md": "1113d3b27abb67575600a415c9b01cebe9e0f60da9ae7f881d39d1f9edc4a29c",
+          "implement.md": "9dea862de21f2475c8e83817e33862a4c69ea3f674473faf7bbf2c0af52ceb98"
         },
         "execution_class": "planned",
         "delivery_mode": "change_bearing",
-        "sealed_at": "2026-10-20T08:05:49.429313+00:00"
+        "sealed_at": "2026-10-21T13:22:45.129217+00:00"
       },
-      "approved_revision": 1,
-      "approval_basis": "用户于本会话明确批准完整根方案并要求推进到停止点；本 owner 计划仅细化已展示范围",
-      "approved_at": "2026-10-20T08:06:00.701886+00:00"
+      "approved_revision": 4,
+      "approval_basis": "User explicitly instructed in this session to merge the established routing strategy into the real source and proceed directly without another approval request",
+      "approved_at": "2026-10-21T13:22:45.370689+00:00"
     }
   }
 }

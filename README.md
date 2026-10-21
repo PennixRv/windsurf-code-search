@@ -1,8 +1,11 @@
 # `@pennixrv/windsurf-code-search`
 
 An on-demand Agent Skill and local CLI that asks Windsurf Devstral for bounded
-semantic code-search candidates. Local `rg` and CodeGraph remain the default
-path; this helper is for genuinely unknown locations or vague legacy behavior.
+semantic code-search candidates. Use exact text search for known code anchors
+and CodeGraph for symbols and relationships. When the requested behavior and
+search scope are clear but no useful code anchor exists, use this helper
+directly within the permitted external-search scope. Clarify unclear meaning
+or scope before searching.
 
 ## Use
 

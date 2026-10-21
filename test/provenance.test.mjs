@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
+import { mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 import test from "node:test";
@@ -9,6 +9,19 @@ import { verify } from "../scripts/release/verify-provenance.mjs";
 function digest(value) {
   return createHash("sha256").update(value).digest("hex");
 }
+
+test("public provenance covers every non-self runtime file with its shipped digest", () => {
+  const root = new URL("../", import.meta.url);
+  const projectionPath = "references/source-provenance.json";
+  const projection = JSON.parse(readFileSync(new URL(projectionPath, root), "utf8"));
+  assert.deepEqual(
+    Object.keys(projection.runtime_file_sha256).sort(),
+    projection.runtime_files.filter((path) => path !== projectionPath).sort(),
+  );
+  for (const [path, expected] of Object.entries(projection.runtime_file_sha256)) {
+    assert.equal(digest(readFileSync(new URL(path, root))), expected, path);
+  }
+});
 
 function writeFixture(records) {
   const root = mkdtempSync(join(tmpdir(), "fast-context-provenance-"));
