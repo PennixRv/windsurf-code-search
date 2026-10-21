@@ -19,3 +19,8 @@
 - 同步 README 的入口路由说明；公开 provenance 中 README 与 CLI 的既存摘要已过期，已改为当前交付文件摘要，并更新私有清单中的公开 projection 摘要。新增回归检查公开清单完整覆盖所有非自身 runtime 文件且摘要与实际字节一致，不改变运行时代码、包清单或外部权限。
 - 官方 Node 二进制下载在 90 秒超时后清理临时目录。改用 npm 官方 registry 的 `node-linux-x64@26.5.1` 与 `npm@12.0.1` 临时安装，忽略安装脚本，先断言实际 `node --version=v26.5.1`、`npm --version=12.0.1`，再运行原生门禁：`npm test` 117/117 通过、无跳过；provenance 19 文件通过；pack 检查 1/1 通过。临时运行时随后清理，不改变全局安装。
 - 审查确认源 Skill、界面、README、静态测试和两层 provenance 对齐；现有安全规范的包清单与来源一致性合同已覆盖此次修复，不新增重复规范。模型真实路由、最终集合与新会话仍待根 rollout 消费者验收，当前不归档。
+
+## 2026-10-22 归档前消费者验收
+
+- 根 rollout 的真实新 Codex 宿主线程 `01a15f5a-9805-7062-a288-780a49c22863` 已完成只读消费者验收：项目规则、规划 Skill、全局路由 Skill 均实际加载，`SessionStart`/`UserPromptSubmit` Hook 均实际注入；四个代表场景分别验证 planned 规划链、major replan、minor 原阶段留存和非法 archive/跨阶段拒绝，结论为 `PASS`。该证据满足本源任务归档前消费者门；最终 Skills 集合更新后仍需独立的新宿主验收。
+- 当前源任务仍为 `in_progress`，`branch=main`、`base_branch=main`、`pr_url=null`，本仓无独立 PR 分支事实。源测试、provenance、pack 及消费者验收均通过，按根批准计划进入原生归档；归档提交改变的最终 SHA 将回写根任务并作为 Skills collection pin 的唯一来源。
