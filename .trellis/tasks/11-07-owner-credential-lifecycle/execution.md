@@ -5,3 +5,7 @@
 采用未占用的 0.1.17；registry 明确 E404、远端无同名 tag。按既有发布合同在隔离临时工具目录固定 Node 26.5.1/npm 12.0.1；npm exec 的 node 包因安装脚本未运行没有生成 binary，未编辑 npm 缓存，改用 npm 原生安装固定 node-linux-x64 二进制包。最终完整通过 124 项测试、19 文件 provenance 和 pack:check；原生 release:prepare-artifact 已生成 v0.1.17.tgz。
 
 Spec 已在 cli/windsurf-code-search-security.md 补充可执行生命周期合同。计划工作提交包含本次源码、文档、测试、版本、provenance、原生任务资产与准备后的发行 tgz；随后单独证据子提交、annotated tag、推送与 Actions 发布。沿根明确提交发布授权执行，不重复征求批准。
+
+实际 source C 为 cd6b7fab706bc995a78903543e78912495dba561，直接 evidence 子提交 E 为 50147de6a46bad1c02f2868915fbd77da8d3b061；annotated v0.1.17 已推送。preflight、tag verifier、release evidence verifier 全部通过。绑定 tarball SHA-256 为 471c397712aa90f94a42c31ba047850f1c06b8e08cfc76b9776d9f23c08ccb0a。
+
+Actions https://github.com/PennixRv/windsurf-code-search/actions/runs/42355980168 的 validate job 成功，publish job 在 Verify npm publication identity 的非回显 npm whoami 收到 E401，尚未进入 npm publish。随后 registry 明确 E404；NPM_TOKEN secret 仅核验名称及更新时间 2026-08-06T13:02:52Z，没有取得或记录值。失败属于认证前置条件，不能宣称已发布；保留 tag 和原始候选。等待受信渠道修复仓库 Actions secret，再重验精确候选与 registry 状态，沿当前发布合同恢复；不自动重试认证错误，不消费未发布源。
