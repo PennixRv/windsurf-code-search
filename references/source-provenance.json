@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "package": "@pennixrv/windsurf-code-search@0.1.16",
+  "package": "@pennixrv/windsurf-code-search@0.1.17",
   "source_repository": "https://github.com/PennixRv/windsurf-code-search",
   "upstream": {
     "repository": "https://github.com/oulkurt/fast-context-skill",
@@ -32,16 +32,16 @@
     "README.md": "c33613623e0eca2c3ac58dc581933286d4ebfe827a8774fc75354c20beea20d9",
     "NOTICE.md": "cc25264b880d726f158bfa046bfdbe6871adb2ad86ebad3ecacad1f68410d61f",
     "LICENSE": "bb9a2ce78d8b8ca19db1bb4ddc68b02aa1959487d28fc472d8414ede53cc3df1",
-    "references/script-contract.md": "de189f42d17479cac1c7cddabdfa283abfa35dd4a5c20e824575457eb0ab82b9",
+    "references/script-contract.md": "7771a985bbf9f05166f8bfcf909c43332d446766012442e003c17ffd9680d922",
     "agents/openai.yaml": "b23ecdefb80a7fc504d203b04d2f203fa703f1f6f3ae2622ce128be098e8b95c",
     "bin/windsurf-code-search": "5cc2f8088819f93f8d83ba174acb7e202d0ddcc99c7d55922bfb07ab1be98569",
     "scripts/windsurf-code-search.mjs": "194f4fb7deffd4f7adfd8d9c818d3b46a5a29c8693921f4b1a3ec6536e8c748f",
     "scripts/lib/LICENSE.fast-context-mcp": "06dcddbb6908a0c6dd4a9e8ec822eea41d5a460a53089fecccc8a68049e99241",
-    "scripts/lib/credentials.mjs": "d36d7e0dc471fc0215d4798a626434c100bb3a0fce64b04034a252edec3a3e91",
+    "scripts/lib/credentials.mjs": "a718b2200f76993146e55a9b00c770521e4c7d96cb5e131ee2c8d7314fb72968",
     "scripts/lib/core.mjs": "84d5aed3888b80c3ef9351b6e9d0d3ad7d1688440dc5831f4f79c9ff72e6f0f3",
     "scripts/lib/devin-credential-helper.mjs": "803ef84423c90b78f6c6a7ad410a2a8f2d5fd417ec2fac1d3654b770d99d3301",
     "scripts/lib/executor.mjs": "87ff4c758764c601a53e0398cc0ff79af46edad7a27bea96f474e1d032a2f5cb",
-    "scripts/lib/lifecycle.mjs": "65f55f82e78ea219bfecc130a91e81f5a0b4be373a13f5b8a1a193698a10eae4",
+    "scripts/lib/lifecycle.mjs": "8826cffb293ba29929c2cc8a0d24895d1ca3a88bc367a05d544687099b8c2639",
     "scripts/lib/path-guard.mjs": "cf8b5631ede6e6368fe80ae28fb6c42dc6353642ddf1a92b326dabc515cf3393",
     "scripts/lib/protobuf.mjs": "be21011475d2623b993a6baced0d829ca0c36f0d871fe2c3fb5b439079c8b88a",
     "scripts/lib/public-error.mjs": "c2a412470632aa50b7db1a946681a471da166c18529a3de569327e77c50cf2b3"

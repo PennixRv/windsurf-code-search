@@ -40,6 +40,12 @@ CLI 只接受一个 `--project <directory>` 和一个 `--query <text>`。它还�
 
 远程散文、原始协议帧、文件内容、仓库映射、进度事件、子进程 stderr 和捕获的异常消息永远不出现在公开输出中。公开失败使用固定 `FC_*` 代码和 stderr 上的本地诊断文本。
 
+## 生命周期凭据归属
+
+`lifecycle inspect/configure/unconfigure --json` 从 stdin 接收 JSON，固定 `target=windsurf`。默认中央模式接收 `secrets.api_key` 与 `desired_digest`，兼容既有 schema 2 receipt。显式 `credential_mode=owner` 不接收中央 KEY：缺文件时 inspect 只报告 Devin 来源是否可导入，configure 才使用原生 Devin resolver 将值直接写入专属文件及私有 receipt。目录须为当前用户所有且权限 0700，文件 0600；不改变原 Devin 登录。
+
+有完整归属时，模式变化返回 `configuration-required`，明确 configure 后重新绑定；不会将无 receipt 的文件变成受管文件。文件字节漂移、孤立 receipt、无效格式、不安全路径、环境覆盖或缺 Devin 输入均阻断。输出只含固定状态与来源类别，不含 KEY。配置失败恢复本次字节；并发外部变化时拒绝覆盖并报告恢复失败。删除仍要求当前完整归属，不以模式选择授予删除权。
+
 ## 有界远程完成
 
 远程协议最多执行三次 `restricted_exec` 轮次。每次仍使用同一 PathGuard、资源预算、命令数和输出限制。已有本地证据的 `answer` 可以提前结束；不能为了耗尽上限而消耗剩余工具轮次。只有三次有效工具轮次全部完成后，最终请求才收到固定的强制回答用户消息，并且只公开 `answer` 工具。该消息禁止 `restricted_exec`，要求严格的 `<file>` 或 `<range>` 条目或明确的精确无结果形式，限制结果数，并禁止猜测路径或范围。畸形工具标签 JSON 每个逻辑请求最多接收一条固定修正用户消息，并在相同剩余截止时间内重试一次；它不会转发远程文本，也不会创建新的工具轮次。投影拒绝在属于格式或范围问题时也可以接收一次仅答案修正。客户端将终结阶段的非答案响应拒绝为 `FC_PROTOCOL_INVALID`；内部固定协议原因不通过 CLI 输出。工具包络可以有有界的远程 reasoning 前缀，但客户端丢弃该前缀，不在后续请求中重放；非空白 JSON 后缀仍视为畸形。合法的远程 EndStream 错误仍然封闭失败，但映射到固定服务类别，不误报为畸形 Connect 数据。终结请求和修正请求使用同一单调截止时间，绝不创建后备候选来源。

@@ -56,8 +56,11 @@ export function inspectOwnerCredential({ environment = process.env } = {}) {
   const path = ownerConfigPath(environment);
   let descriptor;
   try {
+    const directory = lstatSync(dirname(path));
+    if (!directory.isDirectory() || directory.isSymbolicLink()
+      || directory.uid !== process.getuid() || (directory.mode & 0o077) !== 0) return ownerConfigResult("blocked");
     const initial = lstatSync(path);
-    if (!initial.isFile() || initial.isSymbolicLink() || (initial.mode & 0o077) !== 0) {
+    if (!initial.isFile() || initial.isSymbolicLink() || initial.uid !== process.getuid() || (initial.mode & 0o077) !== 0) {
       return ownerConfigResult("blocked");
     }
     if (initial.size > OWNER_CONFIG_LIMIT) return ownerConfigResult("blocked");

@@ -2,6 +2,26 @@
 
 ## Scenario: External Semantic Search
 
+### Lifecycle credential ownership
+
+`runLifecycle(action, input, environment)` accepts explicit `credential_mode:
+"owner"` for the fixed `windsurf` target. Default central mode preserves schema 2
+receipts and `secrets.api_key`. Owner mode never needs that central input: missing
+files may be imported only by the native Devin helper during `configure`;
+`inspect` returns only source availability. A current-user private directory and
+0600 ordinary owner file are required. Keep the original Devin login untouched.
+
+An intact receipt with a changed mode or desired input returns
+`configuration-required`; explicit configure may rebind it. File-content drift,
+orphan receipt, invalid path/permissions, unowned file, environment override or
+missing Devin source blocks writes and removal. Failed receipt writes restore
+only this attempt's credential bytes; concurrent external changes block rollback.
+The JavaScript-only `persistReceipt` fault seam is unavailable to CLI JSON or the
+environment. Tests cover central compatibility, import, rebind, private modes,
+source preservation, refusal, write failure and concurrent-change retention.
+Wrong: infer a missing owner file means no runtime credential. Correct: report
+owner state, native credential source and remote functionality separately.
+
 ### 1. Scope / Trigger
 
 `scripts/windsurf-code-search.mjs` is a user-facing CLI that may send a bounded

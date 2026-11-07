@@ -1,0 +1,56 @@
+{
+  "id": "owner-credential-lifecycle",
+  "name": "owner-credential-lifecycle",
+  "title": "Windsurf owner 凭据单文件生命周期",
+  "description": "关联根 converge-pennix-lifecycle 已批准合同；由 owner 原生 Devin resolver 导入专属文件，保留中央输入兼容和安全归属保护，发布新版。",
+  "status": "in_progress",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P2",
+  "creator": "penn",
+  "assignee": "penn",
+  "createdAt": "2026-11-07",
+  "completedAt": null,
+  "branch": "main",
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": null,
+  "relatedFiles": [],
+  "notes": "",
+  "meta": {
+    "execution_class": "planned",
+    "delivery_mode": "change_bearing",
+    "planning": {
+      "revision": 1,
+      "stage": "plan_closed",
+      "review_digest": "sha256:4ac6a51b6372a7f01bb32f2d601d7f615fac212313b389d78d9615f781328ce8",
+      "seal": {
+        "revision": 1,
+        "task_id": "owner-credential-lifecycle",
+        "task_name": "11-07-owner-credential-lifecycle",
+        "documents": [
+          "prd.md",
+          "design.md",
+          "implement.md"
+        ],
+        "document_digests": {
+          "prd.md": "2397c5b88e057fb2bf23efe18d338a350d00e1b6d1af69cb0d4d920982065a25",
+          "design.md": "65b626d29ea9d0a0f19ea0dd8353e4deade72e50cc64db049993f01271b715fe",
+          "implement.md": "1bccb66125eb1326cd977021d2b5aa69c5d7c15c34c310ac8c764c1df9d1cee6"
+        },
+        "execution_class": "planned",
+        "delivery_mode": "change_bearing",
+        "plan_digest": "sha256:4ac6a51b6372a7f01bb32f2d601d7f615fac212313b389d78d9615f781328ce8",
+        "sealed_at": "2026-11-07T08:08:19.256076+00:00"
+      },
+      "approved_revision": 1,
+      "approval_basis": "根实施合同 24db3ff9e7d997bf2ffcdefb7006894006d980df3382e76b5339d42f16d2e00a；用户明确：批准，现在开始吧。覆盖本 owner 同范围实施、提交推送和发行。",
+      "approved_at": "2026-11-07T08:08:19.314544+00:00"
+    }
+  }
+}
