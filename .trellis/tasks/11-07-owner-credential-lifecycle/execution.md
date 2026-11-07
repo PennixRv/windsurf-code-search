@@ -9,3 +9,7 @@ Spec 已在 cli/windsurf-code-search-security.md 补充可执行生命周期合�
 实际 source C 为 cd6b7fab706bc995a78903543e78912495dba561，直接 evidence 子提交 E 为 50147de6a46bad1c02f2868915fbd77da8d3b061；annotated v0.1.17 已推送。preflight、tag verifier、release evidence verifier 全部通过。绑定 tarball SHA-256 为 471c397712aa90f94a42c31ba047850f1c06b8e08cfc76b9776d9f23c08ccb0a。
 
 Actions https://github.com/PennixRv/windsurf-code-search/actions/runs/42355980168 的 validate job 成功，publish job 在 Verify npm publication identity 的非回显 npm whoami 收到 E401，尚未进入 npm publish。随后 registry 明确 E404；NPM_TOKEN secret 仅核验名称及更新时间 2026-08-06T13:02:52Z，没有取得或记录值。失败属于认证前置条件，不能宣称已发布；保留 tag 和原始候选。等待受信渠道修复仓库 Actions secret，再重验精确候选与 registry 状态，沿当前发布合同恢复；不自动重试认证错误，不消费未发布源。
+
+用户更新 secret 后，重验固定 tag/evidence 和精确 registry E404，再沿 gh run rerun --failed 执行 attempt 2。npm whoami 通过，原 tarball 的 npm publish --provenance 被 registry 返回 E403 / E_STAGE_REQUIRED（token 只能暂存，公开发布须先 stage 再 approve）；后续 registry 精确版本仍 E404。没有创建 stage 或公开版本成功的证据，不能把 provenance 签名生成等同于发行完成。官方 npm-stage 文档及固定 npm 12.0.1 help 确认 stage approve 需要维护者 2FA。根任务正在核对是否维持直接发布权限，或经方案修订采用暂存/人工批准；未改变发布 workflow、tarball 或 tag。
+
+用户澄清已勾选 bypass 2FA。进一步核验官方 about-access-tokens、creating-and-viewing-access-tokens：bypass 与 Packages and scopes Permissions 独立，stage only 的直接发布正是 E_STAGE_REQUIRED；publish and stage 才允许直接发布。2027-01 的撤除尚未生效，不据此要求迁移机制。保留原直接发布方案，等待用户核对该 token 的精确包权限和 Actions secret 对应关系；未要求扩大包范围、修改包级策略或传递 token 值。
