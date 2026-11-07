@@ -376,3 +376,26 @@ Windsurf当前provenance/pack基线通过，beta39消费者更新并保留定制
 ### Status
 
 [OK] **Completed**
+
+
+## 会话（Session） 16：Pennix 生命周期收敛交付
+<!-- trellis-session: v=2 fp=31834888d4b34aaa -->
+
+**日期（Date）**: 2026-11-07
+**任务（Task）**: Pennix 生命周期收敛交付
+**分支（Branch）**: `main`
+
+### 摘要（Summary）
+
+完成 owner 凭据单文件生命周期，v0.1.17 直接发布及公开摘要/签名/attestation 独立核验，集合消费和合成项目真实搜索通过；CI 即时 404 及跨登录限制如实保留。
+
+### Git 提交（Git Commits）
+
+| 哈希（Hash） | 消息（Message） |
+|------|---------|
+| `cd6b7fab706bc995a78903543e78912495dba561` | fix: add owner-only Windsurf credential lifecycle |
+| `50147de6a46bad1c02f2868915fbd77da8d3b061` | release: attest Windsurf v0.1.17 artifact |
+
+### 状态（Status）
+
+[OK] **已完成（Completed）**

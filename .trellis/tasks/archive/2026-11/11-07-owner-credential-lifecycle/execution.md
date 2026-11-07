@@ -1,5 +1,15 @@
 # 实施与验证
 
+## 最终发行与消费结果
+
+维护者再次更新 secret（仅核验更新时间 2026-11-07T09:05:45Z）后，重验原 tag/evidence、精确 registry E404，沿同一直接发布 workflow 恢复 attempt 3。npm publish 于 09:06:44Z 明确成功，版本 0.1.17，provenance logIndex 3734260690。CI 紧接的公开 tarball 下载收到传播期 404，整个 run 为 failure；没有重跑 publish 或移动 tag。公开可见后独立下载 SHA-256 与绑定证明一致，npm install --prefer-online 精确版本成功，npm audit signatures 确认 registry signature 和 attestation 各 1 个有效。该独立验证补齐发布后条件，不能把原 run 写成通过。
+
+集合 c607488ec6ef7f0855bd79d15c303beda159f43e 已物化本发行 E 并由本机原生 Lifecycle 固定安装。config-doctor、lifecycle inspect/check 通过，运行时来源 owner-config、目录 0700/文件 0600；原 Devin 文件摘要前后一致，未新增中央 Windsurf 字段。一次真实远端搜索只使用公开合成 arithmetic.py，exit 0、complete、无截断，正确返回加法函数第 1–3 行。首次误带 --no-external 的本地调用为 FC_EXTERNAL_DISABLED，未联网，不计作真实搜索或通过。根侧全集 22 组件/6 连接 check exit 0，其他连接未统一开启远端探针。
+
+本任务源码、离线验证、原生发行、公开证明及实际消费均已完成；以下保留按时间积累的实施和认证恢复证据。CI 的即时 404 等待不足属于仍可改进的发行验证机制，不阻止本次经独立证据确认的已发布身份。
+
+## 实施与认证恢复记录
+
 已沿根批准合同实施 owner 模式、Devin 导入、中央兼容、模式重绑定及归属/漂移/环境覆盖保护。新增生命周期与真实 CLI 回归，安全写失败测试通过可信 JavaScript-only persistReceipt 故障入口，不可由 CLI JSON 设置。
 
 采用未占用的 0.1.17；registry 明确 E404、远端无同名 tag。按既有发布合同在隔离临时工具目录固定 Node 26.5.1/npm 12.0.1；npm exec 的 node 包因安装脚本未运行没有生成 binary，未编辑 npm 缓存，改用 npm 原生安装固定 node-linux-x64 二进制包。最终完整通过 124 项测试、19 文件 provenance 和 pack:check；原生 release:prepare-artifact 已生成 v0.1.17.tgz。
