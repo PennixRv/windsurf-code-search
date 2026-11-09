@@ -112,7 +112,7 @@ export async function runCli({
       for await (const chunk of process.stdin) input += chunk;
       const result = await runLifecycle(argv[1], input ? JSON.parse(input) : {}, environment);
       stdout.write(`${JSON.stringify(result)}\n`);
-      return 0;
+      return result.error ? 2 : 0;
     }
     if (argv?.[0] === "configure" || argv?.[0] === "config-doctor") {
       const keyFromStdin = argv.includes("--key-stdin");
@@ -162,6 +162,10 @@ export async function runCli({
     stdout.write(`${JSON.stringify(result)}\n`);
     return 0;
   } catch (error) {
+    if (argv?.[0] === "lifecycle" && error?.lifecycleResult) {
+      stdout.write(`${JSON.stringify(error.lifecycleResult)}\n`);
+      return 2;
+    }
     const safeError = error instanceof FastContextError
       ? error
       : new FastContextError("FC_REMOTE_UNAVAILABLE");

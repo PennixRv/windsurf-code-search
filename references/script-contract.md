@@ -42,9 +42,11 @@ CLI 只接受一个 `--project <directory>` 和一个 `--query <text>`。它还�
 
 ## 生命周期凭据归属
 
-`lifecycle inspect/configure/unconfigure --json` 从 stdin 接收 JSON，固定 `target=windsurf`。默认中央模式接收 `secrets.api_key` 与 `desired_digest`，兼容既有 schema 2 receipt。显式 `credential_mode=owner` 不接收中央 KEY：缺文件时 inspect 只报告 Devin 来源是否可导入，configure 才使用原生 Devin resolver 将值直接写入专属文件及私有 receipt。目录须为当前用户所有且权限 0700，文件 0600；不改变原 Devin 登录。
+`lifecycle inspect/validate/configure/unconfigure --json` 从 stdin 接收 JSON，固定 `target=windsurf`。默认中央模式接收 `secrets.api_key` 与 `desired_digest`，兼容既有 schema 2 receipt。显式 `credential_mode=owner` 不接收中央 KEY：缺文件时 inspect 只报告 Devin 来源是否可导入，configure 才使用原生 Devin resolver 将值直接写入专属文件及私有 receipt。目录须为当前用户所有且权限 0700，文件 0600；不改变原 Devin 登录。
 
-有完整归属时，模式变化返回 `configuration-required`，明确 configure 后重新绑定；不会将无 receipt 的文件变成受管文件。文件字节漂移、孤立 receipt、无效格式、不安全路径、环境覆盖或缺 Devin 输入均阻断。输出只含固定状态与来源类别，不含 KEY。配置失败恢复本次字节；并发外部变化时拒绝覆盖并报告恢复失败。删除仍要求当前完整归属，不以模式选择授予删除权。
+有完整归属时，模式变化返回 `configuration-required`，明确 configure 后重新绑定；不会将无 receipt 的文件变成受管文件。文件字节漂移、无效格式、不安全路径、环境覆盖或缺 Devin 输入均阻断。孤立 receipt 返回 `orphaned`，仅允许 unconfigure 删除可证自有记录；configure 保持阻断。输出只含固定状态与来源类别，不含 KEY。配置失败恢复本次字节；并发外部变化时拒绝覆盖并报告恢复失败。
+
+协议响应声明 `protocol_version=1`、`capabilities=["validate","execution-effect"]`。validate 接收 `operation=configure|unconfigure`，复用执行校验，不创建目录、不写文件、不访问网络。执行请求可附 `operation_id`，响应原样绑定该身份，并返回 `effect=none|changed|restored|unknown`。none 表示尚无写入或幂等；restored 须同时证明文件字节、权限及父目录状态恢复；无法证明则保持 unknown。非零退出也输出脱敏结构化回执，调用方须校验协议和操作身份后再使用副作用事实。
 
 ## 有界远程完成
 

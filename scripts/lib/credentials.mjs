@@ -96,6 +96,15 @@ export function inspectOwnerCredential({ environment = process.env } = {}) {
 }
 
 function assertOwnerTarget(path) {
+  for (let parent = dirname(path); ; parent = dirname(parent)) {
+    try {
+      const info = lstatSync(parent);
+      if (!info.isDirectory() || info.isSymbolicLink()) throw new Error("unsafe owner configuration directory");
+    } catch (error) {
+      if (error?.code !== "ENOENT") throw error;
+    }
+    if (parent === dirname(parent)) break;
+  }
   try {
     const metadata = lstatSync(path);
     if (!metadata.isFile() || metadata.isSymbolicLink() || (metadata.mode & 0o077) !== 0) {
@@ -107,11 +116,18 @@ function assertOwnerTarget(path) {
   }
 }
 
-export function writeOwnerCredential(apiKey, { environment = process.env } = {}) {
+export function validateOwnerCredential(apiKey, { environment = process.env } = {}) {
   const normalized = typeof apiKey === "string" ? apiKey.trim() : "";
   if (!normalized || normalized.length > OWNER_KEY_LIMIT || /[\r\n]/.test(normalized)) {
     throw new Error("invalid owner credential");
   }
+  const path = ownerConfigPath(environment);
+  assertOwnerTarget(path);
+  return normalized;
+}
+
+export function writeOwnerCredential(apiKey, { environment = process.env } = {}) {
+  const normalized = validateOwnerCredential(apiKey, { environment });
   const path = ownerConfigPath(environment);
   const directory = dirname(path);
   mkdirSync(directory, { recursive: true, mode: 0o700 });

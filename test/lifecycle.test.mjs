@@ -78,7 +78,7 @@ test("external, drifted, unsafe and orphaned files retain their protection", asy
   chmodSync(path, 0o644);
   assert.equal((await runLifecycle("inspect", owner, environment)).state, "invalid");
   rmSync(path);
-  assert.equal((await runLifecycle("inspect", owner, environment)).state, "drifted");
+  assert.equal((await runLifecycle("inspect", owner, environment)).state, "orphaned");
   await assert.rejects(runLifecycle("configure", owner, environment));
   symlinkSync("/nonexistent", path);
   assert.equal((await runLifecycle("inspect", owner, environment)).state, "invalid");
@@ -90,6 +90,31 @@ test("invalid receipt blocks import before writing a credential", async t => {
   mkdirSync(receipt, { recursive: true, mode: 0o700 });
   await assert.rejects(runLifecycle("configure", owner, environment));
   assert.throws(() => statSync(path), { code: "ENOENT" });
+});
+
+test("orphan withdrawal removes only this receipt and preserves Devin", async t => {
+  const { environment, path, source } = fixture(t);
+  const original = readFileSync(source);
+  await runLifecycle("configure", owner, environment);
+  rmSync(path);
+  assert.equal((await runLifecycle("inspect", owner, environment)).state, "orphaned");
+  const result = await runLifecycle("unconfigure", { target: "windsurf", operation_id: "orphan-remove" }, environment);
+  assert.equal(result.effect, "changed");
+  assert.throws(() => statSync(`${path}.pennix-lifecycle.json`), { code: "ENOENT" });
+  assert.deepEqual(readFileSync(source), original);
+});
+
+test("validate rejects a symlink ancestor without creating descendants", async t => {
+  const { environment } = fixture(t);
+  const external = join(environment.HOME, "external");
+  mkdirSync(external);
+  symlinkSync(external, join(environment.HOME, "linked"));
+  const changed = { ...environment, XDG_CONFIG_HOME: join(environment.HOME, "linked", "missing") };
+  await assert.rejects(runLifecycle("validate", { ...central, operation: "configure", operation_id: "unsafe" }, changed), error => {
+    assert.equal(error.lifecycleResult.effect, "none");
+    return true;
+  });
+  assert.throws(() => statSync(join(external, "missing")), { code: "ENOENT" });
 });
 
 test("receipt write failure restores only this operation's credential bytes", async t => {
@@ -110,4 +135,33 @@ test("receipt write failure restores only this operation's credential bytes", as
     },
   }), /rollback failed/);
   assert.equal(JSON.parse(readFileSync(path)).apiKey, "concurrent-sentinel");
+});
+
+test("validation is read-only and execution replies bind effect to operation identity", async t => {
+  const { environment, path, source } = fixture(t);
+  const original = readFileSync(source);
+  const input = { ...owner, operation: "configure", operation_id: "probe-1" };
+  const validated = await runLifecycle("validate", input, environment);
+  assert.equal(validated.protocol_version, 1);
+  assert.equal(validated.operation_id, "probe-1");
+  assert.equal(validated.effect, "none");
+  assert.throws(() => statSync(dirname(path)), { code: "ENOENT" });
+  const configured = await runLifecycle("configure", input, environment);
+  assert.equal(configured.effect, "changed");
+  assert.equal((await runLifecycle("configure", input, environment)).effect, "none");
+  assert.equal((await runLifecycle("unconfigure", { target: "windsurf", operation_id: "remove-1" }, environment)).effect, "changed");
+  assert.deepEqual(readFileSync(source), original);
+  await assert.rejects(runLifecycle("configure", { ...central, secrets: { api_key: "bad\nsecret" } }, environment), error => {
+    assert.equal(error.lifecycleResult.effect, "none");
+    assert.doesNotMatch(JSON.stringify(error.lifecycleResult), /bad|secret/);
+    return true;
+  });
+  await assert.rejects(runLifecycle("configure", input, environment, {
+    persistReceipt: async () => { throw new Error("private failure sentinel"); },
+  }), error => {
+    assert.equal(error.lifecycleResult.effect, "restored");
+    assert.equal(error.lifecycleResult.operation_id, "probe-1");
+    assert.doesNotMatch(JSON.stringify(error.lifecycleResult), /private failure sentinel/);
+    return true;
+  });
 });

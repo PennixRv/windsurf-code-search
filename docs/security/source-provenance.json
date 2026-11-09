@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "package": "@pennixrv/windsurf-code-search@0.1.17",
+  "package": "@pennixrv/windsurf-code-search@0.1.18",
   "baseline": {
     "repository": "https://github.com/PennixRv/windsurf-code-search",
     "commit": "d5ebd5522295d21c1a4d6fcf05580e069104c5d6"
@@ -74,21 +74,21 @@
       "classification": "fork_owned",
       "owner": "pennixrv",
       "change_summary": "Patch release identity and exact individual-file runtime allowlist.",
-      "shipped_sha256": "fe42251bbae378017b0d3057b8b82f8cbb50a58d12c607e3208c40706edadac3"
+      "shipped_sha256": "65f6f2eef57e040577b0d63da6354afbbb603080053c1570f88714b4d0eec859"
     },
     {
       "path": "references/script-contract.md",
       "classification": "fork_owned",
       "owner": "pennixrv",
       "change_summary": "Finite CLI with bounded upstream session recovery, strict envelope and answer-shape correction, local evidence projection, credential-source, and redacted remote-error contract.",
-      "shipped_sha256": "7771a985bbf9f05166f8bfcf909c43332d446766012442e003c17ffd9680d922"
+      "shipped_sha256": "ad1a76271c6fd55cc02e29a0626ba749b0811c724cf8f6a22e9228a7c5d9959c"
     },
     {
       "path": "references/source-provenance.json",
       "classification": "fork_owned",
       "owner": "pennixrv",
       "change_summary": "Public, privacy-safe provenance projection included in the npm package.",
-      "shipped_sha256": "9f9ab1283e7e311b70e7b1ddd0b860cb9ede82611978942a5feeb94dc3a80254"
+      "shipped_sha256": "4052c443824b8c49f420397131d9a7829d0e6e95f9bfbb4b2a8620e7a8db9395"
     },
     {
       "path": "scripts/lib/LICENSE.fast-context-mcp",
@@ -113,7 +113,7 @@
       "classification": "fork_owned",
       "owner": "pennixrv",
       "change_summary": "Explicit-first Linux/WSL Devin credential selection through a bounded private helper pipe.",
-      "shipped_sha256": "a718b2200f76993146e55a9b00c770521e4c7d96cb5e131ee2c8d7314fb72968"
+      "shipped_sha256": "32c97b2d40936a0fc6cca5d003d188e7969a9f3e6738e9cde5d3b17fd97d00e5"
     },
     {
       "path": "scripts/lib/devin-credential-helper.mjs",
@@ -134,7 +134,7 @@
       "classification": "fork_owned",
       "owner": "pennixrv",
       "change_summary": "Windsurf credential lifecycle ownership receipt and rollback contract.",
-      "shipped_sha256": "8826cffb293ba29929c2cc8a0d24895d1ca3a88bc367a05d544687099b8c2639"
+      "shipped_sha256": "191ac6908d8122be10b5091330be148ce02441cb4ac2e6417fc72a92e26ab2d9"
     },
     {
       "path": "scripts/lib/path-guard.mjs",
@@ -162,7 +162,7 @@
       "classification": "fork_owned",
       "owner": "pennixrv",
       "change_summary": "Finite CLI parser, explicit opt-out, pre-network credential boundary, and awaited bounded search lifecycle.",
-      "shipped_sha256": "194f4fb7deffd4f7adfd8d9c818d3b46a5a29c8693921f4b1a3ec6536e8c748f"
+      "shipped_sha256": "e540b15e8f63c4bcf6d8ebab1422202b362c92b3c5b3a533285acb186a1d04d7"
     }
   ]
 }

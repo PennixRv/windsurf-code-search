@@ -1,0 +1,56 @@
+{
+  "id": "lifecycle-owner-protocol",
+  "name": "lifecycle-owner-protocol",
+  "title": "Lifecycle 原生 owner 协议",
+  "description": "落实已批准根合同的 Windsurf 无副作用预检、可信执行结果和凭据撤回边界。",
+  "status": "in_progress",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P2",
+  "creator": "penn",
+  "assignee": "penn",
+  "createdAt": "2026-11-09",
+  "completedAt": null,
+  "branch": "main",
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": null,
+  "relatedFiles": [],
+  "notes": "",
+  "meta": {
+    "planning": {
+      "revision": 3,
+      "stage": "plan_closed",
+      "review_digest": "sha256:3f9469b375b6be8fe68a4027b1e5633a0c19d34ce6ed4b8afb7cc3c4d280a109",
+      "seal": {
+        "revision": 3,
+        "task_id": "lifecycle-owner-protocol",
+        "task_name": "11-09-lifecycle-owner-protocol",
+        "documents": [
+          "prd.md",
+          "design.md",
+          "implement.md"
+        ],
+        "document_digests": {
+          "prd.md": "528577733989aef4b66bd8d49d52258e329f17c07cfd25a2e43ae047b5a51f82",
+          "design.md": "95b624dbfb756f3c0959e94c129c402191180e23cc18e7eabbd37079208269e4",
+          "implement.md": "20a9ca576df8e60e08a4049122dad9fc020ffe0672d40d47381fa84a2ca26c0b"
+        },
+        "execution_class": "planned",
+        "delivery_mode": "change_bearing",
+        "plan_digest": "sha256:3f9469b375b6be8fe68a4027b1e5633a0c19d34ce6ed4b8afb7cc3c4d280a109",
+        "sealed_at": "2026-11-09T03:26:10.554351+00:00"
+      },
+      "approved_revision": 3,
+      "approval_basis": "用户已明确批准展示的完整根合同并完整推进，包括本组件范围、发布和本机验收；见根 implementation-approval.md",
+      "approved_at": "2026-11-09T03:26:10.607516+00:00"
+    },
+    "execution_class": "planned",
+    "delivery_mode": "change_bearing"
+  }
+}
