@@ -1,0 +1,189 @@
+{
+  "id": "skill-contract-navigation",
+  "name": "skill-contract-navigation",
+  "title": "Windsurf Skill 脚本合同导航修订",
+  "description": "接续根侧 Pennix Skills 审查 F03，在真实上游修正脚本合同的执行前导航与候选覆盖语义，验证包产物并交付固定来源。",
+  "status": "completed",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P2",
+  "creator": "penn",
+  "assignee": "penn",
+  "createdAt": "2026-10-11",
+  "completedAt": "2026-11-17",
+  "branch": "main",
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": null,
+  "relatedFiles": [],
+  "notes": "",
+  "meta": {
+    "execution_class": "planned",
+    "delivery_mode": "change_bearing",
+    "planning": {
+      "revision": 1,
+      "seal": {
+        "revision": 1,
+        "task_id": "skill-contract-navigation",
+        "task_name": "10-11-skill-contract-navigation",
+        "documents": [
+          "prd.md",
+          "design.md",
+          "implement.md"
+        ],
+        "document_digests": {
+          "prd.md": "6dc6b81b1983158cdbbbc71f7ada5069d3037a47750f5ae369fc5767f36edae2",
+          "design.md": "bee3b10ec5d09b27b7471dc7051b6706c33c0c0059379c60a49167296bb4b23c",
+          "implement.md": "a7cf6376766c320ea1a46a2830893b60935ff3d9849951710d765c717bfc78ec"
+        },
+        "execution_class": "planned",
+        "delivery_mode": "change_bearing",
+        "sealed_at": "2026-10-11T09:16:05.347200+00:00"
+      },
+      "approved_revision": 1,
+      "approval_basis": "用户在展示根、Pennix、Windsurf、FastCtx revision 1及Grok摘要后明确批准上述已封口的完整修订包进入实施并完成交付收敛",
+      "approved_at": "2026-10-11T09:21:03.513014+00:00"
+    },
+    "task_workflow": {
+      "schema_version": 1,
+      "task_route_revision": "1",
+      "task_kind": "analysis",
+      "complexity": "simple",
+      "project_context": "existing",
+      "phase_ids": [
+        "goal_exploration_and_requirements",
+        "solution_design_and_convergence",
+        "delivery_review_and_closeout"
+      ],
+      "current_phase_id": null,
+      "input_revision": "14",
+      "phases": {
+        "goal_exploration_and_requirements": {
+          "status": "accepted",
+          "input_revision": "9",
+          "artifact_revision": "510fc99beb5a572012bf37e1bd1082866aba71b0ed83c212191c8e4416b7459c",
+          "artifact_refs": [
+            "current-closeout-review.md"
+          ],
+          "result_revision": "2",
+          "result_ref": "current-closeout-review.md",
+          "outcome_kind": "accepted",
+          "reason": null,
+          "evidence_refs": [
+            "current-closeout-approval.md"
+          ],
+          "acceptance": {
+            "artifact_revision": "510fc99beb5a572012bf37e1bd1082866aba71b0ed83c212191c8e4416b7459c",
+            "result_revision": "2",
+            "input_revision": "9",
+            "task_route_revision": "1",
+            "evidence_refs": [
+              "current-closeout-approval.md"
+            ]
+          }
+        },
+        "solution_design_and_convergence": {
+          "status": "accepted",
+          "input_revision": "11",
+          "artifact_revision": "510fc99beb5a572012bf37e1bd1082866aba71b0ed83c212191c8e4416b7459c",
+          "artifact_refs": [
+            "current-closeout-review.md"
+          ],
+          "result_revision": "2",
+          "result_ref": "current-closeout-review.md",
+          "outcome_kind": "analysis_conclusion",
+          "reason": null,
+          "evidence_refs": [
+            "current-closeout-approval.md"
+          ],
+          "acceptance": {
+            "artifact_revision": "510fc99beb5a572012bf37e1bd1082866aba71b0ed83c212191c8e4416b7459c",
+            "result_revision": "2",
+            "input_revision": "11",
+            "task_route_revision": "1",
+            "evidence_refs": [
+              "current-closeout-approval.md"
+            ]
+          }
+        },
+        "delivery_review_and_closeout": {
+          "status": "accepted",
+          "input_revision": "13",
+          "artifact_revision": "510fc99beb5a572012bf37e1bd1082866aba71b0ed83c212191c8e4416b7459c",
+          "artifact_refs": [
+            "current-closeout-review.md"
+          ],
+          "result_revision": "2",
+          "result_ref": "current-closeout-review.md",
+          "outcome_kind": "delivery_ready",
+          "reason": null,
+          "evidence_refs": [
+            "current-closeout-approval.md"
+          ],
+          "acceptance": {
+            "artifact_revision": "510fc99beb5a572012bf37e1bd1082866aba71b0ed83c212191c8e4416b7459c",
+            "result_revision": "2",
+            "input_revision": "13",
+            "task_route_revision": "1",
+            "evidence_refs": [
+              "current-closeout-approval.md"
+            ]
+          }
+        }
+      },
+      "route_dependency_admission": null,
+      "implementation_authorization": null,
+      "closeout_disposition": "delivery_ready",
+      "skip_records": {
+        "decision_space_construction_and_merging": {
+          "reason": "当前已批准历史任务复核，无产品实施；原历史合同和原件保留。",
+          "evidence_refs": [
+            "current-closeout-review.md"
+          ],
+          "task_route_revision": "1",
+          "input_revision": "1",
+          "artifact_revision": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        },
+        "task_implementation": {
+          "reason": "当前已批准历史任务复核，无产品实施；原历史合同和原件保留。",
+          "evidence_refs": [
+            "current-closeout-review.md"
+          ],
+          "task_route_revision": "1",
+          "input_revision": "1",
+          "artifact_revision": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        }
+      },
+      "return_record": {
+        "from": "delivery_review_and_closeout",
+        "to": "goal_exploration_and_requirements",
+        "return_kind": "contract_change",
+        "authorization_retained": false,
+        "reason": "原生重开后的局部格式修正；当前批准语义不变，重新绑定正确字节和摘要。",
+        "evidence_refs": [
+          "current-closeout-review.md",
+          "current-closeout-approval.md"
+        ],
+        "task_route_revision": "1"
+      }
+    },
+    "task_lifecycle_recoveries": [
+      {
+        "from_status": "completed",
+        "to_status": "planning",
+        "reason": "当前复核文档末尾空行触发默认diff检查；按已批准合同修正文案格式并重新接受，裁决及历史原件不变。",
+        "evidence_refs": [
+          "current-closeout-review.md"
+        ],
+        "reopened_at": "2026-11-16T23:56:44.646500+00:00",
+        "terminal_completed_at": "2026-11-17",
+        "terminal_cancellation": null
+      }
+    ]
+  }
+}
