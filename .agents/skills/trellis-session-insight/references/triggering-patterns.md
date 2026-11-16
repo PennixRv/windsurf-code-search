@@ -1,8 +1,6 @@
 # Triggering Patterns
 
-Verbatim user phrasings that suggest local conversation recall. Check the intent
-and available current evidence before calling `trellis mem`; these examples do
-not require an unconditional history search.
+Verbatim user phrasings that should make an AI reach for `trellis mem`. Calibrate instinct against these — if a user message hits one of these patterns and you do not reach for `mem`, you probably missed an obvious recall.
 
 Patterns are grouped by the *intent* behind the phrasing, not the surface words. The same intent shows up in different languages and registers.
 
@@ -34,8 +32,7 @@ Reach: `trellis mem search "<decision keyword>"` to find the session, then `extr
 
 ## Cross-session continuation
 
-The user resumed work after a gap and the context is implicit. Read the active
-task and current files first; use raw history only for missing discussion.
+The user resumed work after a gap and the context is implicit.
 
 - "Where were we?"
 - "Continue from last time."
@@ -44,7 +41,7 @@ task and current files first; use raw history only for missing discussion.
 - "我们上次做到哪了"
 - "接着昨天那个任务"
 
-Reach: `trellis mem list --task <current-task-dir>` to find the most recent sessions tied to the active task, then `extract` the last one.
+Reach: first read the current task's native phase, ownership, and recorded progress. Use `trellis mem list --cwd <project-root>` and `search "<task-id or distinctive topic>" --cwd <project-root>` to find candidate sessions, then inspect them with `context` or `extract`. The CLI has no `--task` filter; project membership and recency do not prove that a session owns the task. History supplements current task state and does not transfer ownership.
 
 ## Familiar-bug debugging
 
@@ -83,14 +80,9 @@ The user explicitly wants to look back at this task — not as a forced step, on
 - "记一下这次踩的坑"
 - "复盘下这个任务"
 
-Reach: identify the current task's session id (from `.trellis/.runtime/sessions/*.json` or `mem list --task <task-dir>`), then `extract <id> --phase brainstorm` and `--phase implement`. Present a summary — surface concrete file:line citations where possible. Whether to also write the summary somewhere (PRD, spec, notes file) is the user's call; offer, don't auto-write.
+Reach: use the task's recorded host session identifier as a candidate, or search its distinctive topic within `--cwd <project-root>`, then verify the session content. `extract <id> --phase brainstorm` and `--phase implement` are historical dialogue slices based on recorded create/start calls, not the current five workflow phases; use `--phase all` when those boundaries do not apply. Present concrete citations where possible. Write findings only to an authorized natural task or knowledge location.
 
 ## Anti-patterns: do NOT reach for `mem` here
-
-- "Find our maintained deployment notes" → the configured native knowledge tool.
-- "Save this reusable result to my notebook" → explicit knowledge write through its owner.
-- "Promote this method into a Skill" → verify the evidence, then the source Skill owner.
-- Current task artifacts already answer the question → use those artifacts.
 
 - "What does this function do?" → read the file.
 - "Why is this test failing?" → read the test output and the file.

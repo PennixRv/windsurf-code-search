@@ -13,8 +13,6 @@ When debug is complete, use this for deep analysis to break the "fix bug -> forg
 
 Analyze the bug you just fixed from these 5 dimensions:
 
-Start with a short causal loop before filling the five dimensions: expected behavior → observed failure → discriminating evidence → root cause → prevention check. If the failure is not reproduced, label the uncertainty and do not promote a plausible explanation to a confirmed cause.
-
 ### 1. Root Cause Category
 
 Which category does this bug belong to?
@@ -121,13 +119,7 @@ When multiple root causes are plausible and evidence is incomplete, update your 
 
 Before investigating, state what you believe and why:
 
-| Hypothesis | Prior | Reasoning |
-|------------|-------|-----------|
-| H1: [cause A] | 40% | Most common for this pattern |
-| H2: [cause B] | 30% | Plausible given environment |
-| H3: [other] | 30% | Catch-all |
-
-Priors must sum to 100%. If you can't assign probabilities, investigate first.
+List plausible hypotheses with current supporting and contradicting evidence, uncertainty and a discriminating check. Qualitative confidence is sufficient; do not invent numeric probabilities or require them to sum to 100%.
 
 ### Step 2: Observe Evidence
 
@@ -154,12 +146,7 @@ Don't gather more of the same. Find evidence that **differs strongly** between t
 
 ### Step 5: State Confidence
 
-| Confidence | Action |
-|------------|--------|
-| 90%+ | Proceed with fix, monitor |
-| 70-90% | Proceed, add fallback check |
-| 50-70% | Test hypothesis before committing |
-| <50% | Need more evidence, don't guess |
+State which hypothesis the evidence supports, what it rules out, and which limits remain. Choose the next check or authorized fix based on consequences and uncertainty, not a numeric threshold. Do not add speculative fallbacks to compensate for an unverified cause.
 
 Never express binary certainty when evidence is incomplete. Use "most likely", "plausible but unlikely", "worth investigating".
 
@@ -175,10 +162,16 @@ Never express binary certainty when evidence is incomplete. Use "most likely", "
 
 ## After Analysis: Immediate Actions
 
-Record verified findings in the active task. Update a spec only when the finding establishes a reusable, executable contract owned by that project and the current task authorizes the change. Routine progress and one-off observations stay in task records.
+After analysis, preserve the reusable finding at its natural owner:
 
-Consumer projects do not sync specs into Trellis templates. When working on the Trellis source itself, update a corresponding template under `packages/cli/src/templates/markdown/` only if it exists and the change is intended for generated consumers. Keep root coordination contracts in their owner; do not copy them into component specs.
+1. **Update applicable spec/guides** when the finding establishes a reusable executable contract or thinking trigger within the task's authority:
+   - If it's a cross-platform issue → update `cross-platform-thinking-guide.md`
+   - If it's a cross-layer issue → update `cross-layer-thinking-guide.md`
+   - If it's a code reuse issue → update `code-reuse-thinking-guide.md`
+   - If it's domain-specific → update `backend/*.md` or `frontend/*.md`
 
-Follow the task's existing commit and release process. This skill does not independently authorize source changes, commits, publication, or new tickets.
+2. **Respect the source owner** — project specs do not automatically belong in Trellis's bundled templates. Update a component template only when that component owns the rule and the task authorizes that source change; use its native generation path for installed assets.
 
-When the analysis reveals a neighboring defect, compare its owner, target, risk, and acceptance with the current task. Record the finding and ask for inclusion when it changes material scope; only a same-owner, reversible, low-risk correction may continue under the existing in-progress addition rule. This keeps root-cause learning broad while keeping implementation scope explicit.
+3. **Record evidence and verification** in the current task or journal when no reusable spec change is justified. Commit only under the project's existing authorization; analysis does not grant commit, publication or installation authority.
+
+Keep the finding discoverable without manufacturing a spec change or a second task ledger.

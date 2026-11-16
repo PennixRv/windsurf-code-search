@@ -1,77 +1,34 @@
 # Local Workflow System
 
-`.trellis/workflow.md` is the Trellis workflow source of truth inside the user project. An AI does not need Trellis source code to understand how the current project should move tasks forward; this file is enough.
+The installed project's .trellis/workflow.md is the local workflow source. Read it before changing task guidance or platform entry points.
 
-## File Responsibilities
+## Business phases
 
-`.trellis/workflow.md` has three responsibilities:
+The workflow keeps its business phases distinct, with separate activities, outputs, and transition conditions:
 
-1. **Explain workflow phases**: Plan, Execute, Finish.
-2. **Define skill routing**: which skill or agent the AI should use when the user expresses a certain intent.
-3. **Provide workflow-state prompt blocks**: hooks can inject the prompt block for the current state into the conversation.
+- Goal Exploration and Requirements Confirmation Phase
+- Decision Space Construction and Consolidation Phase
+- Solution Design and Convergence Phase
+- Task Implementation and Test Verification Phase
+- Delivery Review and On-Site Closeout Phase
 
-## Current Phase Model
+The task route may skip a phase when evidence shows it adds no value. The Goal Exploration and Requirements Confirmation Phase requires explicit user confirmation of the current requirements revision before the route enters Decision Space Construction and Consolidation Phase or Solution Design and Convergence Phase. Acceptance in Solution Design and Convergence Phase does not grant implementation authorization. During Delivery Review and On-Site Closeout Phase, review the current delivery and handle task completion or cancellation.
 
-```text
-Phase 1: Plan    -> clarify what to build, produce prd.md and required research
-Phase 2: Execute -> implement against the PRD and specs, then check
-Phase 3: Finish  -> final verification, preserve lessons, and wrap up
-```
+Phase identifiers, route revisions, accepted artifact revisions, and authorization are stored and changed through Trellis CLI. Skills and Hooks guide or surface the active phase; they do not create another state source. Formal session handoff is independent of the task and its phases.
 
-Each phase contains numbered steps, such as `1.3 Configure context`. These numbers are not runtime fields in `task.json`; they are workflow structure for AI and humans to read.
+## Skill routing and state prompts
 
-## Skill Routing
+Each phase Skill owns its procedure and diagram. The workflow entry routes to the Skill matching the current phase identifier. Component Skills are selected by the work required, not by a fixed phase checklist.
 
-Read the selected `workflow.md` and current task phase to determine routing;
-platform capability alone does not select the implementation/check path:
+Workflow-state blocks provide per-turn breadcrumbs. Keep their phase identifiers aligned with Core and update host parsers when headings or state tags change. Do not derive a phase from task status or artifact presence when Trellis CLI provides the current route.
 
-- A workflow that selects native sub-agent dispatch uses its platform-supported `trellis-implement` / `trellis-check` path.
-- An inline workflow has the main session read `trellis-before-dev`, implement and check directly. Explicit Channel independent evidence remains subject to that workflow's authorization and acceptance contract.
-- A Channel-driven workflow is a separate selected variant; generic Channel examples do not override an inline workflow.
-
-When changing local AI behavior, update the routing descriptions in `workflow.md` first, then check whether the corresponding platform skill, command, or agent files need to stay in sync.
-
-## Workflow-State Prompt Blocks
-
-The bottom of `workflow.md` can contain state blocks like this:
-
-```text
-[workflow-state:no_task]
-...
-[/workflow-state:no_task]
-```
-
-Hooks choose the right block based on current task status and inject it into the conversation. Common states include:
-
-| State | Meaning |
-| --- | --- |
-| `no_task` | The current session has no active task. |
-| `planning` | The task is still in requirements, research, or context configuration. |
-| `in_progress` | The task has entered implementation and checking. |
-| `completed` | The task is complete and waiting for wrap-up or archive. |
-
-If the user wants to change policies such as "whether to create a task when there is no task," "when task creation may be skipped," or "whether sub-agents are required," edit these state blocks and the routing table above them.
-
-## Local Modification Patterns
-
-Common changes:
+## Local modification patterns
 
 | Goal | Edit point |
 | --- | --- |
-| Add a phase | Update the Phase Index, phase body, routing, and state blocks. |
-| Change task creation policy | Update the `no_task` state block and Phase 1 description. |
-| Change the default implementation/check path | Update Phase 2 and skill routing. |
-| Change the wrap-up flow | Update Phase 3 and `finish-work` descriptions together. Follow the selected workflow's commit/push authorization; finish-work checks acceptance and classifies task-related versus unrelated dirty paths before archive and journal recording. |
-| Change platform differences | Update routing descriptions grouped by platform. |
+| Change phase activities or transitions | .trellis/workflow.md and the matching phase Skill |
+| Change component routing | .trellis/workflow.md and pennix-workflow-routing where applicable |
+| Change lifecycle or phase state | Trellis CLI task workflow implementation and its contract |
+| Change platform context injection | Relevant Hook or plugin, keeping the Trellis task record authoritative |
 
-After editing, make the AI reread `.trellis/workflow.md`; do not assume the flow from the old conversation is still valid.
-
-## Relationship To Platform Files
-
-`workflow.md` is the semantic center of the local workflow, but each platform can also have its own entry files:
-
-- skills, such as `trellis-idea-to-closed-plan` and `trellis-check`.
-- commands/prompts/workflows, such as continue and finish-work.
-- hooks, such as session-start or workflow-state injection.
-
-If only `workflow.md` changes, platform entry files may still contain old language. When the user wants to change "what the AI actually does," also inspect the relevant platform directory.
+After a shared workflow change, inspect relevant platform entry files for stale behavior. Keep phase-specific workflows distinct.

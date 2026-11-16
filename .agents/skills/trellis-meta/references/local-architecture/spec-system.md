@@ -8,12 +8,8 @@ A common single-repository structure:
 
 ```text
 .trellis/spec/
-├── backend/
-│   ├── index.md
-│   └── ...
-├── frontend/
-│   ├── index.md
-│   └── ...
+├── index.md
+├── <actual-topic>.md
 └── guides/
     ├── index.md
     └── ...
@@ -23,7 +19,9 @@ A common monorepo structure:
 
 ```text
 .trellis/spec/
+├── index.md
 ├── cli/
+│   ├── index.md
 │   ├── backend/
 │   │   ├── index.md
 │   │   └── ...
@@ -39,7 +37,7 @@ A common monorepo structure:
     └── ...
 ```
 
-`index.md` is the entry point for each layer. It should list the Pre-Development Checklist and Quality Check. Specific guidelines live in other Markdown files in the same directory.
+The root `index.md` is the common entry, followed by configured package and actual topic/layer indexes. Keep the Pre-Development Checklist and Quality Check. Existing frontend/backend or other layers remain valid when they match the project; the examples do not require those layers.
 
 ## Package Configuration
 
@@ -72,7 +70,7 @@ Before a task enters implementation, planning may write relevant specs into `imp
 {"file": ".trellis/spec/cli/unit-test/conventions.md", "reason": "Test expectations"}
 ```
 
-Sub-agents or platform preludes read these JSONL files and load the referenced specs. On platforms without sub-agent support, the AI should read the relevant specs directly according to the workflow.
+主会话按工作流读取适用规范；可选 JSONL 提供上下文引用，Teamwork 也可通过原生显式输入消费。清单不决定执行者或授权。
 
 ## What Specs Should Contain
 
@@ -95,8 +93,12 @@ When the AI learns a new rule during implementation or debugging, it should upda
 | Change monorepo spec mapping | `packages` / `default_package` / `spec_scope` in `.trellis/config.yaml`. |
 | Change which specs AI reads before implementation | The task's `implement.jsonl`. |
 | Change which specs AI reads during checking | The task's `check.jsonl`. |
-| Change when specs should be updated | Phase 3.3 in `.trellis/workflow.md` and the `trellis-update-spec` skill. |
+| Change when specs should be updated | Solution Design and Convergence Phase guidance in `.trellis/workflow.md` and the `trellis-update-spec` skill. |
 
 ## Boundaries
 
 `.trellis/spec/` is the user's project specification, not a permanent copy of Trellis built-in templates. The AI should encourage the user to update it according to the actual project code instead of treating Trellis default templates as immutable documents.
+
+New-project `init` prepares neutral navigation. Ordinary existing-project `init` repairs only a missing local root index, preserving existing files, package mappings and deleted topics/guides. An explicitly repeated default init also recreates a deliberately deleted root index; no deletion intent is stored. External registry sources retain their owner, and unrecognized declarations stop local preparation. Ordinary update and session startup do not trigger this repair or semantic migration.
+
+Use the available `trellis-spec-bootstrap` to establish or refresh source-backed conventions within the authorized task. Native file preparation and unchanged fingerprints do not establish semantic readiness. Do not add a second spec state ledger.

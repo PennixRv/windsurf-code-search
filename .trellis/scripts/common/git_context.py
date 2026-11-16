@@ -29,12 +29,11 @@ from .packages_context import (
 )
 from .paths import get_repo_root
 from .spec_match import match_specs_for_file
-from .trellis_config import read_trellis_config
 from .workflow_phase import (
     filter_platform,
     get_phase_index,
     get_step,
-    resolve_effective_platform,
+    resolve_platform_label,
 )
 
 # Backward-compatible alias — external modules import this name
@@ -48,6 +47,16 @@ _run_git_command = run_git
 def main() -> None:
     """CLI entry point."""
     import argparse
+
+    from .worktree_delegation import node_context
+    from .task_workflow import TaskWorkflowError
+    try:
+        delegated = node_context()
+    except (ValueError, OSError, KeyError, TaskWorkflowError) as error:
+        raise SystemExit(f"Delegated node blocked: {error}") from error
+    if delegated is not None:
+        print(json.dumps({"delegated_node": delegated, "instruction": "Read node_method_ref and current contract. Do not enter controller phases, task intake, or nested implementation delegation."}, ensure_ascii=False))
+        return
 
     parser = argparse.ArgumentParser(description="Get Session Context for AI Agent")
     parser.add_argument(
@@ -65,7 +74,7 @@ def main() -> None:
     )
     parser.add_argument(
         "--step",
-        help="Step id for --mode phase, e.g. 1.1, 2.2. Omit to get the Phase Index.",
+        help="Legacy workflow step id. Omit to get the Phase Index and load the active phase Skill.",
     )
     parser.add_argument(
         "--platform",
@@ -96,8 +105,8 @@ def main() -> None:
             else:
                 parser.exit(2, "Phase Index section not found in workflow.md\n")
         if args.platform:
-            effective = resolve_effective_platform(
-                args.platform, read_trellis_config()
+            effective = resolve_platform_label(
+                args.platform
             )
             content = filter_platform(content, effective)
         print(content, end="")

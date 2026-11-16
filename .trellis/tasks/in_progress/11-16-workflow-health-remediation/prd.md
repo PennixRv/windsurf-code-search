@@ -1,0 +1,7 @@
+# 工作流体检 W05：Windsurf项目资产与消费者包
+
+执行根workflow-health-remediation-release-deploy已明确批准合同cafeaf12543e5aa07154ed5416439f58f1016bc64ce522c90be7421bf64899fa的HA10／17，实际批准见根approval.md。沿main，不新分支／工作树，不实施委派，不新增真实请求。
+
+通过当前受测Trellis原生update／migrate-layout迁移旧Channel生成块、Skills、角色与任务布局，手工执行策略改为Teamwork只读证据，不覆盖历史／自定义未知内容。仅审阅并通过原生接口接受确定的模板候选，删除的旧startup入口维持原生保留行为，核验现行hook引用均存在。
+
+正式打包仍复用scripts/release/build-package.mjs的消费者投影；集合调用方修在pennix-skills，不修改搜索实现、凭据或网络合同。验证npm test、provenance、pack:check及实际消费者树；运行载荷未变化时不为开发资产迁移另造npm版本。源码通过后提交推送，固定提交由集合／Lifecycle消费，最终发布、两端重装与现场验收归根W08—W11。

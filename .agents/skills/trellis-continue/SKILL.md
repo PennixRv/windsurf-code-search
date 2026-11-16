@@ -1,90 +1,32 @@
 ---
 name: trellis-continue
-description: "Resume the actual pending action from current context or a compaction checkpoint. Query only missing or conflicting task/phase facts. Use when the next action needs recovery; an ordinary continue with a known checkpoint needs no repeated startup or state reload."
+description: "Resume work on the current task. Loads the workflow Phase Index, figures out which phase/step to pick up at, then pulls the step-level detail via get_context.py --mode phase. Use when coming back to an in-progress task and you need to know what to do next."
 ---
 
 # Continue Current Task
 
-Resume work on the current task — pick up at the right phase/step in `.trellis/workflow.md`.
+Resume from the active Trellis task and its current phase. The task record and phase route are authoritative; do not infer the phase from artifact presence or session history.
 
----
+## Load current context
 
-## Step 1: Reuse the Checkpoint; Fill Only Missing Context
+    python3 ./.trellis/scripts/get_context.py
 
-If the current conversation or compaction summary already supplies project root,
-task, phase, authorization and pending action, resume that action directly. Keep
-running tool handles and completed work; skip the queries below and Steps 2–4
-unless a specific fact or instruction is missing/conflicting. A plain continue
-does not require startup, Git/status/history or formal handoff validation.
+## Read the phase route
 
-After compaction, never repeat or re-answer the last consumed user input from
-before compaction. Continue from the actual checkpoint. Handle genuinely new
-post-compaction input normally.
+    python3 ./.trellis/scripts/get_context.py --mode phase
 
-For a fresh session, changed target, missing/conflicting facts or explicit
-inspection, use the minimum query that resolves the gap:
+Follow the active phase breadcrumb to the matching bundled phase Skill and its workflow.md. Use the task CLI to inspect or change phase state. A resume does not itself accept an artifact, grant authorization, or move the task.
 
-```bash
-python3 ./.trellis/scripts/task.py current --json
-```
+Without hook context, use `python3 ./.trellis/scripts/task.py phase show <task>`
+and explicitly read the applicable spec indexes and guidelines. If the route is
+missing, inspect recorded requirements and authorization, choose the ordered
+phases with evidence for omissions, then initialize through the native CLI.
+Reuse existing confirmations; resume only the known unfinished action.
 
-Use full `get_context.py` only when its identity/project/Git overview is needed.
-Protected native writes still enforce identity, binding and ownership through
-their owner; this shortcut never bypasses those checks.
+Task lifecycle status and business phase are separate. A planning task may remain in Goal Exploration and Requirements Confirmation Phase, Decision Space Construction and Consolidation Phase, or Solution Design and Convergence Phase. `in_progress` marks authorized Task Implementation and Test Verification Phase; `completed` and `cancelled` are terminal lifecycle states. Delivery Review and On-Site Closeout Phase remains explicit.
 
-Before routing by status, distinguish identity from task binding. A non-null
-`session_source` confirms available identity; only `source=session:...` confirms
-a direct task binding. For `unbound` / `unbound_ambiguous`, review existing task
-artifacts and select by the user's explicit intent. Exit code 1 for ambiguity
-does not mean identity is absent. Do not guess, duplicate tasks, invent identity,
-or edit runtime pointers. Return a planning candidate to the planning gates below;
-use native `task.py select <task>` to bind planning context after any required
-Channel drain; use `task.py start` only when its activation contract permits it.
-An eligible `analysis_only` candidate remains in planning without start.
-If `session_source` is null, report unavailable identity separately.
+## Phase operations
 
-## Step 2: Load the Phase Index Only When Needed
+Resume the known unfinished action first. Reassess auxiliary methods only when the problem, phase, or available capabilities have changed; reuse still-valid Skill bodies and decisions. Select relevant host-declared methods directly, or use an available workflow router for unclear combinations. Do not restart discovery, preload a collection, infer paths from old summaries, or repeat settled questions. Auxiliary methods do not change task state or action permissions.
 
-```bash
-python3 ./.trellis/scripts/get_context.py --mode phase
-```
-
-Run only when the phase or routing rule is missing; otherwise reuse it.
-
-## Step 3: Decide Where You Are
-
-`get_context.py` shows the active task's `status` field. Route by `status` + artifact presence. This command replaces the user needing to remember the Trellis flow; it does not itself approve implementation.
-
-- `status=planning` + `task.json.meta.delivery_mode = "analysis_only"` → verify the PRD's bounded evidence deliverable and protected-target no-change boundary, then complete the evidence and archive directly regardless of complexity or cross-owner scope. Do not run `task.py start`; a protected-target change requires a separate change-bearing task.
-- `status=planning` + no `prd.md` → load `trellis-idea-to-closed-plan` and resume at the recorded stage
-- `status=planning` + a recorded `decision-needed` or unsealed decision chain → return to `pennix-decision-grill` only for a change-bearing decision or a user-owned choice that materially defines the requested research scope or method; research recommendations and open product choices alone do not trigger the gate.
-- `status=in_progress` + a material unresolved decision → record the reason and run `task.py replan <task> "<reason>"`; do not ask a native question during implementation.
-- `status=planning` + `prd.md` only → decide whether the task is lightweight or complex. Lightweight can move to **1.4** review; complex returns to **1.1** to add `design.md` + `implement.md`.
-- `status=planning` + complex artifacts complete + sub-agent jsonl not curated (empty, or only a legacy `_example` placeholder row) → **1.3**
-- `status=planning` + required artifacts complete + required jsonl curated or inline mode → for change-bearing work, run the Planning Seal closure pass without sealing, present the final plan, then ask through `pennix-decision-grill` whether to seal and approve proceeding or supplement/revise. Explicit combined approval authorizes native seal/approve/start for that same plan at **1.4**; reuse existing sufficient authorization without asking again. Feedback stays in planning; material changes require renewed final review. `analysis_only` work completes its evidence and archives without this path. A replan invalidates change-bearing approval; keep minor progress edits outside frozen plan documents.
-- `status=in_progress` + implementation not started → **2.1**
-- `status=in_progress` + implementation done, not yet checked → **2.2**
-- `status=in_progress` + check passed → **3.3** (spec update) → **3.4** (commit)
-- `status=completed` (rare; usually archived immediately) → archive flow
-
-Phase rules (full detail in `.trellis/workflow.md`):
-
-1. Run steps **in order** within a phase — `[required]` steps must not be skipped
-2. `[once]` steps are already done if the required output exists. `prd.md` alone can be enough only for lightweight tasks; complex tasks also need `design.md` and `implement.md`.
-3. You may go back to an earlier phase if discoveries require it
-
-## Step 4: Load the Specific Step
-
-Only if the identified step's instructions are missing:
-
-```bash
-python3 ./.trellis/scripts/get_context.py --mode phase --step <X.X> --platform codex
-```
-
-Follow the loaded instructions. After each `[required]` step completes, move to the next.
-
----
-
-## Reference
-
-Full workflow and detailed phase steps live in `.trellis/workflow.md`. This command is only an entry point — the canonical guidance is there.
+Use the native task CLI for phase artifact revisions, acceptance, evidence-backed skips, waiting, blocking, resuming, returning to an earlier phase, route changes, implementation authorization, completion, and cancellation. Read task.py help for current arguments. Do not create a second status record or use formal session handoff to resume task work.

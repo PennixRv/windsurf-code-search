@@ -7,7 +7,7 @@ This directory is for local AI working in a user project where Trellis was insta
 | User wording | Read first |
 | --- | --- |
 | "Change the Trellis flow / phases / next prompt" | `change-workflow.md` |
-| "Change task creation, status, archive, or hooks" | `change-task-lifecycle.md` |
+| "Change task creation, lifecycle, phase state, or hooks" | `change-task-lifecycle.md` |
 | "AI did not read context / change injected content" | `change-context-loading.md` |
 | "A platform hook is not behaving as expected" | `change-hooks.md` |
 | "Change implement/check/research agent behavior" | `change-agents.md` |
@@ -29,7 +29,7 @@ This directory is for local AI working in a user project where Trellis was insta
 | --- | --- |
 | Workflow | `.trellis/workflow.md` |
 | Project configuration | `.trellis/config.yaml` |
-| Task material | `.trellis/tasks/<task>/` |
+| Task material | `.trellis/tasks/<task-dir>/` |
 | Project specs | `.trellis/spec/` |
 | Runtime scripts | `.trellis/scripts/` |
 | Platform integration | `.claude/`, `.codex/`, `.cursor/`, `.opencode/`, `.zcode/`, and similar directories |

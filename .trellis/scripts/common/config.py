@@ -22,7 +22,6 @@ from .trellis_config import parse_simple_yaml
 DEFAULT_SESSION_COMMIT_MESSAGE = "chore: record journal"
 DEFAULT_MAX_JOURNAL_LINES = 2000
 DEFAULT_SESSION_AUTO_COMMIT = True
-DEFAULT_CODEX_DISPATCH_MODE = "inline"
 
 CONFIG_FILE = "config.yaml"
 
@@ -118,12 +117,11 @@ def get_max_journal_lines(repo_root: Path | None = None) -> int:
 def get_session_auto_commit(repo_root: Path | None = None) -> bool:
     """Whether scripts should auto-stage + auto-commit session/task changes.
 
-    Governs both ``add_session.py:_auto_commit_workspace`` and
-    ``task_store.py:_auto_commit_archive``.
+    Governs ``add_session.py:_auto_commit_workspace``.
 
     Default: ``True`` (existing behavior — auto-stage + auto-commit).
     Set ``session_auto_commit: false`` in ``.trellis/config.yaml`` to skip
-    auto-staging entirely; the journal/archive files are still written to
+    auto-staging entirely; journal files are still written to
     disk, but the user manages ``git add`` / ``git commit`` themselves.
 
     Accepts native YAML booleans (``true`` / ``false``) and the string
@@ -137,41 +135,6 @@ def get_session_auto_commit(repo_root: Path | None = None) -> bool:
     )
 
 
-def get_codex_dispatch_mode(repo_root: Path | None = None) -> str:
-    """Return Codex dispatch mode.
-
-    Default is ``inline``: the main session carries out implementation and
-    verification directly. ``auto`` explicitly enables Trellis sub-agents and
-    native context injection with a child-side fallback. ``sub-agent`` remains
-    a backwards-compatible alias for ``auto``.
-
-    Invalid explicit configuration falls back to ``inline`` rather than
-    unexpectedly dispatching a sub-agent. This CLI-facing parser is the only
-    place that emits a warning for invalid values; hook readers fail safely
-    without producing per-turn warning noise.
-    """
-    config = _load_config(repo_root)
-    codex = config.get("codex")
-    if codex is None:
-        return DEFAULT_CODEX_DISPATCH_MODE
-    if not isinstance(codex, dict):
-        print(
-            f"[WARN] invalid codex config: {codex!r}; using inline",
-            file=sys.stderr,
-        )
-        return "inline"
-
-    raw = codex.get("dispatch_mode", DEFAULT_CODEX_DISPATCH_MODE)
-    mode = str(raw).strip().lower()
-    if mode in ("auto", "inline"):
-        return mode
-    if mode == "sub-agent":
-        return "auto"
-    print(
-        f"[WARN] invalid codex.dispatch_mode value: {raw!r}; using inline",
-        file=sys.stderr,
-    )
-    return "inline"
 
 
 def get_default_workflow(repo_root: Path | None = None) -> str | None:
@@ -198,7 +161,7 @@ DEFAULT_CONTEXT_INJECTION_MAX_TOTAL_BYTES = 131072
 
 
 def get_context_injection_limits(repo_root: Path | None = None) -> dict[str, int]:
-    """Return sub-agent context injection byte limits.
+    """Return main-session context injection byte limits.
 
     Reads the ``context_injection:`` section of ``.trellis/config.yaml``:
 
@@ -282,7 +245,7 @@ def get_hooks(event: str, repo_root: Path | None = None) -> list[str]:
     """Get hook commands for a lifecycle event.
 
     Args:
-        event: Event name (e.g. "after_create", "after_archive").
+        event: Event name (e.g. "after_create", "after_complete").
         repo_root: Repository root path.
 
     A hook the user believes is installed and which silently never runs is the
@@ -303,6 +266,11 @@ def get_hooks(event: str, repo_root: Path | None = None) -> list[str]:
             file=sys.stderr,
         )
         return []
+    if event == "after_complete" and "after_archive" in hooks:
+        print(
+            "[WARN] ignoring legacy hook `after_archive`; rename it to `after_complete` in config.yaml",
+            file=sys.stderr,
+        )
     commands = hooks.get(event)
     if commands is None:
         return []

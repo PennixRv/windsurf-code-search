@@ -5,7 +5,7 @@ description: "Reach into past AI conversation history through the `trellis mem` 
 
 # Trellis Session Insight
 
-This skill teaches an AI **how to call `trellis mem`** for local conversation history and **when reaching for it is the right move**.
+This skill teaches an AI **how to call `trellis mem`** — the project's cross-session memory feedstock — and **when reaching for it is the right move**.
 
 It is intentionally a **capability skill, not a workflow**. There is no fixed output file, no required write-back step, no "always run after finish-work" rule. What to do with what `mem` returns is a judgement call made in the moment of the conversation. The skill exists so the AI knows the capability is there and can decide.
 
@@ -14,14 +14,6 @@ It is intentionally a **capability skill, not a workflow**. There is no fixed ou
 A local CLI that indexes the user's past Claude Code, Codex, Devin CLI, Grok, OpenCode, Pi Agent, and ZCode conversation logs and lets you list, search, slice by Trellis task boundaries, and dump cleaned dialogue from them. Claude and Codex use `~/.claude/projects/` and `~/.codex/sessions/`. Devin CLI (Cognition terminal agent, not `trellis init --devin` Desktop) uses `~/.local/share/devin/cli/sessions.db`. Grok uses `~/.grok/sessions/`. OpenCode uses `~/.local/share/opencode/opencode.db` (zero-dependency SQLite reader). Pi uses its default or environment-configured session root, global `~/.pi/agent/settings.json`, and the scoped project's `.pi/settings.json`; relative `sessionDir` values resolve from the settings file directory. Project-local Pi settings require project-scoped lookup through the current cwd or `--cwd`. ZCode uses `~/.zcode/cli/db/db.sqlite`.
 
 Nothing in `mem` is uploaded. All reads are local.
-
-`mem` returns historical discussion, not a curated knowledge base or an automatic
-preference/summary writer. Current source, task artifacts, `AGENTS.md`, and specs
-own current facts. If the user asks for maintained knowledge or reusable notes,
-use that environment's configured native knowledge tool instead. Select the
-source by intent and add a targeted second lookup only for a specific evidence
-gap; there is no required sequence through all sources. A knowledge tool's
-absence or failure does not block Trellis tasks, local recall, or handoff.
 
 ## When to reach for it
 
@@ -40,7 +32,7 @@ If none of these apply, don't call `mem`. It is a tool, not a ceremony.
 
 - The relevant context is already in the current turn, `prd.md`, `design.md`, recent `git log`, or the open files. `mem` is for stuff that has fallen out of immediate reach.
 - The user is asking about a fact in the code, not a fact from a past conversation. `git log -p` / `grep` / reading the file directly is faster and more authoritative.
-- You are in a sub-agent (`trellis-implement` / `trellis-check`) whose dispatch prompt already includes the curated `implement.jsonl` / `check.jsonl` context. Adding `mem` on top usually just clutters.
+- An authorized teammate or delegated-agent work package already contains the relevant evidence and context. Read history only if the assigned question requires it; history does not expand the assignment or authorization.
 - The user has explicitly said "don't dig through history, just answer what I asked".
 
 ## What to do with what `mem` returns
@@ -48,43 +40,12 @@ If none of these apply, don't call `mem`. It is a tool, not a ceremony.
 Treat the output as **raw material**, not a deliverable. Once you have it, decide based on the live conversation:
 
 - **Quote inline in your reply** if a specific past exchange answers the user's current question — and cite the session-id / phase so the user can verify.
-- **Update `<task>/prd.md` or `<task>/design.md`** if `mem` surfaced a load-bearing decision that should have been written down but wasn't. Verify against current facts and follow the active task's authorization; material changes return to its planning gate.
+- **Update `<task>/prd.md` or `<task>/design.md`** if `mem` surfaced a load-bearing decision that should have been written down but wasn't. Surface the proposed edit to the user first.
 - **Append to a task-local notes file** (e.g. `<task>/notes.md` or extending an existing one) if the finding belongs to the current task's record but doesn't fit the PRD.
 - **Update `.trellis/spec/`** if the finding is a project-wide convention or gotcha that would help future tasks. Run the `trellis-update-spec` skill for that — `session-insight` ends at the discovery.
 - **Just absorb it** for the next few turns and answer better, without writing anything. This is often the right move for one-off recall.
 
 Trellis does not prescribe a single destination. Forcing every recall into a fixed file makes the file grow into noise. Let the situation decide.
-
-Reusable experience can be proposed for a user-maintained knowledge tool;
-executable project contracts go through `trellis-update-spec`, stable methods
-through the source Skill owner, and cross-project rules require an explicit
-common scope. External knowledge writes or new promotions require concrete user
-intent, including any minimal source-note status/version/target-link update.
-Existing authorized task/spec duties do not acquire an extra confirmation gate.
-Verify each target independently; do not introduce automatic synchronization.
-
-## Bulk history and resource boundaries
-
-For bulk or remote history research, first define the project path, platform,
-date range, question and required session types. Start with metadata and a small
-sample to verify the stored structure; filter before extracting bodies. Confirm
-main-session versus child-session scope from actual metadata, not file counts.
-
-Choose the processing location and authorized destination before reading a
-large corpus. Process one bounded unit at a time, retain only needed results,
-and transfer only the requested material. Test the intended bulk path on small
-or synthetic data and observe memory/output before scaling. On resource
-pressure, stop the affected work, preserve its checkpoint and reduce the unit;
-do not continue a remote scan or increase concurrency blindly.
-
-`--limit` limits displayed rows, not scan work or a process memory budget.
-Codex small-output `search`/`context` avoid accumulating all dialogue bodies,
-but per-record parsing, fingerprints/index metadata and output still cost
-memory. Full `extract`/phase results and the other platform adapters may retain
-complete dialogue arrays. Do not promise constant memory or infer an earlier
-OOM's cause from these limits alone. Preserve the source logs; raw dialogue,
-credentials and runtime data do not belong in Git. Historical findings still
-require current-source verification and do not authorize automatic write-back.
 
 ## How to call it
 
@@ -107,7 +68,7 @@ trellis mem list --cwd <project-path>
 trellis mem projects   # → list active project cwds, then narrow
 ```
 
-Phase slicing (`--phase brainstorm|implement|all`) cuts the session at `task.py create`/`replan` and `task.py start` boundaries. For a finish-work review of the current task, `--phase brainstorm` recovers the planning discussion and `--phase implement` recovers the execution loop. Default is `all`.
+Phase slicing (`--phase brainstorm|implement|all`) cuts the session at `task.py create` and `task.py start` boundaries. For a finish-work review of the current task, `--phase brainstorm` recovers the planning discussion and `--phase implement` recovers the execution loop. Default is `all`.
 
 ## Triggering patterns
 

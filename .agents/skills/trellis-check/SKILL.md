@@ -5,7 +5,7 @@ description: "Comprehensive quality verification: spec compliance, lint, type-ch
 
 # Code Quality Check
 
-Verify the task's affected behavior against the current implementation, applicable specs, and acceptance criteria.
+Comprehensive quality verification for recently written code. Combines spec compliance, cross-layer safety, and pre-commit checks.
 
 ---
 
@@ -16,24 +16,17 @@ git diff --name-only HEAD
 git status
 ```
 
-Use the diff as the entry point. Follow the affected behavior through existing
-implementation, necessary callers, configuration, tests, documentation and
-generated consumers. Expand when evidence of an existing problem could affect
-the task result; do not default to a whole-module or whole-repository audit.
-
 ## Step 2: Read Task Artifacts and Applicable Specs
 
-Read the current task artifacts in order:
-
-- `prd.md`
-- `design.md` if present
-- `implement.md` if present
+Read the current native phase, accepted contract and its actual artifact references for requirements, design, execution and validation. Common filenames such as `prd.md`, `design.md` and `implement.md` do not prove current acceptance or authorization. For taskless work, check the authorized bounded request.
 
 ```bash
 python3 ./.trellis/scripts/get_context.py --mode packages
 ```
 
-For each changed package/layer, read the spec index and follow its **Quality Check** section:
+Read the available `.trellis/spec/index.md`, affected configured package
+indexes (`.trellis/spec/<package>/index.md`), and existing layer indexes.
+Follow their **Quality Check** sections; older projects need no migration:
 
 ```bash
 cat .trellis/spec/<package>/<layer>/index.md
@@ -43,13 +36,7 @@ Read the specific guideline files referenced — the index is a pointer, not the
 
 ## Step 3: Run Project Checks
 
-Run the project's lint, type-check, and test commands. Fix any failures before proceeding.
-
-Choose checks by changed behavior and risk. When the task includes installation,
-release or a live workflow, verify its normal entry and required endpoint;
-isolated tests do not prove those endpoints. A clean bootstrap or destructive
-cleanup applies only when required by the task and authorized. Reuse valid
-results and distinguish checks run, not run, blocked, or limited.
+Run the applicable required project checks and verification appropriate to the changed behavior and risk. Investigate failures and fix those caused by the change within its authorization; record unrelated baseline failures and unavailable checks accurately. Do not silently expand the task to repair unrelated failures or claim checks passed when evidence is incomplete.
 
 ## Step 4: Review Against Checklist
 
@@ -63,9 +50,9 @@ results and distinguish checks run, not run, blocked, or limited.
 
 ### Test Coverage
 
-- [ ] Non-trivial behavior and material risks covered by meaningful checks?
-- [ ] Bug fix has a regression that reaches the failing path?
-- [ ] Existing tests updated when their behavior changed, without duplicating trivial implementation?
+- [ ] Non-trivial new behavior and risk covered by meaningful existing or new tests?
+- [ ] Bug fix reproduced by a regression check at the actual entry path?
+- [ ] Changed behavior reflected in tests without mirroring implementation details?
 
 ### Spec Sync
 
@@ -78,7 +65,7 @@ results and distinguish checks run, not run, blocked, or limited.
 - [ ] Any tidying of code the task did not require?
 - [ ] Any abstraction, config or extension point added for a case that does not exist yet?
 - [ ] Any speculative fallback for a state that cannot occur?
-- [ ] Each changed file serves the task or a necessary consumer, even if the AC do not name it individually?
+- [ ] Any file changed that the acceptance criteria do not mention?
 - [ ] Any workaround added at the caller instead of a fix where the behavior actually lives?
 
 ## Step 5: Cross-Layer Dimensions (if applicable)
@@ -96,7 +83,7 @@ Skip this step if your change is confined to a single layer.
 
 - [ ] Searched for existing similar code before creating new?
   ```bash
-  grep -r "pattern" src/
+  rg "pattern" src/
   ```
 - [ ] If the same value repeats, does it represent one stable concept whose callers must change together? Extract only then — two literals that merely happen to match today should stay separate.
 - [ ] After batch modification, all occurrences updated?
@@ -116,25 +103,7 @@ Skip this step if your change is confined to a single layer.
 
 Report every violation you find. Then:
 
-Verify important findings against current requirements, actual sources, callers
-and relevant counterevidence before prioritizing. Separate observed facts from
-inferences; a rule's presence, a zero call count or an intentional behavior is
-not by itself proof of a defect. Record task-relevant findings and their effect
-on acceptance; new consequential scope choices follow the task's decision gate.
-
 - Mechanical and local (lint nit, missing type, wrong import, dead branch, failing assertion) → fix in place, then re-run project checks.
-- Design or judgment (naming a shared concept, moving a module boundary, changing a public interface, reassigning where behavior lives) → record the evidence and your recommendation, and stop. Do not rewrite it silently.
+- Local engineering judgment within the accepted contract → resolve it with evidence and continue. A material unresolved change to scope, public behavior, ownership, risk or acceptance → record the recommendation and pause dependent work for the project's decision process.
 
 If a fix would touch files outside the current task's scope, say so and stop instead of widening the change.
-
-## Step 7: Close the Review Loop
-
-For each material finding, preserve the chain from evidence to action:
-
-1. State the observed behavior, source or test evidence, and confidence.
-2. Identify the affected acceptance criterion, owner, target, and risk.
-3. Classify the finding as an in-scope correction, a separately owned issue, or a consequential scope change.
-4. Fix only in-scope mechanical corrections. Record separately owned or consequential findings and use the task's decision/replan gate before dependent work.
-5. Re-run the smallest check that exercises the finding, then re-read the affected acceptance criteria and final diff.
-
-Do not silently absorb newly discovered work because it is nearby. A user-requested addition can remain in the current task only when the existing same-owner, reversible, low-risk rule applies; otherwise ask through the normal decision route and update the sealed plan before implementation.

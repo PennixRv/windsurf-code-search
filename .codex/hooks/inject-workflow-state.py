@@ -44,6 +44,7 @@ import re
 import sys
 import queue
 import threading
+import subprocess
 from pathlib import Path
 
 # Force UTF-8 on stdin/stdout/stderr on Windows. Default codepage there is
@@ -74,7 +75,7 @@ from typing import Optional
 # get the full SessionStart overview; this short reminder points the main session
 # at the start skill once and leaves the per-turn state block compact.
 CODEX_NO_TASK_BOOTSTRAP_NOTICE = """<trellis-bootstrap>
-If Trellis project context is missing, read the `trellis-start` skill once. Current context or a sufficient compaction summary counts as loaded; an ordinary continue resumes its pending action without restarting.
+If you have not already loaded Trellis context this session, read the `trellis-start` skill once.
 </trellis-bootstrap>"""
 
 
@@ -162,7 +163,7 @@ def _resolve_active_task(root: Path, input_data: dict):
 
 def get_active_task(
     root: Path, input_data: dict
-) -> tuple[str, str, str] | None:
+) -> tuple[str, str, str, str | None] | None:
     """Return active task data, a task-record error, or no task pointer.
 
     ``(task_id, "task_error", source)`` is distinct from ``None``: a session
@@ -171,9 +172,6 @@ def get_active_task(
     prompt.
     """
     active = _resolve_active_task(root, input_data)
-    if active.source_type == "unbound_ambiguous":
-        candidates = ", ".join(active.candidate_paths)
-        return candidates, "unbound_ambiguous", active.source
     if not active.task_path:
         return None
 
@@ -181,25 +179,39 @@ def get_active_task(
     if not task_dir.is_absolute():
         task_dir = root / task_dir
     if active.stale:
-        return task_dir.name, f"stale_{active.source_type}", active.source
+        return task_dir.name, f"stale_{active.source_type}", active.source, None
 
     task_json = task_dir / "task.json"
     if not task_json.is_file():
-        return task_dir.name, "task_error", active.source
+        return task_dir.name, "task_error", active.source, None
     try:
         data = json.loads(task_json.read_text(encoding="utf-8"))
     except (json.JSONDecodeError, OSError):
-        return task_dir.name, "task_error", active.source
+        return task_dir.name, "task_error", active.source, None
     if not isinstance(data, dict):
-        return task_dir.name, "task_error", active.source
+        return task_dir.name, "task_error", active.source, None
 
     task_id = data.get("id") or task_dir.name
     status = data.get("status", "")
     if not isinstance(status, str) or not status:
-        return task_dir.name, "task_error", active.source
-    if active.source_type == "unbound":
-        return task_id, "unbound_task", active.source
-    return task_id, status, active.source
+        return task_dir.name, "task_error", active.source, None
+    meta = data.get("meta")
+    if isinstance(meta, dict) and "task_workflow" in meta:
+        phase_workflow = meta["task_workflow"]
+        if not isinstance(phase_workflow, dict):
+            return task_id, "task_error", active.source, None
+        phase_id = phase_workflow.get("current_phase_id")
+        phases = phase_workflow.get("phases")
+        if phase_id is None:
+            routed = phase_workflow.get("phase_ids")
+            phase_id = routed[-1] if isinstance(routed, list) and routed else None
+        phase = phases.get(phase_id) if isinstance(phases, dict) and isinstance(phase_id, str) else None
+        if isinstance(phase_id, str) and isinstance(phase, dict):
+            phase_status = phase.get("status")
+            if isinstance(phase_status, str) and phase_status:
+                return task_id, phase_id, active.source, phase_status
+        return task_id, "task_error", active.source, None
+    return task_id, status, active.source, None
 
 
 # ---------------------------------------------------------------------------
@@ -314,79 +326,10 @@ def prompt_has_skip_keyword(prompt: str, keyword: str) -> bool:
     return re.search(pattern, prompt, re.IGNORECASE) is not None
 
 
-def _resolve_codex_dispatch_mode(config: dict) -> str:
-    """Normalize `codex.dispatch_mode` from .trellis/config.yaml to "auto" or "inline".
-
-    Defaults to `inline`. `auto` explicitly enables native dispatch; the
-    legacy `sub-agent` value is an alias for `auto`. Any other explicit value
-    (including invalid ones) falls back to `inline`
-    without per-turn warnings. Shared by `_codex_mode_banner` (the per-turn
-    banner) and `resolve_breadcrumb_key` (the breadcrumb tag key) so the two
-    stay in lockstep.
-    """
-    mode = "inline"
-    if isinstance(config, dict):
-        codex_cfg = config.get("codex")
-        if isinstance(codex_cfg, dict):
-            cfg_mode = str(codex_cfg.get("dispatch_mode", mode)).strip().lower()
-            if cfg_mode == "inline":
-                mode = "inline"
-            elif cfg_mode in ("auto", "sub-agent"):
-                mode = "auto"
-            else:
-                mode = "inline"
-    return mode
 
 
-def _codex_mode_banner(config: dict) -> str:
-    """Emit a `<codex-mode>` banner for the additionalContext payload.
-
-    Reads `codex.dispatch_mode` from .trellis/config.yaml; defaults to
-    `inline`, so the main session implements and checks directly. `auto`
-    explicitly dispatches Trellis sub-agents using native Codex context
-    injection with a child-side fallback. This does not rely on inherited
-    parent transcripts: `fork_turns` remains caller-controlled, and
-    fresh-history sub-agents still receive their explicit delegated task and
-    inherited session configuration. The legacy `sub-agent` value is an alias
-    for `auto`. Invalid explicit values fall back to `inline` without per-turn
-    warnings. The banner makes the active mode explicit to Codex AI per turn,
-    complementing the workflow-state body which is per-status. Mode tells AI
-    which dispatch protocol to follow; workflow-state tells AI what step it's at.
-    """
-    mode = _resolve_codex_dispatch_mode(config)
-    if mode == "auto":
-        meaning = (
-            "auto: implement/check work defaults to Trellis sub-agents; native Codex "
-            "context injection is preferred and child-side loading is the fallback. "
-            "The main session still coordinates, clarifies, updates specs, commits, and finishes."
-        )
-    else:
-        meaning = (
-            "inline: the main session implements/checks directly; "
-            "do not dispatch implement/check sub-agents. Explicit Channel independent-evidence "
-            "subnodes follow the selected project workflow and remain available in inline mode."
-        )
-    return f"<codex-mode>{meaning}</codex-mode>"
 
 
-def resolve_breadcrumb_key(
-    status: str, platform: str | None, config: dict
-) -> str:
-    """Pick the breadcrumb tag key based on Codex dispatch_mode.
-
-    Codex defaults to ``inline`` and therefore uses the parallel
-    ``<status>-inline`` breadcrumb for main-session execution. Explicit
-    ``auto`` uses the ordinary ``<status>`` breadcrumb for native
-    SubagentStart dispatch with child-side fallback; ``sub-agent`` remains an
-    alias for ``auto``. Invalid explicit values fall back to inline without
-    per-turn warnings.
-
-    Non-codex platforms return the plain status unchanged.
-    """
-    if platform == "codex":
-        mode = _resolve_codex_dispatch_mode(config)
-        return f"{status}-inline" if mode == "inline" else status
-    return status
 
 
 def build_breadcrumb(
@@ -394,7 +337,7 @@ def build_breadcrumb(
     status: str,
     templates: dict[str, str],
     source: str | None = None,
-    breadcrumb_key: str | None = None,
+    phase_status: str | None = None,
 ) -> str:
     """Build the <workflow-state>...</workflow-state> block.
 
@@ -403,16 +346,15 @@ def build_breadcrumb(
       "Refer to workflow.md for current step." line
     - `no_task` pseudo-status (task_id is None) → header omits task info
     """
-    lookup_key = breadcrumb_key or status
-    body = templates.get(lookup_key)
-    if body is None and lookup_key != status:
-        body = templates.get(status)
+    body = templates.get(status)
     if body is None:
         body = "Refer to workflow.md for current step."
-    if status == "unbound_ambiguous":
-        header = f"Status: {status}\nCandidates: {task_id}"
+    if task_id is None:
+        header = f"Status: {status}"
+    elif phase_status:
+        header = f"Task: {task_id}\nPhase: {status} ({phase_status})"
     else:
-        header = f"Status: {status}" if task_id is None else f"Task: {task_id} ({status})"
+        header = f"Task: {task_id} ({status})"
     return f"<workflow-state>\n{header}\n{body}\n</workflow-state>"
 
 
@@ -454,6 +396,20 @@ def _load_hook_input() -> dict:
 
 
 def main() -> int:
+    if os.environ.get("TRELLIS_DELEGATION_CONTEXT"):
+        try:
+            locator = Path(os.environ["TRELLIS_DELEGATION_CONTEXT"])
+            if locator.is_symlink() or locator.stat().st_size > 256 * 1024:
+                raise ValueError("invalid delegation context")
+            context = json.loads(locator.read_text(encoding="utf8"))
+            result = subprocess.run([sys.executable, str(Path(context["control_root"]) / ".trellis/scripts/get_context.py")], capture_output=True, text=True, timeout=15)
+            message = result.stdout.strip() if result.returncode == 0 else "Delegated node blocked: invalid/stale context; preserve resources and report to controller."
+            if len(message.encode()) > 256 * 1024:
+                raise ValueError("oversized delegation context")
+        except (OSError, ValueError, KeyError, subprocess.TimeoutExpired):
+            message = "Delegated node blocked: missing/invalid execution context; do not enter controller workflow."
+        print(json.dumps({"hookSpecificOutput": {"hookEventName": "UserPromptSubmit", "additionalContext": message}}))
+        return 0
     if os.environ.get("TRELLIS_HOOKS") == "0" or os.environ.get("TRELLIS_DISABLE_HOOKS") == "1":
         return 0
 
@@ -474,24 +430,21 @@ def main() -> int:
     platform = _detect_platform(data)
     task = get_active_task(root, data)
     if task is None:
-        # No active task — still emit a breadcrumb nudging AI toward
-        # trellis-idea-to-closed-plan + task.py create when user describes tracked work.
-        no_task_key = resolve_breadcrumb_key("no_task", platform, config)
+        # No active task — still emit a breadcrumb for classifying new work.
         breadcrumb = build_breadcrumb(
-            None, "no_task", templates, breadcrumb_key=no_task_key
+            None, "no_task", templates
         )
     else:
-        task_id, status, source = task
-        status_key = resolve_breadcrumb_key(status, platform, config)
+        task_id, status, source, phase_status = task
         source_for_breadcrumb = None if platform == "codex" else source
         breadcrumb = build_breadcrumb(
-            task_id, status, templates, source_for_breadcrumb, breadcrumb_key=status_key
+            task_id, status, templates, source_for_breadcrumb,
+            phase_status=phase_status,
         )
     if platform == "codex":
         parts: list[str] = []
         if task is None:
             parts.append(CODEX_NO_TASK_BOOTSTRAP_NOTICE)
-        parts.append(_codex_mode_banner(config))
         parts.append(breadcrumb)
         breadcrumb = "\n\n".join(parts)
 

@@ -13,7 +13,7 @@ Platform marker syntax in workflow.md:
     [/Claude Code, Cursor, ...]
 
 Provides:
-    get_phase_index   - Extract the Phase Index section (no --step)
+    get_phase_index   - Extract the phase index section (no --step)
     get_step          - Extract a single step (#### X.X) section
     filter_platform   - Strip platform blocks that don't include the given name
 """
@@ -35,9 +35,9 @@ _MARKER_RE = re.compile(r"^\[(/?)([A-Za-z][^\[\]]*)\]\s*$")
 # Step heading: "#### 1.0 Title" or "#### 1.0 ..."
 _STEP_HEADING_RE = re.compile(r"^####\s+(\d+\.\d+)\b.*$")
 
-# Phase Index starts here; Phase 1/2/3 step bodies follow; ends at Breadcrumbs.
-_PHASE_INDEX_HEADINGS = {"## Phase Index", "## 阶段索引（Phase Index）"}
-_PHASE_ONE_HEADINGS = {"## Phase 1: Plan", "## 阶段一：规划（Phase 1: Plan）"}
+# Phase Index ends at the first section heading that follows it.
+_PHASE_INDEX_HEADINGS = {"## 阶段索引", "## Phase Index"}
+_NEXT_PHASE_SECTION_RE = re.compile(r"^#{2,3}\s+")
 
 
 def _read_workflow() -> str:
@@ -65,7 +65,7 @@ def get_phase_index() -> str:
     """Return the compact Phase Index summary from workflow.md.
 
     SessionStart and no-step phase context use this small summary as their
-    orientation payload. Detailed Phase 1/2/3 instructions are loaded with
+    orientation payload. Detailed phase instructions are loaded with
     ``get_step`` on demand. ``[workflow-state:STATUS]`` tag blocks are
     consumed by the per-turn hook, so they're stripped from this output.
     """
@@ -79,7 +79,7 @@ def get_phase_index() -> str:
         if start is None and stripped in _PHASE_INDEX_HEADINGS:
             start = i
             continue
-        if start is not None and stripped in _PHASE_ONE_HEADINGS:
+        if start is not None and _NEXT_PHASE_SECTION_RE.match(stripped):
             end = i
             break
 
@@ -162,42 +162,9 @@ _PLATFORM_MARKER_LABELS: dict[str, str] = {
 }
 
 
-def resolve_effective_platform(platform: str, config: dict) -> str:
-    """Map ``codex`` to a dispatch-mode-namespaced virtual platform name.
-
-    When ``--platform codex`` is passed, return ``"codex-sub-agent"`` by
-    default or ``"codex-inline"`` when explicitly configured in
-    ``.trellis/config.yaml``. ``sub-agent`` remains an alias for ``auto``.
-    ``filter_platform`` then surfaces blocks whose marker lists include the
-    namespaced name (e.g. ``[codex-sub-agent, ...]`` or ``[codex-inline, Kilo,
-    Antigravity, Devin]``).
-
-    Native Codex context injection supports the ``auto`` default. Invalid
-    explicit values fall back to ``inline`` safely; this renderer deliberately
-    does not warn because it can run in normal CLI output flows.
-
-    Platforms whose marker label differs from their id resolve through
-    ``_PLATFORM_MARKER_LABELS``. Everything else is returned unchanged.
-    """
-    label = _PLATFORM_MARKER_LABELS.get(platform.strip().lower())
-    if label:
-        return label
-    if platform == "codex":
-        mode = "inline"
-        codex_cfg = config.get("codex") if isinstance(config, dict) else None
-        if codex_cfg is not None:
-            if not isinstance(codex_cfg, dict):
-                mode = "inline"
-            else:
-                cfg_mode = str(codex_cfg.get("dispatch_mode", mode)).strip().lower()
-                if cfg_mode == "inline":
-                    mode = "inline"
-                elif cfg_mode in ("auto", "sub-agent"):
-                    mode = "auto"
-                else:
-                    mode = "inline"
-        return "codex-sub-agent" if mode == "auto" else "codex-inline"
-    return platform
+def resolve_platform_label(platform: str) -> str:
+    """Resolve a real host identifier to its workflow marker label."""
+    return _PLATFORM_MARKER_LABELS.get(platform.strip().lower(), platform)
 
 
 def filter_platform(content: str, platform: str) -> str:

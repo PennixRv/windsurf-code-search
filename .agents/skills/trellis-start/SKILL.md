@@ -1,71 +1,37 @@
 ---
 name: trellis-start
-description: "Initialize missing Trellis context once for a new session or changed project. Read workflow, identity, task and guidelines as needed. Do not invoke for an ordinary continue, new task, or compaction recovery when the current context or summary already supplies the project and checkpoint."
+description: "Initializes session context from .trellis/, including workflow, developer identity, git status, tasks and guidelines. Routes new requests through trellis-request-intake and existing work through trellis-continue. Use when beginning a session or re-establishing missing project context."
 ---
 
 # Start Session
 
-Initialize a Trellis-managed development session. This platform has no session-start hook, so manually load the equivalent compact context by following these steps.
+Load the session's Trellis context. Route a new request through `trellis-request-intake`; resume existing work through `trellis-continue` and the task record's current phase. Do not repeat initialization when context and ownership have already been established.
 
-Run this initialization once when project context is genuinely missing or the
-target project changes. Existing session context and a sufficient compaction
-summary count as loaded context. An ordinary continue or new task in the same
-known project resumes the pending action without repeating these steps. For
-partial missing/conflicting facts, query only the needed owner evidence.
+## Load context
 
----
+    python3 ./.trellis/scripts/get_context.py
+    python3 ./.trellis/scripts/get_context.py --mode phase
+    python3 ./.trellis/scripts/get_context.py --mode packages
 
-## Step 1: Current state
-Identity, git status, current task, active tasks, journal location.
+Read the applicable spec indexes before editing code. The active phase breadcrumb names the phase Skill and its workflow.md.
 
-```bash
-python3 ./.trellis/scripts/get_context.py
-```
+## Route the current request
 
-If this output includes a line beginning `Trellis update available:`, copy the full line verbatim when summarizing session context. Do not shorten operational command hints.
+After identifying the request and native phase, select only host-declared auxiliary Skills that fit the current problem. Direct matches need no router; unclear combinations or responsibilities may use an available workflow router. Do not preload all methods or require a particular optional collection. Reuse valid decisions and authorization, and return method results to the current request or phase.
 
-## Step 2: Workflow overview
-Compact Phase Index, request triage rules, planning artifact contract, and the step-detail command.
+- New request: use `trellis-request-intake` to determine whether it changes the current goal, is independent work, or qualifies for the taskless route. Reuse existing authorization and evidence.
+- Task with no initialized route: inspect its current requirements, choose the applicable ordered phases with evidence for omissions, then initialize the route through task.py phase init.
+- Goal Exploration and Requirements Confirmation Phase: load `trellis-goal-exploration-and-requirements`. Do not leave until the user confirms the current requirements artifact revision.
+- Decision Space Construction and Consolidation Phase: load `trellis-decision-space-construction-and-merging`.
+- Solution Design and Convergence Phase: load `trellis-solution-design-and-convergence`. An accepted implementation contract still requires separate implementation authorization.
+- Task Implementation and Test Verification Phase: load `trellis-task-implementation` and the target repository's applicable specs.
+- Delivery Review and On-Site Closeout Phase: load `trellis-delivery-review-and-closeout`.
 
-```bash
-python3 ./.trellis/scripts/get_context.py --mode phase
-```
+Task lifecycle status does not replace the business phase route. Use Trellis CLI to inspect or change task and phase state.
 
-Full guide in `.trellis/workflow.md` (read on demand).
+## Spec context
 
-## Step 3: Guideline indexes
-Discover packages + spec layers, then read each relevant index file.
+    python3 ./.trellis/scripts/get_context.py --mode packages
+    cat .trellis/spec/guides/index.md
 
-```bash
-python3 ./.trellis/scripts/get_context.py --mode packages
-cat .trellis/spec/guides/index.md
-cat .trellis/spec/<package>/<layer>/index.md   # for each relevant layer
-```
-
-Index files list the specific guideline docs to read when you actually start coding.
-
-## Step 4: Decide next action
-From Step 1 you know the current task and status. Check the task directory:
-
-- **Active task with `task.json.meta.delivery_mode = "analysis_only"`** → keep `planning`, complete the PRD's bounded evidence work, then verify the no-change boundary, commit task artifacts, and archive directly. Do not run `task.py start`; any protected-target change needs a separate change-bearing task.
-- **Active task status `planning`** → read `meta.planning.stage` through `task.py current --json`, then load `trellis-idea-to-closed-plan` and resume that exact stage. Do not infer planning state from whether `prd.md` exists.
-- **Existing task selected by explicit intent but not bound** → use native `task.py select` for context only. Drain already dispatched Channel units before a real task switch. Planned/change-bearing work presents the final plan and asks whether to seal and approve proceeding or supplement/revise before native seal/approve/start; reuse an existing sufficient authorization. Selecting or recovering context does not approve implementation.
-- **Active task status `in_progress`** → Phase 2 step 2.1. Load the step detail:
-  ```bash
-  python3 ./.trellis/scripts/get_context.py --mode phase --step 2.1 --platform codex
-  ```
-- **No active task** → classify first. Simple conversation needs no task. Bounded direct work uses the workflow's direct path without a mandatory task-creation question. Complex work creates a task and enters planning when authorized; ask only if the necessary authorization is missing.
-
----
-
-## Skill routing (quick reference)
-
-| User intent | Skill |
-|---|---|
-| New task, unresolved planning, or major change to an active task | `trellis-idea-to-closed-plan` |
-| About to write code | `trellis-before-dev` |
-| Done coding / quality check | `trellis-check` |
-| Stuck / fixed same bug multiple times | `trellis-break-loop` |
-| Learned something worth capturing | `trellis-update-spec` |
-
-Full rules + anti-rationalization table in `.trellis/workflow.md`.
+Read the package and layer indexes relevant to the requested changes, then follow their references.

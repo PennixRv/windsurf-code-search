@@ -17,5 +17,6 @@ project_doc_fallback_filenames = ["AGENTS.md"]
 # Codex 0.129+ additionally gates each installed hook behind a one-time
 # `/hooks` TUI review; until the user approves it, the hook stays inactive.
 
-# This project does not configure native Codex subagents. Parallel work, when
-# required, is coordinated through `trellis channel` from the main session.
+# Native role dispatch is not part of the Trellis execution model.
+[agents]
+enabled = false

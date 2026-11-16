@@ -78,10 +78,10 @@ def init_developer(name: str, repo_root: Path | None = None) -> bool:
     journal_file = workspace_dir / f"{FILE_JOURNAL_PREFIX}1.md"
     if not journal_file.exists():
         today = datetime.now().strftime("%Y-%m-%d")
-        journal_content = f"""# 日志（Journal）- {name}（第 1 部分）
+        journal_content = f"""# Journal - {name} (Part 1)
 
-> AI 开发会话日志
-> 开始日期（Started）: {today}
+> AI development session journal
+> Started: {today}
 
 ---
 
@@ -95,46 +95,46 @@ def init_developer(name: str, repo_root: Path | None = None) -> bool:
     # Create index.md with markers for auto-update
     index_file = workspace_dir / "index.md"
     if not index_file.exists():
-        index_content = f"""# 工作区索引（Workspace Index）- {name}
+        index_content = f"""# Workspace Index - {name}
 
-> AI 开发会话跟踪日志。
+> Journal tracking for AI development sessions.
 
 ---
 
-## 当前状态（Current Status）
+## Current Status
 
 <!-- @@@auto:current-status -->
-- **活动文件（Active File）**: `journal-1.md`
-- **会话总数（Total Sessions）**: 0
-- **最近活动（Last Active）**: -
+- **Active File**: `journal-1.md`
+- **Total Sessions**: 0
+- **Last Active**: -
 <!-- @@@/auto:current-status -->
 
 ---
 
-## 活动文档（Active Documents）
+## Active Documents
 
 <!-- @@@auto:active-documents -->
-| 文件（File） | 行数（Lines） | 状态（Status） |
+| File | Lines | Status |
 |------|-------|--------|
-| `journal-1.md` | ~0 | 活动（Active） |
+| `journal-1.md` | ~0 | Active |
 <!-- @@@/auto:active-documents -->
 
 ---
 
-## 会话历史（Session History）
+## Session History
 
 <!-- @@@auto:session-history -->
-| # | 日期（Date） | 标题（Title） | 提交（Commits） | 分支（Branch） |
+| # | Date | Title | Commits | Branch |
 |---|------|-------|---------|--------|
 <!-- @@@/auto:session-history -->
 
 ---
 
-## 备注（Notes）
+## Notes
 
-- 会话会追加到日志文件
-- 当前日志超过 2000 行时创建新的日志文件
-- 使用 `add_session.py` 记录会话
+- Sessions are appended to journal files
+- New journal file created when current exceeds 2000 lines
+- Use `add_session.py` to record sessions
 """
         try:
             index_file.write_text(index_content, encoding="utf-8")

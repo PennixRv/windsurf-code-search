@@ -1,0 +1,95 @@
+---
+name: trellis-teamwork
+description: Use Trellis Teamwork for live multi-agent collaboration, Teamwork Sessions, teammate assignments, coordination modes, and runtime diagnostics.
+---
+
+# trellis-teamwork
+
+Mechanism: **Trellis Teamwork** (Trellis 团队协作). One executor is a
+**Trellis teammate**; plural **Trellis teammates** (Trellis 团队成员).
+**Paseo-based-parallelism** (Paseo 并行协作) and its **Paseo delegated-agent**
+(Paseo 委派 Agent) are a separate implementation mechanism and executor role.
+Sessions, worktrees, nodes and attempts retain their own object names.
+
+`trellis teamwork` is the local multi-agent collaboration runtime. A
+Teamwork Session is the persistent chat or forum object used by the runtime;
+it is independent from the Trellis task lifecycle and does not own business-phase progress.
+Use Teamwork when agents need a durable event log, a bounded teammate
+assignment, a one-shot consultation, or a forum discussion.
+
+Typical user signals: “和 codex/claude 讨论”, “brainstorm with another agent”, “派一个 teammate 做 review”, “open a Teamwork forum”, “look at this thread”, “Teamwork 卡住了 / 没输出”, “progress was truncated”, “how do I use trellis teamwork”.
+
+This skill is an index. Load only the reference file for the current job — do not preload all of them.
+
+## First Commands
+
+```bash
+trellis --version
+trellis teamwork --help
+trellis teamwork list --all
+trellis teamwork list --scope global --all
+trellis teamwork config
+```
+
+If the user names a Teamwork Session or thread, inspect it before asking for
+background:
+
+```bash
+trellis teamwork forum <session> --scope global
+trellis teamwork thread <session> <thread> --scope global
+trellis teamwork context list <session> --scope global --thread <thread>
+```
+
+## Route By User Intent
+
+| User intent | Read |
+|---|---|
+| `general`: bounded research, review, or verification assignments | `references/teamwork-plan-construction.md`, then `references/coordination-modes.md` |
+| Advisor: one to three bounded consultations | `references/coordination-modes.md`, then `references/teamwork-plan-construction.md` |
+| `committee`: parallel assessment by two or three distinct lenses | `references/coordination-modes.md`, then `references/teamwork-plan-construction.md` |
+| Profile, model, provider, reasoning effort, or role-card configuration | `references/teammate-configuration-matrix.md` |
+| “和 codex/claude 讨论一下”, “brainstorm with another agent” | `references/teamwork-plan-construction.md`, then `references/coordination-modes.md` |
+| “派 teammate 做研究或验证”, “让 agent review”, “spawn a worker” | `references/teamwork-plan-construction.md`, then `references/teammate-processes.md` |
+| “开 issue 区 / topic 群 / changelog / board”, “make a forum” | `references/teamwork-plan-construction.md` |
+| “看看这个 thread”, “inspect a thread” | `references/teamwork-plan-construction.md` |
+| “Teamwork 卡住了 / 没输出 / progress 被截断”, “teammate stalled” | `references/teammate-processes.md` |
+| “具体命令怎么写”, “what flags does X take” | `references/teamwork-plan-construction.md` |
+
+## Core Rules
+
+- Teammates provide research, review, verification, evidence, and advice under a role contract; they do not implement product code. Coding tools or provider permission modes do not grant that role authority. Return results in the assigned format and let the coordinator review them.
+- Trellis teammates do not ask the user directly or require a user-question tool. Return missing input, limitations, unresolved choices or contract-valid blocked reports to the main agent; the main agent first resolves evidence and allocation before deciding whether a user choice is needed.
+- `general`, `advisor`, and `committee` are coordination modes, independent from profiles, providers, `run`, batch execution, and forum sessions. Read project defaults with `teamwork config`; construct a frozen plan with `teamwork plan` and execute it with `teamwork batch --task <task-dir>`.
+- For a managed batch, invoke one foreground `teamwork batch --json` command and wait for its receipt. The CLI owns FIFO admission, capacity, provider waits, retries, cancellation, report validation, and settlement; the main agent must not schedule per-assignment waits or retries.
+- If the host yields that call, silently continue its original handle. Do not emit repetitive progress, query unrelated status, start unrelated work, or create another batch. If the handle is unavailable, use `teamwork reconcile <original-plan> --task <task-dir> --wait 30` to observe that same batch read-only. A pending snapshot permits another bounded observation; a yielded observation continues its own handle. Neither path redispatches, extends the original deadline, releases capacity, or accepts reports. Codex's native projection and supported PreToolUse guard provide the recovery locator; they do not prevent model wake-ups or ordinary messages. After coordinator loss, use explicit native reconciliation and retain reservations until provider exit is proven.
+- Agent/program callers must use `run --json`, `batch --json`, or `wait --json --from <worker>` for final results. Default run text and default wait events are compatibility/operator views. Read `execution`, every `reports[].validation` and content status, then perform semantic review; `done`, exit zero, `complete`, and `ALL_ACCEPTED` alone do not accept a task result. `semanticValidation: not_run` explicitly leaves that decision to the main agent.
+- Tool permissions are automatically allowed; the default Codex launch has no sandbox. Source/Git, memory, and delegation boundaries are prompt obligations. Do not add tool/path permission gates or describe the role as technical isolation.
+- Initialization carries common/professional rules and the mode-specific result contract. Task messages carry task data, acceptance and exact identity/path references. Context manifests may choose inline, required full reading, or on-demand references; reference text never becomes system instructions. ACP has user content only and cannot claim system priority.
+- A batch runtime continuation waits on the same provider process under the same frozen deadline. It does not send another provider prompt or consume a full-attempt retry. A live `teamwork wait` host-tool continuation is a separate interactive-session workflow.
+- Select one of the six professional profiles and one of its named configurations. For multiple teammates, consider the second and third candidates and record the selection reason; using the same configuration is allowed. See the configuration matrix reference before constructing a new plan.
+- Teamwork does not create or operate Paseo workspaces, Git worktrees, or source-writing implementation agents. Those mechanisms remain independent.
+- New forum Teamwork Sessions use `--type forum`. A `thread` is one item inside a forum Teamwork Session.
+- Use `--context-file` / `--context-raw` and `trellis teamwork context add/delete/list`.
+- Use `--stdin` or `--text-file` for long messages. Do not put long mixed Chinese/English text in the positional shell argument.
+- Pretty `messages` output is an operator dashboard and may truncate progress. Use `--raw` for audit.
+- `--as` is the speaker or worker handle, depending on the command. Use explicit, stable names when multiple agents or sessions are involved.
+- `--scope project` (default) operates on the current cwd's project bucket; `--scope global` operates on the shared `__global__` bucket. Pick scope deliberately — a global board is invisible from project listings unless `--scope global` is passed.
+- For exploratory discussion, choose distinct questions and pressure-test unresolved assumptions. Continue only while another exchange can change the decision or its evidence; do not require a fixed number of rounds or relabel a confirmation as new evidence.
+- **Dispatcher wait pattern**: use `wait --json --from <worker>` for a final content report. Operator event waits may use `--kind done` / `--kind turn_finished`; tags are labels, not runtime completion events. Resume an outstanding host continuation before any other host action.
+- Teamwork Sessions are event-sourced. Do not parse `events.jsonl` first; use `forum`, `thread`, `messages --thread`, and `context list`.
+- `@pennixrv/trellis-core` owns reusable Teamwork Session/thread state, event append, sequence allocation, context/title projection, reducers, and task helpers. The CLI owns flags, terminal rendering, prompts, teammate lifecycle, and process exits.
+- Teamwork plan construction belongs to the current phase coordinator. Teamwork validates and executes a frozen plan; it does not select the task phase, change task status, or create a second task state machine.
+- The native host-created `subagent` remains separate from a Teamwork teammate.
+
+## Reference Files
+
+- `references/teamwork-plan-construction.md` — plan binding, task integration, Teamwork Session and forum commands, reports, and cleanup.
+- `references/teammate-configuration-matrix.md` — candidate profiles, frozen execution configuration, provider capabilities, and role boundaries.
+- `references/coordination-modes.md` — `general`, `advisor`, and `committee` semantics and selection.
+- `references/teammate-processes.md` — dispatch, context injection, waiting, interruption, retry, reconciliation, and diagnostics.
+
+## Not For
+
+- One static review where a markdown file and prompt are enough.
+- Replacing normal tool calls with self-logging.
+- Long-term memory retrieval. Use durable forum Teamwork Sessions for actionable issues, and `trellis mem` (the `trellis-session-insight` skill) for session/history search.

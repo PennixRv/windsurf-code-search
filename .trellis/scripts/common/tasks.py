@@ -6,7 +6,7 @@ Replaces scattered task.json parsing across 9+ files.
 
 Provides:
     load_task          — Load a single task by directory path
-    iter_active_tasks  — Iterate all non-archived tasks (sorted)
+    iter_active_tasks  — Iterate all task records (sorted)
     get_all_statuses   — Get {dir_name: status} map for children progress
 """
 
@@ -19,6 +19,7 @@ from pathlib import Path
 from .io import describe_json_read_failure, read_json_checked
 from .paths import FILE_TASK_JSON
 from .types import TaskInfo
+from .task_layout import iter_task_dirs, task_status_dir
 
 
 def load_task(task_dir: Path) -> TaskInfo | None:
@@ -62,9 +63,9 @@ def load_task(task_dir: Path) -> TaskInfo | None:
 
 
 def iter_active_tasks(tasks_dir: Path) -> Iterator[TaskInfo]:
-    """Iterate all active (non-archived) tasks, sorted by directory name.
+    """Iterate all task records, sorted by directory name.
 
-    Skips the "archive" directory and directories without valid task.json.
+    Skips directories without valid task.json.
 
     Args:
         tasks_dir: Path to the tasks directory.
@@ -72,14 +73,14 @@ def iter_active_tasks(tasks_dir: Path) -> Iterator[TaskInfo]:
     Yields:
         TaskInfo for each valid task.
     """
-    if not tasks_dir.is_dir():
-        return
+    from .task_move import require_settled_layout
 
-    for d in sorted(tasks_dir.iterdir()):
-        if not d.is_dir() or d.name == "archive":
-            continue
+    require_settled_layout(tasks_dir.parent.parent)
+    for d in iter_task_dirs(tasks_dir):
         info = load_task(d)
         if info is not None:
+            if info.status != task_status_dir(d, tasks_dir):
+                print(f"[WARN] Task status/directory mismatch: {d}", file=sys.stderr)
             yield info
 
 
@@ -112,11 +113,8 @@ def children_progress(
     """
     if not children:
         return ""
-    # A child missing from active statuses has been archived (cmd_archive
-    # sets status=completed before moving the dir). Count it as done so
-    # parent progress doesn't regress when children are archived.
     done = sum(
         1 for c in children
-        if c not in all_statuses or all_statuses.get(c) in ("completed", "done")
+        if all_statuses.get(c) in ("completed", "done")
     )
     return f" [{done}/{len(children)} done]"

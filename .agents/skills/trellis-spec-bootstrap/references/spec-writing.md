@@ -18,12 +18,18 @@ Use short snippets only when they make the rule clearer. Prefer linking to the f
 Keep the spec tree aligned with the project:
 
 - Keep `index.md` as the navigation file for the spec directory.
+- Keep the root index and configured package indexes connected to the real
+  topic files. Do not assume frontend/backend layers or recreate deleted layers.
 - Split topics when developers would look for them independently.
 - Merge topics when separate files would repeat the same rule.
 - Delete template files that do not apply.
 - Add new files for important local patterns the template missed.
 
 ## Content Standards
+
+Use a minimal topic structure: scope, project conventions with source evidence,
+and verification. For an empty project, record confirmed boundaries and pending
+evidence; do not invent conventions or generate empty domain documents.
 
 Good spec sections include:
 
@@ -68,3 +74,5 @@ grep -R "To be filled\\|TODO: fill\\|placeholder" .trellis/spec
 ```
 
 Also check links, index files, and whether any spec still describes a template rather than this repository.
+
+Check active task bindings before moving or deleting a topic. Preserve archived examples as history, clearly distinguish them from current instructions, and do not rewrite historical acceptance evidence to make a current link check pass. Report which conventions were verified from which sources and what remains unverified.
