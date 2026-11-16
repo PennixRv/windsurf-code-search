@@ -7,10 +7,10 @@
 
 ## Status
 
-- [ ] Review migration guide
-- [ ] Update custom files
-- [ ] Run `trellis update --migrate`
-- [ ] Test workflows
+- [x] Review migration guide
+- [x] Update custom files
+- [x] Run `trellis update --migrate`
+- [x] Test workflows
 
 ---
 

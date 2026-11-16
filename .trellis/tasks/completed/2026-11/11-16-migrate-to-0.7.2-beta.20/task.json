@@ -1,0 +1,127 @@
+{
+  "id": "migrate-to-0.7.2-beta.20",
+  "name": "migrate-to-0.7.2-beta.20",
+  "title": "Migrate to v0.7.2-beta.20",
+  "description": "Breaking change migration from v0.7.0-beta.54 to v0.7.2-beta.20",
+  "status": "completed",
+  "dev_type": null,
+  "scope": "migration",
+  "package": null,
+  "priority": "P1",
+  "creator": "trellis-update",
+  "assignee": "penn",
+  "createdAt": "2026-11-16",
+  "completedAt": "2026-11-16",
+  "branch": null,
+  "base_branch": null,
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": "11-16-workflow-health-remediation",
+  "relatedFiles": [],
+  "notes": "",
+  "meta": {
+    "task_workflow": {
+      "schema_version": 1,
+      "task_route_revision": "1",
+      "task_kind": "analysis",
+      "complexity": "simple",
+      "project_context": "existing",
+      "phase_ids": [
+        "goal_exploration_and_requirements",
+        "delivery_review_and_closeout"
+      ],
+      "current_phase_id": null,
+      "input_revision": "5",
+      "phases": {
+        "goal_exploration_and_requirements": {
+          "status": "accepted",
+          "input_revision": "2",
+          "artifact_revision": "d2e74a235947ca21a7259e2708aab6f80e4f022514110f543de53298af1586a0",
+          "artifact_refs": [
+            "verification.md"
+          ],
+          "result_revision": "1",
+          "result_ref": "verification.md",
+          "outcome_kind": "accepted",
+          "reason": null,
+          "evidence_refs": [
+            "verification.md",
+            "../11-16-workflow-health-remediation/prd.md"
+          ],
+          "acceptance": {
+            "artifact_revision": "d2e74a235947ca21a7259e2708aab6f80e4f022514110f543de53298af1586a0",
+            "result_revision": "1",
+            "input_revision": "2",
+            "task_route_revision": "1",
+            "evidence_refs": [
+              "verification.md",
+              "../11-16-workflow-health-remediation/prd.md"
+            ]
+          }
+        },
+        "delivery_review_and_closeout": {
+          "status": "accepted",
+          "input_revision": "4",
+          "artifact_revision": "d2e74a235947ca21a7259e2708aab6f80e4f022514110f543de53298af1586a0",
+          "artifact_refs": [
+            "verification.md"
+          ],
+          "result_revision": "1",
+          "result_ref": "verification.md",
+          "outcome_kind": "delivery_ready",
+          "reason": null,
+          "evidence_refs": [
+            "verification.md",
+            "../11-16-workflow-health-remediation/prd.md"
+          ],
+          "acceptance": {
+            "artifact_revision": "d2e74a235947ca21a7259e2708aab6f80e4f022514110f543de53298af1586a0",
+            "result_revision": "1",
+            "input_revision": "4",
+            "task_route_revision": "1",
+            "evidence_refs": [
+              "verification.md",
+              "../11-16-workflow-health-remediation/prd.md"
+            ]
+          }
+        }
+      },
+      "route_dependency_admission": null,
+      "implementation_authorization": null,
+      "closeout_disposition": "delivery_ready",
+      "skip_records": {
+        "decision_space_construction_and_merging": {
+          "reason": "原生自动生成迁移任务；实施已由已授权父任务完成，本路线仅接纳只读核验结果并归档，不重复实施或回退父任务",
+          "evidence_refs": [
+            "verification.md"
+          ],
+          "task_route_revision": "1",
+          "input_revision": "1",
+          "artifact_revision": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        },
+        "solution_design_and_convergence": {
+          "reason": "原生自动生成迁移任务；实施已由已授权父任务完成，本路线仅接纳只读核验结果并归档，不重复实施或回退父任务",
+          "evidence_refs": [
+            "verification.md"
+          ],
+          "task_route_revision": "1",
+          "input_revision": "1",
+          "artifact_revision": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        },
+        "task_implementation": {
+          "reason": "原生自动生成迁移任务；实施已由已授权父任务完成，本路线仅接纳只读核验结果并归档，不重复实施或回退父任务",
+          "evidence_refs": [
+            "verification.md"
+          ],
+          "task_route_revision": "1",
+          "input_revision": "1",
+          "artifact_revision": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        }
+      },
+      "return_record": null
+    }
+  }
+}
