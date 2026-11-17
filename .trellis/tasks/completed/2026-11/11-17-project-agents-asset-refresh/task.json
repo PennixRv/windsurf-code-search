@@ -3,7 +3,7 @@
   "name": "project-agents-asset-refresh",
   "title": "Refresh native Trellis project instructions",
   "description": "Apply the approved root project-agents-injection-optimization contract to this existing managed project: native AGENTS and bundled analysis guidance refresh, preserve local configuration and unrelated assets, verify and close the source asset owner record. No product/runtime release or new branch is required.",
-  "status": "in_progress",
+  "status": "completed",
   "dev_type": null,
   "scope": null,
   "package": null,
@@ -11,7 +11,7 @@
   "creator": "penn",
   "assignee": "penn",
   "createdAt": "2026-11-17",
-  "completedAt": null,
+  "completedAt": "2026-11-17",
   "branch": "main",
   "base_branch": "main",
   "worktree_path": null,
@@ -35,8 +35,8 @@
         "task_implementation",
         "delivery_review_and_closeout"
       ],
-      "current_phase_id": "task_implementation",
-      "input_revision": "5",
+      "current_phase_id": null,
+      "input_revision": "9",
       "phases": {
         "goal_exploration_and_requirements": {
           "status": "accepted",
@@ -87,28 +87,52 @@
           }
         },
         "task_implementation": {
-          "status": "active",
-          "input_revision": "5",
-          "artifact_revision": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
-          "artifact_refs": [],
-          "result_revision": "0",
-          "result_ref": null,
-          "outcome_kind": null,
+          "status": "accepted",
+          "input_revision": "6",
+          "artifact_revision": "6ec1d5ac5aab674b1693184708ff181a839b813ab04beb2594bfd424c356a0e7",
+          "artifact_refs": [
+            "execution.md"
+          ],
+          "result_revision": "1",
+          "result_ref": "execution.md",
+          "outcome_kind": "implementation_result",
           "reason": null,
-          "evidence_refs": [],
-          "acceptance": null
+          "evidence_refs": [
+            "execution.md"
+          ],
+          "acceptance": {
+            "artifact_revision": "6ec1d5ac5aab674b1693184708ff181a839b813ab04beb2594bfd424c356a0e7",
+            "result_revision": "1",
+            "input_revision": "6",
+            "task_route_revision": "1",
+            "evidence_refs": [
+              "execution.md"
+            ]
+          }
         },
         "delivery_review_and_closeout": {
-          "status": "not_started",
-          "input_revision": "1",
-          "artifact_revision": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
-          "artifact_refs": [],
-          "result_revision": "0",
-          "result_ref": null,
-          "outcome_kind": null,
+          "status": "accepted",
+          "input_revision": "8",
+          "artifact_revision": "efb4dede9267e1eba579984e307ae71d60e8d40a1bc695652f91d35ace7694f2",
+          "artifact_refs": [
+            "delivery-review.md"
+          ],
+          "result_revision": "1",
+          "result_ref": "delivery-review.md",
+          "outcome_kind": "delivery_ready",
           "reason": null,
-          "evidence_refs": [],
-          "acceptance": null
+          "evidence_refs": [
+            "delivery-review.md"
+          ],
+          "acceptance": {
+            "artifact_revision": "efb4dede9267e1eba579984e307ae71d60e8d40a1bc695652f91d35ace7694f2",
+            "result_revision": "1",
+            "input_revision": "8",
+            "task_route_revision": "1",
+            "evidence_refs": [
+              "delivery-review.md"
+            ]
+          }
         }
       },
       "route_dependency_admission": null,
@@ -118,7 +142,7 @@
         "approval_ref": "approval.md",
         "task_route_revision": "1"
       },
-      "closeout_disposition": null,
+      "closeout_disposition": "delivery_ready",
       "skip_records": {
         "decision_space_construction_and_merging": {
           "reason": "Parent task accepted the decision space and the user approved this exact asset refresh scope.",
